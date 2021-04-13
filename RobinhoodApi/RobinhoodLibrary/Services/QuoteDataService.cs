@@ -162,8 +162,7 @@ namespace RobinhoodLibrary.Services
                 * cap-weighted
                 * investment-trust-or-fund */
 
-            InstrumentsTag instrumentsTag = await _httpClientManager.GetAsync<InstrumentsTag>($"{Constants.Routes.TagsBase}{tag}/")
-                ;
+            InstrumentsTag instrumentsTag = await _httpClientManager.GetAsync<InstrumentsTag>($"{Constants.Routes.TagsBase}{tag}/");
             if (instrumentsTag?.Instruments == null || !instrumentsTag.Instruments.Any())
             {
                 throw new HttpResponseException("The instruments gotten by tag is null or empty");
@@ -186,8 +185,7 @@ namespace RobinhoodLibrary.Services
         /// <inheritdoc />
         public async Task<Account> GetAccount()
         {
-            AccountResult accountResult =
-                await _httpClientManager.GetAsync<AccountResult>(Constants.Routes.Accounts);
+            AccountResult accountResult = await _httpClientManager.GetAsync<AccountResult>(Constants.Routes.Accounts);
 
             if (accountResult?.Results == null || !accountResult.Results.Any() || accountResult.Results.All(a => a.Deactivated))
             {
@@ -195,20 +193,6 @@ namespace RobinhoodLibrary.Services
             }
 
             return accountResult.Results.FirstOrDefault();
-        }
-
-        /// <inheritdoc />
-        /// /!\ gives BadRequest, the same result fro the python library.
-        public async Task<dynamic> GetStockMarketData(IList<string> instruments)
-        {
-            if (instruments == null || !instruments.Any())
-            {
-                throw new HttpResponseException("Invalid request, reason : given instruments is null or empty");
-            }
-
-            return await _httpClientManager
-                .GetAsync<dynamic>(
-                    $"{RbHelper.BuildUrlMarketData()}quotes/?instruments={string.Join(",", instruments)}");
         }
 
         /// <inheritdoc />
@@ -246,6 +230,19 @@ namespace RobinhoodLibrary.Services
         }
 
         /// <inheritdoc />
+        /// /!\ gives BadRequest, the same result for the python library.
+        public async Task<dynamic> GetStockMarketData(IList<string> instruments)
+        {
+            if (instruments == null || !instruments.Any())
+            {
+                throw new HttpResponseException("Invalid request, reason : given instruments is null or empty");
+            }
+
+            return await _httpClientManager
+                .GetAsync<dynamic>($"{RbHelper.BuildUrlMarketData()}quotes/?instruments={string.Join(",", instruments)}");
+        }
+
+        /// <inheritdoc />
         /// /!\ gives 404, the route not exist in python, but exist in ruby code.
         public async Task<dynamic> GetPopularity(string stock)
         {
@@ -257,8 +254,7 @@ namespace RobinhoodLibrary.Services
 
             string instrumentId = quoteData.Instrument.Split("/")[4];
 
-            return await _httpClientManager
-                .GetAsync<dynamic>($"{Constants.Routes.InstrumentsBase}{instrumentId}/popularity/");
+            return await _httpClientManager.GetAsync<dynamic>($"{Constants.Routes.InstrumentsBase}{instrumentId}/popularity/");
         }
     }
 }

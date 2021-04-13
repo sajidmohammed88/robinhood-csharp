@@ -27,8 +27,7 @@ namespace RobinhoodLibrary.Services
         {
             ChainResult chainResult = await _httpClientManager
                 .GetAsync<ChainResult>(Constants.Routes.OptionsChainBase,
-                    query: new Dictionary<string, string> { { "equity_instrument_ids", instrumentId } })
-                ;
+                    query: new Dictionary<string, string> { { "equity_instrument_ids", instrumentId } });
 
             return chainResult.Results.FirstOrDefault();
         }

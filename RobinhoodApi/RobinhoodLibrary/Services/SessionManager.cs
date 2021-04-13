@@ -61,7 +61,7 @@ namespace RobinhoodLibrary.Services
 
             if (response.StatusCode == HttpStatusCode.Unauthorized && autoLog)
             {
-                await RefreshOauth2Async();
+                ConfigureManager(await RefreshOauth2Async());
 
                 response = await _httpClient.GetAsync(url);
             }
@@ -87,7 +87,7 @@ namespace RobinhoodLibrary.Services
 
             if (response.StatusCode == HttpStatusCode.Unauthorized && autoLog)
             {
-                await RefreshOauth2Async();
+                ConfigureManager(await RefreshOauth2Async());
 
                 response = await _httpClient.PostAsync(url,
                     new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded"));
