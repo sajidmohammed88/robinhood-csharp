@@ -47,7 +47,8 @@ namespace RobinhoodLibrary.Helpers
             };
 
         internal static OrderRequest BuildOrderRequestForMarket(string instrumentUrl, string symbol,
-            TimeInForce timeInForce, int quantity, string price = null, string stopPrice = null) =>
+            TimeInForce timeInForce, int quantity, OrderType orderType, Trigger trigger, Side side, string price = null,
+            string stopPrice = null) =>
             new OrderRequest
             {
                 InstrumentUrl = instrumentUrl,
@@ -55,10 +56,13 @@ namespace RobinhoodLibrary.Helpers
                 TimeInForce = timeInForce,
                 Quantity = quantity,
                 Price = price,
-                StopPrice = stopPrice
+                StopPrice = stopPrice,
+                OrderType = orderType,
+                Trigger = trigger,
+                Side = side
             };
 
-        internal static void CheckOrderRequest(OrderRequest orderRequest, string price, string lastTradeParse)
+        internal static void CheckOrderRequest(OrderRequest orderRequest)
         {
             if (orderRequest == null)
             {
@@ -67,14 +71,14 @@ namespace RobinhoodLibrary.Helpers
 
             if (string.IsNullOrEmpty(orderRequest.InstrumentUrl) || string.IsNullOrEmpty(orderRequest.Symbol))
             {
-                throw new RequestCheckException("Neither InstrumentUrl nor symbol were passed to SubmitBuyOrder");
+                throw new RequestCheckException("InstrumentUrl or symbol is empty.");
             }
 
             if (orderRequest.OrderType == OrderType.Limit)
             {
                 if (orderRequest.Price == null)
                 {
-                    throw new RequestCheckException("Limit order has no price in call to SubmitBuyOrder");
+                    throw new RequestCheckException("Limit order has no price.");
                 }
             }
 
@@ -82,30 +86,26 @@ namespace RobinhoodLibrary.Helpers
             {
                 if (orderRequest.StopPrice == null)
                 {
-                    throw new RequestCheckException("Stop order has no stop_price in call to SubmitBuyOrder");
+                    throw new RequestCheckException("Stop order don't have stop_price.");
                 }
             }
 
             if (orderRequest.StopPrice != null && orderRequest.Trigger != Trigger.Stop)
             {
-                throw new RequestCheckException("Stop price set for non-stop order in call to SubmitBuyOrder");
+                throw new RequestCheckException("Stop price set for non-stop order.");
             }
 
             if (orderRequest.Price != null)
             {
                 if (orderRequest.OrderType == OrderType.Market)
                 {
-                    throw new RequestCheckException("Market order has price limit in call to SubmitBuyOrder");
+                    throw new RequestCheckException("Market order has price limit.");
                 }
-            }
-            else
-            {
-                orderRequest.Price = price ?? lastTradeParse;
             }
 
             if (orderRequest.Quantity <= 0)
             {
-                throw new RequestCheckException("Quantity must be positive number in call to SubmitBuyOrder");
+                throw new RequestCheckException("Quantity must be positive number.");
             }
         }
     }

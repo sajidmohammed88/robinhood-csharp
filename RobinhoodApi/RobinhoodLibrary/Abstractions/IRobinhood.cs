@@ -1,8 +1,10 @@
-﻿using RobinhoodLibrary.Data.Fundamentals;
+﻿using RobinhoodLibrary.Data.Dividends;
+using RobinhoodLibrary.Data.Fundamentals;
 using RobinhoodLibrary.Data.Options;
 using RobinhoodLibrary.Data.Orders;
 using RobinhoodLibrary.Data.Portfolios;
 using RobinhoodLibrary.Data.Positions;
+using RobinhoodLibrary.Data.Quote;
 using RobinhoodLibrary.Data.User;
 using RobinhoodLibrary.Enum;
 using System;
@@ -91,7 +93,7 @@ namespace RobinhoodLibrary.Abstractions
         /// Gets the dividends.
         /// </summary>
         /// <returns>Dividends.</returns>
-        Task<dynamic> GetDividends();
+        Task<IList<Dividends>> GetDividends();
 
         /// <summary>
         /// Gets the positions.
@@ -135,7 +137,8 @@ namespace RobinhoodLibrary.Abstractions
         /// Cancel the order.
         /// </summary>
         /// <param name="orderId">The order identifier.</param>
-        Task CancelOrder(Guid orderId);
+        /// <returns>True if the order is canceled, otherwise false.</returns>
+        Task<bool> CancelOrder(Guid orderId);
 
         /// <summary>
         /// Place the market buy order.
@@ -144,8 +147,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="symbol">The symbol.</param>
         /// <param name="timeInForce">The time in force.</param>
         /// <param name="quantity">The quantity.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceMarketBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
+        /// <returns>The quote data.</returns>
+        Task<QuoteData> PlaceMarketBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
 
         /// <summary>
         /// Place the market sell order.
@@ -154,8 +157,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="symbol">The symbol.</param>
         /// <param name="timeInForce">The time in force.</param>
         /// <param name="quantity">The quantity.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceMarketSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
+        /// <returns>The quote data.</returns>
+        Task<QuoteData> PlaceMarketSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
 
         /// <summary>
         /// Place the limit buy order.
@@ -165,8 +168,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="timeInForce">The time in force.</param>
         /// <param name="price">The price.</param>
         /// <param name="quantity">The quantity.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, string price,
+        /// <returns>The quote data.</returns>
+        Task<QuoteData> PlaceLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, string price,
             int quantity);
 
         /// <summary>
@@ -177,8 +180,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="timeInForce">The time in force.</param>
         /// <param name="price">The price.</param>
         /// <param name="quantity">The quantity.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        /// <returns>The quote data</returns>
+        Task<QuoteData> PlaceLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, int quantity);
 
         /// <summary>
@@ -189,8 +192,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="timeInForce">The time in force.</param>
         /// <param name="stopPrice">The stop price.</param>
         /// <param name="quantity">The quantity.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceStopLossBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        /// <returns>The quote data.</returns>
+        Task<QuoteData> PlaceStopLossBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string stopPrice, int quantity);
 
         /// <summary>
@@ -201,8 +204,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="timeInForce">The time in force.</param>
         /// <param name="stopPrice">The stop price.</param>
         /// <param name="quantity">The quantity.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceStopLossSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        /// <returns>The quote data.</returns>
+        Task<QuoteData> PlaceStopLossSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string stopPrice, int quantity);
 
         /// <summary>
@@ -214,8 +217,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="price">The price.</param>
         /// <param name="stopPrice">The stop price.</param>
         /// <param name="quantity">The quantity.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceStopLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        /// <returns>The quote data.</returns>
+        Task<QuoteData> PlaceStopLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, string stopPrice, int quantity);
 
         /// <summary>
@@ -227,8 +230,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="price">The price.</param>
         /// <param name="stopPrice">The stop price.</param>
         /// <param name="quantity">The quantity.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceStopLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        /// <returns>The quote data.</returns>
+        Task<QuoteData> PlaceStopLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, string stopPrice, int quantity);
 
         /// <summary>

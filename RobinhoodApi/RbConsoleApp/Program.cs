@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RobinhoodLibrary.Abstractions;
 using RobinhoodLibrary.Data.Authentication;
+using RobinhoodLibrary.Data.Dividends;
 using RobinhoodLibrary.Data.Fundamentals;
 using RobinhoodLibrary.Data.Orders;
 using RobinhoodLibrary.Data.Portfolios;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using RobinhoodLibrary.Data.Quote;
 
 namespace RobinhoodConsoleApp
 {
@@ -92,7 +94,7 @@ namespace RobinhoodConsoleApp
 
             //Portfolio
             IList<Portfolio> portfolios = await _robinhood.GetPortfolio();
-            dynamic dividends = await _robinhood.GetDividends();
+            IList<Dividends> dividends = await _robinhood.GetDividends();
 
             //Positions
             IList<Position> positions = await _robinhood.GetPositions();
@@ -102,11 +104,27 @@ namespace RobinhoodConsoleApp
             IList<Order> ordersHistory = await _robinhood.GetOrdersHistory();
             Order orderHistory = await _robinhood.GetOrderHistory(new Guid("60743aef-8b9e-4c17-b8b4-b32e1facb242"));
             IList<Order> openedOrders = await _robinhood.GetOpenOrders();
-            await _robinhood.CancelOrder(new Guid("60743aef-8b9e-4c17-b8b4-b32e1facb242"));
+            bool isOrderCanceled = await _robinhood.CancelOrder(new Guid("60743aef-8b9e-4c17-b8b4-b32e1facb242"));
 
-            dynamic x = await _robinhood
-                .PlaceMarketBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/",
-                    "AAPL", TimeInForce.Gfd, 1);
+            QuoteData marketBuyOrder = await _robinhood
+                .PlaceMarketBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, 1);
+            QuoteData marketSellOrder = await _robinhood
+                .PlaceMarketSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, 1);
+            QuoteData limitBuyOrder = await _robinhood
+                .PlaceLimitBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "132.5", 1);
+            QuoteData limitSellOrder = await _robinhood
+                .PlaceLimitSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "132.5", 1);
+            QuoteData stopMarketBuyOrder = await _robinhood
+                .PlaceStopLossBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", 1);
+            QuoteData stopMarketSellOrder = await _robinhood
+                .PlaceStopLossSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", 1);
+            QuoteData stopLimitBuyOrder = await _robinhood
+                .PlaceStopLimitBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", "140.5", 1);
+            QuoteData stopLimitSellOrder = await _robinhood
+                .PlaceStopLimitSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", "150.5", 1);
+
+            dynamic placeBuyOrder = await _robinhood.PlaceBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", "0.0");
+            dynamic placeSellOrder = await _robinhood.PlaceSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", "0.0");
 
             //await _robinhood.Logout();
         }

@@ -1,5 +1,6 @@
 ﻿using RobinhoodLibrary.Abstractions;
 using RobinhoodLibrary.Data.Authentication;
+using RobinhoodLibrary.Data.Dividends;
 using RobinhoodLibrary.Data.Fundamentals;
 using RobinhoodLibrary.Data.News;
 using RobinhoodLibrary.Data.Options;
@@ -250,9 +251,24 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> GetDividends()
+        public async Task<IList<Dividends>> GetDividends()
         {
-            return await _httpClientManager.GetAsync<dynamic>(Constants.Routes.Dividends);
+            DividendsResult dividendsResult = await _httpClientManager.GetAsync<DividendsResult>(Constants.Routes.Dividends);
+            List<Dividends> dividends = new List<Dividends>();
+
+            if (dividendsResult?.Results == null || !dividendsResult.Results.Any())
+            {
+                return dividends;
+            }
+
+            dividends.AddRange(dividendsResult.Results);
+            while (dividendsResult.Next != null)
+            {
+                dividendsResult = await _httpClientManager.GetAsync<DividendsResult>(dividendsResult.Next);
+                dividends.AddRange(dividendsResult.Results);
+            }
+
+            return dividends;
         }
         #endregion
         #region POSITIONS
@@ -317,107 +333,93 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task CancelOrder(Guid orderId)
+        public async Task<bool> CancelOrder(Guid orderId)
         {
             Order order = await _orderService.GetOrderHistory(orderId);
             if (order == null)
             {
-                throw new HttpResponseException($"No order exist for the order id : {orderId}");
+                throw new HttpResponseException($"The order {orderId} not exist.");
             }
 
-            await _httpClientManager.PostAsync(order.Cancel, null, (null, null));
+            var (statusCode, _) = await _httpClientManager.PostAsync(order.Cancel, null, (null, null));
+
+            return statusCode == HttpStatusCode.OK;
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceMarketBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
+        public async Task<QuoteData> PlaceMarketBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity);
-            orderRequest.OrderType = OrderType.Market;
-            orderRequest.Trigger = Trigger.Immediate;
-            orderRequest.Side = Side.Buy;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
+                OrderType.Market, Trigger.Immediate, Side.Buy);
 
             return await _orderService.SubmitBuyOrder(orderRequest);
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceMarketSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
+        public async Task<QuoteData> PlaceMarketSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity);
-            orderRequest.OrderType = OrderType.Market;
-            orderRequest.Trigger = Trigger.Immediate;
-            orderRequest.Side = Side.Sell;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
+                OrderType.Market, Trigger.Immediate, Side.Sell);
 
             return await _orderService.SubmitSellOrder(orderRequest);
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<QuoteData> PlaceLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, int quantity)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity, price);
-            orderRequest.OrderType = OrderType.Limit;
-            orderRequest.Trigger = Trigger.Immediate;
-            orderRequest.Side = Side.Buy;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
+                OrderType.Limit, Trigger.Immediate, Side.Buy, price);
 
             return await _orderService.SubmitBuyOrder(orderRequest);
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<QuoteData> PlaceLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, int quantity)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity, price);
-            orderRequest.OrderType = OrderType.Limit;
-            orderRequest.Trigger = Trigger.Immediate;
-            orderRequest.Side = Side.Sell;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
+                OrderType.Limit, Trigger.Immediate, Side.Sell, price);
 
-            return await _orderService.SubmitBuyOrder(orderRequest);
+            return await _orderService.SubmitSellOrder(orderRequest);
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceStopLossBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<QuoteData> PlaceStopLossBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string stopPrice, int quantity)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity, stopPrice: stopPrice);
-            orderRequest.OrderType = OrderType.Market;
-            orderRequest.Trigger = Trigger.Stop;
-            orderRequest.Side = Side.Buy;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
+                OrderType.Market, Trigger.Stop, Side.Buy, stopPrice: stopPrice);
 
             return await _orderService.SubmitBuyOrder(orderRequest);
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceStopLossSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<QuoteData> PlaceStopLossSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string stopPrice, int quantity)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity, stopPrice: stopPrice);
-            orderRequest.OrderType = OrderType.Market;
-            orderRequest.Trigger = Trigger.Stop;
-            orderRequest.Side = Side.Sell;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
+                OrderType.Market, Trigger.Stop, Side.Sell, stopPrice: stopPrice);
+
+            return await _orderService.SubmitSellOrder(orderRequest);
+        }
+
+        /// <inheritdoc />
+        public async Task<QuoteData> PlaceStopLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+            string price, string stopPrice, int quantity)
+        {
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
+                OrderType.Limit, Trigger.Stop, Side.Buy, price, stopPrice);
 
             return await _orderService.SubmitBuyOrder(orderRequest);
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceStopLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<QuoteData> PlaceStopLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, string stopPrice, int quantity)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity, price, stopPrice);
-            orderRequest.OrderType = OrderType.Limit;
-            orderRequest.Trigger = Trigger.Stop;
-            orderRequest.Side = Side.Buy;
-
-            return await _orderService.SubmitBuyOrder(orderRequest);
-        }
-
-        /// <inheritdoc />
-        public async Task<dynamic> PlaceStopLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
-            string price, string stopPrice, int quantity)
-        {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity, price, stopPrice);
-            orderRequest.OrderType = OrderType.Limit;
-            orderRequest.Trigger = Trigger.Stop;
-            orderRequest.Side = Side.Sell;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
+                OrderType.Limit, Trigger.Stop, Side.Sell, price, stopPrice);
 
             return await _orderService.SubmitBuyOrder(orderRequest);
         }
@@ -425,10 +427,8 @@ namespace RobinhoodLibrary
         /// <inheritdoc />
         public async Task<dynamic> PlaceBuyOrder(string instrumentUrl, string symbol, string price)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1, price ?? "0.0");
-            orderRequest.OrderType = OrderType.Market;
-            orderRequest.Trigger = Trigger.Immediate;
-            orderRequest.Side = Side.Buy;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
+                OrderType.Market, Trigger.Immediate, Side.Buy, price ?? "0.0");
 
             return await _orderService.PlaceOrder(orderRequest);
         }
@@ -436,10 +436,8 @@ namespace RobinhoodLibrary
         /// <inheritdoc />
         public async Task<dynamic> PlaceSellOrder(string instrumentUrl, string symbol, string price)
         {
-            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1, price ?? "0.0");
-            orderRequest.OrderType = OrderType.Market;
-            orderRequest.Trigger = Trigger.Immediate;
-            orderRequest.Side = Side.Sell;
+            OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
+                OrderType.Market, Trigger.Immediate, Side.Sell, price ?? "0.0");
 
             return await _orderService.PlaceOrder(orderRequest);
         }

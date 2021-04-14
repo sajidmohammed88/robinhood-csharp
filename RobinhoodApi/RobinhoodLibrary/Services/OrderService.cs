@@ -61,38 +61,39 @@ namespace RobinhoodLibrary.Services
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> SubmitBuyOrder(OrderRequest orderRequest)
+        public async Task<QuoteData> SubmitBuyOrder(OrderRequest orderRequest)
         {
-            // Used for default price input
-            // Price is required, so we use the current ask price if it is not specified
-            QuoteData quote = await _quoteDataService.GetQuoteData(orderRequest.Symbol);
-            RbHelper.CheckOrderRequest(orderRequest, quote.AskPrice, quote.LastTradePrice);
-            Account account = await _quoteDataService.GetAccount();
-
-            try
-            {
-                return await _httpClientManager.PostAsync<dynamic>(Constants.Routes.OrdersBase,
-                        RbHelper.BuildOrderContent(orderRequest, account.Url));
-            }
-            catch (Exception ex)
-            {
-                throw new HttpRequestException($"Exception when placing an order, reason : {ex.Message}");
-            }
+            return await SubmitOrder(orderRequest, true);
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> SubmitSellOrder(OrderRequest orderRequest)
+        public async Task<QuoteData> SubmitSellOrder(OrderRequest orderRequest)
         {
-            // Used for default price input
-            // Price is required, so we use the current ask price if it is not specified
-            QuoteData quote = await _quoteDataService.GetQuoteData(orderRequest.Symbol);
-            RbHelper.CheckOrderRequest(orderRequest, quote.BidPrice, quote.LastTradePrice);
+            return await SubmitOrder(orderRequest, false);
+        }
+
+        /// <summary>
+        /// Submits the order for sell or buy..
+        /// </summary>
+        /// <param name="orderRequest">The order request.</param>
+        /// <param name="isBuy">if set to <c>true</c> is buy,otherwise false.</param>
+        /// <returns>The quote.</returns>
+        /// <exception cref="HttpRequestException">Exception when placing an order, reason : {ex.Message}</exception>
+        private async Task<QuoteData> SubmitOrder(OrderRequest orderRequest, bool isBuy)
+        {
+            RbHelper.CheckOrderRequest(orderRequest);
             Account account = await _quoteDataService.GetAccount();
+            if (orderRequest.Price == null)
+            {
+                QuoteData quote = await _quoteDataService.GetQuoteData(orderRequest.Symbol);
+                orderRequest.Price = (isBuy ? quote.AskPrice : quote.BidPrice) ?? quote.LastTradePrice;
+            }
 
             try
             {
-                return await _httpClientManager.PostAsync<dynamic>(Constants.Routes.OrdersBase,
-                        RbHelper.BuildOrderContent(orderRequest, account.Url));
+                var submitResult = await _httpClientManager.PostAsync<QuoteData>(Constants.Routes.OrdersBase,
+                    RbHelper.BuildOrderContent(orderRequest, account.Url));
+                return submitResult.Data;
             }
             catch (Exception ex)
             {
@@ -108,6 +109,7 @@ namespace RobinhoodLibrary.Services
                 throw new RequestCheckException("The order request is null in call to PlaceOrder");
             }
 
+            Account account = await _quoteDataService.GetAccount();
             if (orderRequest.Price == null)
             {
                 QuoteData quote = await _quoteDataService.GetQuoteData(orderRequest.Symbol);
@@ -117,8 +119,6 @@ namespace RobinhoodLibrary.Services
                     orderRequest.Price = quote.LastTradePrice;
                 }
             }
-
-            Account account = await _quoteDataService.GetAccount();
 
             try
             {
