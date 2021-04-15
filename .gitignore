@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/RobinhoodApi/RbConsoleApp/bin/Debug/netcoreapp3.1
+/RobinhoodApi/RbConsoleApp/obj
+/RobinhoodApi/RobinhoodLibrary/bin/Debug/netcoreapp3.1
+/RobinhoodApi/RobinhoodLibrary/obj/Debug/netcoreapp3.1
+/RobinhoodApi/RobinhoodLibrary/obj/Release/netcoreapp3.1
+/RobinhoodApi/RobinhoodLibrary/obj
