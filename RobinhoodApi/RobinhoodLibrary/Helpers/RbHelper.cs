@@ -69,9 +69,19 @@ namespace RobinhoodLibrary.Helpers
                 throw new RequestCheckException("The order request is null");
             }
 
-            if (string.IsNullOrEmpty(orderRequest.InstrumentUrl) || string.IsNullOrEmpty(orderRequest.Symbol))
+            if (string.IsNullOrEmpty(orderRequest.InstrumentUrl))
             {
-                throw new RequestCheckException("InstrumentUrl or symbol is empty.");
+                if (string.IsNullOrEmpty(orderRequest.Symbol))
+                {
+                    throw new RequestCheckException("Neither instrumentURL nor symbol were passed.");
+                }
+
+                throw new RequestCheckException("InstrumentUrl is empty.");
+            }
+
+            if (string.IsNullOrEmpty(orderRequest.Symbol))
+            {
+                throw new RequestCheckException("Symbol is empty.");
             }
 
             if (orderRequest.OrderType == OrderType.Limit)
