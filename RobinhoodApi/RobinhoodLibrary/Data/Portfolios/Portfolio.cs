@@ -10,7 +10,7 @@ namespace RobinhoodLibrary.Data.Portfolios
         public Uri Account { get; set; }
 
         [JsonPropertyName("start_date")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [JsonPropertyName("market_value")]
         public string MarketValue { get; set; }
