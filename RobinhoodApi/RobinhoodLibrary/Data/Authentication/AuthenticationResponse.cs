@@ -1,11 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using RobinhoodLibrary.Data.Base;
+using System.Text.Json.Serialization;
 
 namespace RobinhoodLibrary.Data.Authentication
 {
-    public class AuthenticationResponse
+    public class AuthenticationResponse : BaseDetail
     {
-        public string Detail { get; set; }
-
         public Challenge Challenge { get; set; }
 
         [JsonPropertyName("mfa_required")]

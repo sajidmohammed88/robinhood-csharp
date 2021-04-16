@@ -68,7 +68,7 @@ namespace RobinhoodLibrary.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpResponseException("The user is not authenticated, try to login");
+                throw new HttpResponseException("The get call is faulted.");
             }
 
             return JsonSerializer.Deserialize<T>(await response.Content.ReadAsStringAsync(), _settings);
