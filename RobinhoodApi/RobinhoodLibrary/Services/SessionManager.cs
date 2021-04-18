@@ -68,7 +68,7 @@ namespace RobinhoodLibrary.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpResponseException("The get call is faulted.");
+                throw new HttpResponseException($"The get call is faulted for {url} with status code : {response.StatusCode}");
             }
 
             return JsonSerializer.Deserialize<T>(await response.Content.ReadAsStringAsync(), _settings);
