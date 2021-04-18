@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.Json.Serialization;
 
 namespace RobinhoodLibrary.Data.Dividends
 {
@@ -21,21 +20,16 @@ namespace RobinhoodLibrary.Data.Dividends
 
         public string Withholding { get; set; }
 
-        [JsonPropertyName("record_date")]
         public DateTime RecordDate { get; set; }
 
-        [JsonPropertyName("payable_date")]
         public DateTime PayableDate { get; set; }
 
-        [JsonPropertyName("paid_at")]
         public DateTime PaidAt { get; set; }
 
         public string State { get; set; }
 
-        [JsonPropertyName("drip_enabled")]
         public bool DripEnabled { get; set; }
 
-        [JsonPropertyName("nra_withholding")]
         public string NraWithholding { get; set; }
     }
 }

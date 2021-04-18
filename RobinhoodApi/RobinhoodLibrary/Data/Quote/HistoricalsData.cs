@@ -16,16 +16,12 @@ namespace RobinhoodLibrary.Data.Quote
 
         public string Bounds { get; set; }
 
-        [JsonPropertyName("previous_close_price")]
         public string PreviousClosePrice { get; set; }
 
-        [JsonPropertyName("previous_close_time")]
         public DateTime PreviousCloseTime { get; set; }
 
-        [JsonPropertyName("open_price")]
         public string OpenPrice { get; set; }
 
-        [JsonPropertyName("open_time")]
         public DateTime OpenTime { get; set; }
 
         public string Instrument { get; set; }

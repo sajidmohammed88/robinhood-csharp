@@ -40,11 +40,7 @@ namespace RobinhoodLibrary.Services
                 throw new ArgumentNullException(nameof(httpClientFactory));
             }
             _configuration = options?.Value ?? throw new ArgumentNullException(nameof(RobinhoodConfiguration));
-            _settings = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance,
-                Converters = { new JsonStringEnumConverter(SnakeCaseNamingPolicy.Instance, false) }
-            };
+            _settings = CustomJsonSerializerOptions.Current;
             _deviceToken = Guid.NewGuid();
             _httpClient = PrepareHttpClientHeader(httpClientFactory);
         }
