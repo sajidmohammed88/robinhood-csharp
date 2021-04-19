@@ -102,7 +102,7 @@ namespace RobinhoodLibrary.Services
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceOrder(OrderRequest orderRequest)
+        public async Task<Order> PlaceOrder(OrderRequest orderRequest)
         {
             if (orderRequest == null)
             {
@@ -122,8 +122,9 @@ namespace RobinhoodLibrary.Services
 
             try
             {
-                return await _httpClientManager.PostAsync<dynamic>(Constants.Routes.OrdersBase,
+                var response = await _httpClientManager.PostAsync<Order>(Constants.Routes.OrdersBase,
                         RbHelper.BuildOrderContent(orderRequest, account.Url));
+                return response.Data;
             }
             catch (Exception ex)
             {

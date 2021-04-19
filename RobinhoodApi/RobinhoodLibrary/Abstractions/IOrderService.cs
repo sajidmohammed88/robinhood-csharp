@@ -43,7 +43,7 @@ namespace RobinhoodLibrary.Abstractions
         /// Places the order.
         /// </summary>
         /// <param name="orderRequest">The order request.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceOrder(OrderRequest orderRequest);
+        /// <returns>The placed order.</returns>
+        Task<Order> PlaceOrder(OrderRequest orderRequest);
     }
 }

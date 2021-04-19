@@ -240,8 +240,8 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="instrumentUrl">The instrument URL.</param>
         /// <param name="symbol">The symbol.</param>
         /// <param name="price">The price.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceBuyOrder(string instrumentUrl, string symbol, string price);
+        /// <returns>The placed order.</returns>
+        Task<Order> PlaceBuyOrder(string instrumentUrl, string symbol, string price);
 
         /// <summary>
         /// Place the sell order.
@@ -249,7 +249,7 @@ namespace RobinhoodLibrary.Abstractions
         /// <param name="instrumentUrl">The instrument URL.</param>
         /// <param name="symbol">The symbol.</param>
         /// <param name="price">The price.</param>
-        /// <returns></returns>
-        Task<dynamic> PlaceSellOrder(string instrumentUrl, string symbol, string price);
+        /// <returns>The placed order.</returns>
+        Task<Order> PlaceSellOrder(string instrumentUrl, string symbol, string price);
     }
 }

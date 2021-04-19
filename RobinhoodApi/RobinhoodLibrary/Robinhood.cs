@@ -425,7 +425,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceBuyOrder(string instrumentUrl, string symbol, string price)
+        public async Task<Order> PlaceBuyOrder(string instrumentUrl, string symbol, string price)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
                 OrderType.Market, Trigger.Immediate, Side.Buy, price ?? "0.0");
@@ -434,7 +434,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceSellOrder(string instrumentUrl, string symbol, string price)
+        public async Task<Order> PlaceSellOrder(string instrumentUrl, string symbol, string price)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
                 OrderType.Market, Trigger.Immediate, Side.Sell, price ?? "0.0");

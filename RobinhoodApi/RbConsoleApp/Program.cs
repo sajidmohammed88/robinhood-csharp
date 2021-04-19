@@ -123,8 +123,8 @@ namespace RobinhoodConsoleApp
             QuoteData stopLimitSellOrder = await _robinhood
                 .PlaceStopLimitSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", "150.5", 1);
 
-            dynamic placeBuyOrder = await _robinhood.PlaceBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", "0.0");
-            dynamic placeSellOrder = await _robinhood.PlaceSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", "0.0");
+            Order placeBuyOrder = await _robinhood.PlaceBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", "0.0");
+            Order placeSellOrder = await _robinhood.PlaceSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", "0.0");
 
             //await _robinhood.Logout();
         }
