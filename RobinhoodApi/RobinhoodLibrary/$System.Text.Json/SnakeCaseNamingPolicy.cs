@@ -1,15 +1,15 @@
-﻿using System.Linq;
+﻿using Newtonsoft.Json.Serialization;
 
 namespace System.Text.Json
 {
     internal class SnakeCaseNamingPolicy : JsonNamingPolicy
     {
+        private readonly SnakeCaseNamingStrategy _snakeCaseNamingStrategy = new SnakeCaseNamingStrategy();
         public static SnakeCaseNamingPolicy Instance { get; } = new SnakeCaseNamingPolicy();
 
         public override string ConvertName(string name)
         {
-            // Conversion to other naming convention goes here. Like SnakeCase, KebabCase etc.
-            return string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x : x.ToString())).ToLower();
+            return _snakeCaseNamingStrategy.GetPropertyName(name, false);
         }
     }
 }
