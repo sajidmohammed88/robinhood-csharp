@@ -341,13 +341,18 @@ namespace RobinhoodLibrary
                 throw new HttpResponseException($"The order {orderId} not exist.");
             }
 
+            if (order.Cancel == null)
+            {
+                throw new HttpResponseException($"The order {orderId} can't be canceled.");
+            }
+
             var (statusCode, _) = await _httpClientManager.PostAsync(order.Cancel, null, (null, null));
 
             return statusCode == HttpStatusCode.OK;
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> PlaceMarketBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
+        public async Task<Order> PlaceMarketBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
                 OrderType.Market, Trigger.Immediate, Side.Buy);
@@ -356,7 +361,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> PlaceMarketSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
+        public async Task<Order> PlaceMarketSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
                 OrderType.Market, Trigger.Immediate, Side.Sell);
@@ -365,7 +370,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> PlaceLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<Order> PlaceLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, int quantity)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
@@ -375,7 +380,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> PlaceLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<Order> PlaceLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, int quantity)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
@@ -385,7 +390,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> PlaceStopLossBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<Order> PlaceStopLossBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string stopPrice, int quantity)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
@@ -395,7 +400,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> PlaceStopLossSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<Order> PlaceStopLossSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string stopPrice, int quantity)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
@@ -405,7 +410,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> PlaceStopLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<Order> PlaceStopLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, string stopPrice, int quantity)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
@@ -415,7 +420,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> PlaceStopLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+        public async Task<Order> PlaceStopLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
             string price, string stopPrice, int quantity)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
@@ -425,7 +430,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceBuyOrder(string instrumentUrl, string symbol, string price)
+        public async Task<Order> PlaceBuyOrder(string instrumentUrl, string symbol, string price)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
                 OrderType.Market, Trigger.Immediate, Side.Buy, price ?? "0.0");
@@ -434,7 +439,7 @@ namespace RobinhoodLibrary
         }
 
         /// <inheritdoc />
-        public async Task<dynamic> PlaceSellOrder(string instrumentUrl, string symbol, string price)
+        public async Task<Order> PlaceSellOrder(string instrumentUrl, string symbol, string price)
         {
             OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
                 OrderType.Market, Trigger.Immediate, Side.Sell, price ?? "0.0");

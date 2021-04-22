@@ -47,7 +47,7 @@ namespace RobinhoodConsoleApp
                 "1e513292-5926-4dc4-8c3d-4af6b5836704"
             });
 
-            dynamic popularity = await _robinhood.GetPopularity("AAPL");
+            dynamic popularity = await _robinhood.GetPopularity("F");
         }
     }
 }
