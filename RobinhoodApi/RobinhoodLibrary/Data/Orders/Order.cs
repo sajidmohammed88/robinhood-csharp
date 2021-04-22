@@ -1,16 +1,17 @@
-﻿using RobinhoodLibrary.Enum;
+﻿using RobinhoodLibrary.Data.Base;
+using RobinhoodLibrary.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace RobinhoodLibrary.Data.Orders
 {
-    public class Order
+    public class Order : BaseDetail
     {
         public Guid Id { get; set; }
 
         [JsonPropertyName("ref_id")]
-        public Guid RefId { get; set; }
+        public Guid? RefId { get; set; }
 
         public string Url { get; set; }
 
