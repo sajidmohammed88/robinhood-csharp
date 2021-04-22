@@ -102,29 +102,28 @@ namespace RobinhoodConsoleApp
 
             //orders
             IList<Order> ordersHistory = await _robinhood.GetOrdersHistory();
-            Order orderHistory = await _robinhood.GetOrderHistory(new Guid("60743aef-8b9e-4c17-b8b4-b32e1facb242"));
+            Order orderHistory = await _robinhood.GetOrderHistory(new Guid("6081bf8f-cc7c-4960-bed9-04440614aa83"));
             IList<Order> openedOrders = await _robinhood.GetOpenOrders();
-            bool isOrderCanceled = await _robinhood.CancelOrder(new Guid("60743aef-8b9e-4c17-b8b4-b32e1facb242"));
+            bool isOrderCanceled = await _robinhood.CancelOrder(new Guid("6081c6f3-0d58-4532-a9a8-773ced6bec70"));
 
-            QuoteData marketBuyOrder = await _robinhood
-                .PlaceMarketBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, 1);
-            QuoteData marketSellOrder = await _robinhood
-                .PlaceMarketSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, 1);
-            QuoteData limitBuyOrder = await _robinhood
-                .PlaceLimitBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "132.5", 1);
-            QuoteData limitSellOrder = await _robinhood
-                .PlaceLimitSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "132.5", 1);
-            QuoteData stopMarketBuyOrder = await _robinhood
-                .PlaceStopLossBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", 1);
-            QuoteData stopMarketSellOrder = await _robinhood
-                .PlaceStopLossSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", 1);
-            QuoteData stopLimitBuyOrder = await _robinhood
-                .PlaceStopLimitBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", "140.5", 1);
-            QuoteData stopLimitSellOrder = await _robinhood
-                .PlaceStopLimitSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", TimeInForce.Gfd, "135.5", "150.5", 1);
-
-            Order placeBuyOrder = await _robinhood.PlaceBuyOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", "0.0");
-            Order placeSellOrder = await _robinhood.PlaceSellOrder("https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/", "AAPL", "0.0");
+            Order placeBuyOrder = await _robinhood.PlaceBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
+            Order placeSellOrder = await _robinhood.PlaceSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
+            Order marketBuyOrder = await _robinhood
+                .PlaceMarketBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, 1);
+            Order marketSellOrder = await _robinhood
+                .PlaceMarketSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, 1);
+            Order limitBuyOrder = await _robinhood
+                .PlaceLimitBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "1.1", 1);
+            Order limitSellOrder = await _robinhood
+                .PlaceLimitSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "20", 1);
+            Order stopMarketBuyOrder = await _robinhood
+                .PlaceStopLossBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "2.1", 1);
+            Order stopMarketSellOrder = await _robinhood
+                .PlaceStopLossSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "21", 1);
+            Order stopLimitBuyOrder = await _robinhood
+                .PlaceStopLimitBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "1.5", "21", 1);
+            Order stopLimitSellOrder = await _robinhood
+                .PlaceStopLimitSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "15", "21", 1);
 
             //await _robinhood.Logout();
         }

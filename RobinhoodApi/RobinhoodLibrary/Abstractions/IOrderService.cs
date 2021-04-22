@@ -1,6 +1,5 @@
 ﻿using RobinhoodLibrary.Data.Orders;
 using RobinhoodLibrary.Data.Orders.Request;
-using RobinhoodLibrary.Data.Quote;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,15 +28,15 @@ namespace RobinhoodLibrary.Abstractions
         /// Submit the buy order.
         /// </summary>
         /// <param name="orderRequest">The order request.</param>
-        /// <returns>The quote.</returns>
-        Task<QuoteData> SubmitBuyOrder(OrderRequest orderRequest);
+        /// <returns>The buy order.</returns>
+        Task<Order> SubmitBuyOrder(OrderRequest orderRequest);
 
         /// <summary>
         /// Submit the sell order.
         /// </summary>
         /// <param name="orderRequest">The order request.</param>
-        /// <returns>The quote.</returns>
-        Task<QuoteData> SubmitSellOrder(OrderRequest orderRequest);
+        /// <returns>The sell order.</returns>
+        Task<Order> SubmitSellOrder(OrderRequest orderRequest);
 
         /// <summary>
         /// Places the order.

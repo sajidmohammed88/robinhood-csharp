@@ -33,11 +33,11 @@ namespace RobinhoodLibrary.Services
         {
             OrderResult orderResult = await _httpClientManager.GetAsync<OrderResult>(Constants.Routes.OrdersBase);
 
-            List<Order> orders = new List<Order>();
-            if (orderResult?.Results == null || !orderResult.Results.Any())
+            if (orderResult?.Results == null || !orderResult.Results.Any() || orderResult.Next == null)
             {
-                return orders;
+                return orderResult?.Results;
             }
+            List<Order> orders = new List<Order>();
             orders.AddRange(orderResult.Results);
 
             while (orderResult.Next != null)
@@ -61,13 +61,13 @@ namespace RobinhoodLibrary.Services
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> SubmitBuyOrder(OrderRequest orderRequest)
+        public async Task<Order> SubmitBuyOrder(OrderRequest orderRequest)
         {
             return await SubmitOrder(orderRequest, true);
         }
 
         /// <inheritdoc />
-        public async Task<QuoteData> SubmitSellOrder(OrderRequest orderRequest)
+        public async Task<Order> SubmitSellOrder(OrderRequest orderRequest)
         {
             return await SubmitOrder(orderRequest, false);
         }
@@ -77,9 +77,9 @@ namespace RobinhoodLibrary.Services
         /// </summary>
         /// <param name="orderRequest">The order request.</param>
         /// <param name="isBuy">if set to <c>true</c> is buy,otherwise false.</param>
-        /// <returns>The quote.</returns>
+        /// <returns>The order.</returns>
         /// <exception cref="HttpRequestException">Exception when placing an order, reason : {ex.Message}</exception>
-        private async Task<QuoteData> SubmitOrder(OrderRequest orderRequest, bool isBuy)
+        private async Task<Order> SubmitOrder(OrderRequest orderRequest, bool isBuy)
         {
             RbHelper.CheckOrderRequest(orderRequest);
             Account account = await _quoteDataService.GetAccount();
@@ -91,7 +91,7 @@ namespace RobinhoodLibrary.Services
 
             try
             {
-                var submitResult = await _httpClientManager.PostAsync<QuoteData>(Constants.Routes.OrdersBase,
+                var submitResult = await _httpClientManager.PostAsync<Order>(Constants.Routes.OrdersBase,
                     RbHelper.BuildOrderContent(orderRequest, account.Url));
                 return submitResult.Data;
             }
@@ -110,7 +110,7 @@ namespace RobinhoodLibrary.Services
             }
 
             Account account = await _quoteDataService.GetAccount();
-            if (orderRequest.Price == null)
+            if (orderRequest.Price == null || orderRequest.Price == "0.0")
             {
                 QuoteData quote = await _quoteDataService.GetQuoteData(orderRequest.Symbol);
                 orderRequest.Price = quote.BidPrice;
