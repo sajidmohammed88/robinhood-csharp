@@ -62,11 +62,12 @@ namespace RobinhoodLibrary.Services
 
         private async Task<IList<Option>> FillPaginatedOptions(OptionResult optionResult)
         {
-            List<Option> options = new List<Option>();
-            if (optionResult?.Results == null || !optionResult.Results.Any())
+            if (optionResult?.Results == null || !optionResult.Results.Any() || optionResult.Next == null)
             {
-                return options;
+                return optionResult?.Results;
             }
+
+            List<Option> options = new List<Option>();
             options.AddRange(optionResult.Results);
 
             while (optionResult.Next != null)

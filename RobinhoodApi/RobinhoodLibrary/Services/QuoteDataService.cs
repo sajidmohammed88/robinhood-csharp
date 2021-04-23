@@ -121,14 +121,14 @@ namespace RobinhoodLibrary.Services
         /// <inheritdoc />
         public async Task<IList<NewsData>> GetNews(string stock)
         {
-            List<NewsData> newsData = new List<NewsData>();
             NewsResult newsResult = await _httpClientManager.GetAsync<NewsResult>($"{Constants.Routes.NewsBase}{stock}/");
 
-            if (newsResult?.Results == null || !newsResult.Results.Any())
+            if (newsResult?.Results == null || !newsResult.Results.Any() || newsResult.Next == null)
             {
-                throw new HttpResponseException($"No news for the stock:{stock}");
+                return newsResult?.Results;
             }
 
+            List<NewsData> newsData = new List<NewsData>();
             newsData.AddRange(newsResult.Results);
             while (newsResult.Next != null)
             {
