@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace RobinhoodLibrary.Data.Quote
 {
     public class InstrumentsTag
     {
-        [JsonPropertyName("canonical_examples")]
         public string CanonicalExamples { get; set; }
 
         public string Description { get; set; }
@@ -16,7 +14,6 @@ namespace RobinhoodLibrary.Data.Quote
 
         public string Slug { get; set; }
 
-        [JsonPropertyName("membership_count")]
         public int MembershipCount { get; set; }
     }
 }
