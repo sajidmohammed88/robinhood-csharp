@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.Json.Serialization;
 
 namespace RobinhoodLibrary.Data.Orders
 {
@@ -7,10 +6,8 @@ namespace RobinhoodLibrary.Data.Orders
     {
         public string Amount { get; set; }
 
-        [JsonPropertyName("currency_code")]
         public string CurrencyCode { get; set; }
 
-        [JsonPropertyName("currency_id")]
         public Guid CurrencyId { get; set; }
     }
 }

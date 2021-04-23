@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using RobinhoodLibrary.Data.Quote;
 
 namespace RobinhoodConsoleApp
 {
@@ -35,7 +34,7 @@ namespace RobinhoodConsoleApp
                 {
                     Challenge challenge = authResponse.Challenge;
 
-                    Console.WriteLine($"Input challenge code from {challenge.ChallengeType} ({challenge.RemainingAttempts}/{challenge.RemainingRetries}):");
+                    Console.WriteLine($"Input challenge code from {challenge.Type} ({challenge.RemainingAttempts}/{challenge.RemainingRetries}):");
                     string code = Console.ReadLine();
 
                     authResponse = await _robinhood.ChallengeOauth2(challenge.Id, code);
