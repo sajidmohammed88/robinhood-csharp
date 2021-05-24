@@ -1,5 +1,7 @@
 ﻿using RobinhoodLibrary.Abstractions;
 using RobinhoodLibrary.Data.Authentication;
+using RobinhoodLibrary.Data.Crypto;
+using RobinhoodLibrary.Data.Crypto.Request;
 using RobinhoodLibrary.Data.Dividends;
 using RobinhoodLibrary.Data.Fundamentals;
 using RobinhoodLibrary.Data.News;
@@ -19,25 +21,31 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using RobinhoodLibrary.Data.Base;
 
 namespace RobinhoodLibrary
 {
     public class Robinhood : IRobinhood
     {
         private readonly IHttpClientManager _httpClientManager;
+        private readonly IPaginator _paginator;
         private readonly ISessionManager _sessionManager;
         private readonly IQuoteDataService _quoteDataService;
         private readonly IOptionsInformationService _optionsInformationService;
         private readonly IOrderService _orderService;
+        private readonly ICryptoCurrencyService _cryptoCurrencyServiceService;
 
         public Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDataService,
-            IOptionsInformationService optionsInformationService, IOrderService orderService, IHttpClientManager httpClientManager)
+            IOptionsInformationService optionsInformationService, IOrderService orderService, ICryptoCurrencyService cryptoCurrencyService,
+            IHttpClientManager httpClientManager, IPaginator paginator)
         {
             _httpClientManager = httpClientManager ?? throw new ArgumentNullException(nameof(httpClientManager));
+            _paginator = paginator;
             _sessionManager = sessionManager ?? throw new ArgumentNullException(nameof(sessionManager));
             _quoteDataService = quoteDataService ?? throw new ArgumentNullException(nameof(sessionManager));
             _optionsInformationService = optionsInformationService ?? throw new ArgumentNullException(nameof(optionsInformationService));
             _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            _cryptoCurrencyServiceService = cryptoCurrencyService ?? throw new ArgumentNullException(nameof(cryptoCurrencyService));
         }
 
         #region USER
@@ -253,22 +261,8 @@ namespace RobinhoodLibrary
         /// <inheritdoc />
         public async Task<IList<Dividends>> GetDividends()
         {
-            DividendsResult dividendsResult = await _httpClientManager.GetAsync<DividendsResult>(Constants.Routes.Dividends);
-            List<Dividends> dividends = new List<Dividends>();
-
-            if (dividendsResult?.Results == null || !dividendsResult.Results.Any())
-            {
-                return dividends;
-            }
-
-            dividends.AddRange(dividendsResult.Results);
-            while (dividendsResult.Next != null)
-            {
-                dividendsResult = await _httpClientManager.GetAsync<DividendsResult>(dividendsResult.Next);
-                dividends.AddRange(dividendsResult.Results);
-            }
-
-            return dividends;
+            BaseResult<Dividends> dividendsResult = await _httpClientManager.GetAsync<BaseResult<Dividends>>(Constants.Routes.Dividends);
+            return await _paginator.PaginateResultAsync(dividendsResult);
         }
         #endregion
         #region POSITIONS
@@ -276,37 +270,19 @@ namespace RobinhoodLibrary
         /// <inheritdoc />
         public async Task<IList<Position>> GetPositions()
         {
-            PositionResult positionResult = await _httpClientManager
-                .GetAsync<PositionResult>(Constants.Routes.Positions);
+            BaseResult<Position> positionResult = await _httpClientManager
+                .GetAsync<BaseResult<Position>>(Constants.Routes.Positions);
 
-            return await FillPaginatedPotions(positionResult);
+            return await _paginator.PaginateResultAsync(positionResult);
         }
 
         /// <inheritdoc />
         public async Task<IList<Position>> GetOwnedSecurities()
         {
-            PositionResult result = await _httpClientManager
-                .GetAsync<PositionResult>($"{Constants.Routes.Positions}?nonzero=true");
+            BaseResult<Position> result = await _httpClientManager
+                .GetAsync<BaseResult<Position>>($"{Constants.Routes.Positions}?nonzero=true");
 
-            return await FillPaginatedPotions(result);
-        }
-
-        private async Task<IList<Position>> FillPaginatedPotions(PositionResult positionResult)
-        {
-            List<Position> positions = new List<Position>();
-            if (positionResult?.Results == null || !positionResult.Results.Any())
-            {
-                return positions;
-            }
-            positions.AddRange(positionResult.Results);
-
-            while (positionResult.Next != null)
-            {
-                positionResult = await _httpClientManager.GetAsync<PositionResult>(positionResult.Next);
-                positions.AddRange(positionResult.Results);
-            }
-
-            return positions;
+            return await _paginator.PaginateResultAsync(result);
         }
         #endregion
         #region ORDER
@@ -446,6 +422,68 @@ namespace RobinhoodLibrary
 
             return await _orderService.PlaceOrder(orderRequest);
         }
+        #endregion
+
+        #region CRYPTO
+
+        /// <inheritdoc />
+        public async Task<IList<CurrencyPair>> GetCurrencyPairs()
+        {
+            return await _cryptoCurrencyServiceService.GetCurrencyPairs();
+        }
+
+        /// <inheritdoc />
+        public async Task<Quotes> GetQuotes(string pair)
+        {
+            return await _cryptoCurrencyServiceService.GetQuotes(pair);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<CryptoAccount>> GetAccounts()
+        {
+            return await _cryptoCurrencyServiceService.GetAccounts();
+        }
+
+        /// <inheritdoc />
+        public async Task<CryptoOrder> Trade(string pair, CryptoOrderRequest orderRequest)
+        {
+            return await _cryptoCurrencyServiceService.Trade(pair, orderRequest);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<CryptoOrder>> GetTradeHistory()
+        {
+            return await _cryptoCurrencyServiceService.GetTradeHistory();
+        }
+
+        /// <inheritdoc />
+        public async Task<CryptoOrder> GetOrderStatus(string orderId)
+        {
+            return await _cryptoCurrencyServiceService.GetOrderStatus(orderId);
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> CancelCryptoOrder(string orderId)
+        {
+            return await _cryptoCurrencyServiceService.CancelCryptoOrder(orderId);
+        }
+
+        /// <inheritdoc />
+        ///:param pair: BTCUSD,ETHUSD
+        ///:param interval: optional 15second,5minute,10minute,hour,day,week
+        ///:param span: optional hour, day, year,5year,all
+        ///:param bounds: 24_7, regular, extended, trading
+        public async Task<CryptoHistoricalData> Historicals(string pair, string interval, string span, string bounds)
+        {
+            return await _cryptoCurrencyServiceService.Historicals(pair, interval, span, bounds);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<Holding>> Holdings()
+        {
+            return await _cryptoCurrencyServiceService.Holdings();
+        }
+
         #endregion
     }
 }

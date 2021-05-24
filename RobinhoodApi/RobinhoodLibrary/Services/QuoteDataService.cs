@@ -1,4 +1,5 @@
 ﻿using RobinhoodLibrary.Abstractions;
+using RobinhoodLibrary.Data.Base;
 using RobinhoodLibrary.Data.News;
 using RobinhoodLibrary.Data.Quote;
 using RobinhoodLibrary.Data.User;
@@ -19,10 +20,12 @@ namespace RobinhoodLibrary.Services
     public class QuoteDataService : IQuoteDataService
     {
         private readonly IHttpClientManager _httpClientManager;
+        private readonly IPaginator _paginator;
 
-        public QuoteDataService(IHttpClientManager httpClientManager)
+        public QuoteDataService(IHttpClientManager httpClientManager, IPaginator paginator)
         {
             _httpClientManager = httpClientManager;
+            _paginator = paginator;
         }
 
         /// <inheritdoc />
@@ -121,22 +124,9 @@ namespace RobinhoodLibrary.Services
         /// <inheritdoc />
         public async Task<IList<NewsData>> GetNews(string stock)
         {
-            NewsResult newsResult = await _httpClientManager.GetAsync<NewsResult>($"{Constants.Routes.NewsBase}{stock}/");
+            BaseResult<NewsData> newsResult = await _httpClientManager.GetAsync<BaseResult<NewsData>>($"{Constants.Routes.NewsBase}{stock}/");
 
-            if (newsResult?.Results == null || !newsResult.Results.Any() || newsResult.Next == null)
-            {
-                return newsResult?.Results;
-            }
-
-            List<NewsData> newsData = new List<NewsData>();
-            newsData.AddRange(newsResult.Results);
-            while (newsResult.Next != null)
-            {
-                newsResult = await _httpClientManager.GetAsync<NewsResult>(newsResult.Next);
-                newsData.AddRange(newsResult.Results);
-            }
-
-            return newsData;
+            return await _paginator.PaginateResultAsync(newsResult);
         }
 
         /// <inheritdoc />
@@ -185,7 +175,7 @@ namespace RobinhoodLibrary.Services
         /// <inheritdoc />
         public async Task<Account> GetAccount()
         {
-            AccountResult accountResult = await _httpClientManager.GetAsync<AccountResult>(Constants.Routes.Accounts);
+            BaseResult<Account> accountResult = await _httpClientManager.GetAsync<BaseResult<Account>>(Constants.Routes.Accounts);
 
             if (accountResult?.Results == null || !accountResult.Results.Any() || accountResult.Results.All(a => a.Deactivated))
             {
@@ -198,27 +188,14 @@ namespace RobinhoodLibrary.Services
         /// <inheritdoc />
         public async Task<IList<Instrument>> GetWatchLists()
         {
-            WatchlistResult watchListResult = await _httpClientManager.GetAsync<WatchlistResult>(Constants.Routes.WatchLists);
+            BaseResult<Watchlist> watchListResult = await _httpClientManager.GetAsync<BaseResult<Watchlist>>(Constants.Routes.WatchLists);
             if (watchListResult?.Results == null || !watchListResult.Results.Any())
             {
                 throw new HttpResponseException("No watch list exist");
             }
 
-            WatchlistDataResult watchlistDataResult = await _httpClientManager.GetAsync<WatchlistDataResult>(watchListResult.Results[0].Url);
-            List<WatchlistData> watchlistData = new List<WatchlistData>();
-
-            if (watchlistDataResult?.Results == null || !watchlistDataResult.Results.Any())
-            {
-                throw new HttpResponseException($"No data exist for fetched url : {watchListResult.Results[0].Url}");
-            }
-
-            watchlistData.AddRange(watchlistDataResult.Results);
-
-            while (watchlistDataResult.Next != null)
-            {
-                watchlistDataResult = await _httpClientManager.GetAsync<WatchlistDataResult>(watchlistDataResult.Next);
-                watchlistData.AddRange(watchlistDataResult.Results);
-            }
+            BaseResult<WatchlistData> watchlistDataResult = await _httpClientManager.GetAsync<BaseResult<WatchlistData>>(watchListResult.Results[0].Url);
+            IList<WatchlistData> watchlistData = await _paginator.PaginateResultAsync(watchlistDataResult);
 
             IList<Instrument> result = new List<Instrument>();
             foreach (WatchlistData data in watchlistData)

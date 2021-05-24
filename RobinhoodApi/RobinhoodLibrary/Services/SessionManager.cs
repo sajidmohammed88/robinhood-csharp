@@ -12,7 +12,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RobinhoodLibrary.Services
@@ -244,16 +243,16 @@ namespace RobinhoodLibrary.Services
         private HttpClient PrepareHttpClientHeader(IHttpClientFactory httpClientFactory)
         {
             HttpClient client = httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(Constants.Routes.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(_configuration.Timeout);
 
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.ConnectionClose = false;
             client.DefaultRequestHeaders.Add("Accept", "*/*");
             client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
-            client.DefaultRequestHeaders.Add("Accept-Language", "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.");
+            client.DefaultRequestHeaders.Add("Accept-Language", "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5");
             client.DefaultRequestHeaders.Add("X-Robinhood-API-Version", "1.0.0");
-            client.DefaultRequestHeaders.Add("User-Agent", "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)");
+            client.DefaultRequestHeaders.Add("Origin", "https://robinhood.com");
+            client.DefaultRequestHeaders.Add("User-Agent", "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00) Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 
             return client;
         }
