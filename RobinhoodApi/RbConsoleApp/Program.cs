@@ -82,6 +82,9 @@ namespace RobinhoodConsoleApp
             User user = await _robinhood.GetUser();
             InvestmentProfile investmentProfile = await _robinhood.GetInvestmentProfile();
 
+            //crypto currency
+            await FetchCryptoData();
+
             //quote data
             await FetchQuoteData();
 

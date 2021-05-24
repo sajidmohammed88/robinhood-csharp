@@ -15,7 +15,7 @@ namespace RobinhoodLibrary.Abstractions
     /// <summary>
     /// The robinhood interface.
     /// </summary>
-    public interface IRobinhood : IQuoteDataService, ISessionManager
+    public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrencyService
     {
         /// <summary>
         /// Get the user.

@@ -1,5 +1,7 @@
 ﻿using RobinhoodLibrary.Abstractions;
+using RobinhoodLibrary.Data.Base;
 using RobinhoodLibrary.Data.Options;
+using RobinhoodLibrary.Data.Quote;
 using RobinhoodLibrary.Enum;
 using RobinhoodLibrary.Exceptions;
 using System;
@@ -16,17 +18,19 @@ namespace RobinhoodLibrary.Services
     public class OptionsInformationService : IOptionsInformationService
     {
         private readonly IHttpClientManager _httpClientManager;
+        private readonly IPaginator _paginator;
 
-        public OptionsInformationService(IHttpClientManager httpClientManager)
+        public OptionsInformationService(IHttpClientManager httpClientManager, IPaginator paginator)
         {
             _httpClientManager = httpClientManager;
+            _paginator = paginator;
         }
 
         /// <inheritdoc />
         public async Task<Chain> GetChain(string instrumentId)
         {
-            ChainResult chainResult = await _httpClientManager
-                .GetAsync<ChainResult>(Constants.Routes.OptionsChainBase,
+            BaseResult<Chain> chainResult = await _httpClientManager
+                .GetAsync<BaseResult<Chain>>(Constants.Routes.OptionsChainBase,
                     query: new Dictionary<string, string> { { "equity_instrument_ids", instrumentId } });
 
             return chainResult.Results.FirstOrDefault();
@@ -45,38 +49,19 @@ namespace RobinhoodLibrary.Services
                 {"type", string.Join(",", optionType.ToString().ToLower())},
             };
 
-            OptionResult instrumentOptions = await _httpClientManager
-                .GetAsync<OptionResult>(Constants.Routes.OptionsInstrumentsBase, query: query);
+            BaseResult<Option> instrumentOptions = await _httpClientManager
+                .GetAsync<BaseResult<Option>>(Constants.Routes.OptionsInstrumentsBase, query: query);
 
-            return await FillPaginatedOptions(instrumentOptions);
+            return await _paginator.PaginateResultAsync(instrumentOptions);
         }
 
         /// <inheritdoc />
         public async Task<IList<Option>> GetOwnedOptions()
         {
-            OptionResult optionResult = await _httpClientManager
-                .GetAsync<OptionResult>($"{Constants.Routes.OptionsBase}positions/?nonzero=true");
+            BaseResult<Option> optionResult = await _httpClientManager
+                .GetAsync<BaseResult<Option>>($"{Constants.Routes.OptionsBase}positions/?nonzero=true");
 
-            return await FillPaginatedOptions(optionResult);
-        }
-
-        private async Task<IList<Option>> FillPaginatedOptions(OptionResult optionResult)
-        {
-            if (optionResult?.Results == null || !optionResult.Results.Any() || optionResult.Next == null)
-            {
-                return optionResult?.Results;
-            }
-
-            List<Option> options = new List<Option>();
-            options.AddRange(optionResult.Results);
-
-            while (optionResult.Next != null)
-            {
-                optionResult = await _httpClientManager.GetAsync<OptionResult>(optionResult.Next);
-                options.AddRange(optionResult.Results);
-            }
-
-            return options;
+            return await _paginator.PaginateResultAsync(optionResult);
         }
 
         /// <inheritdoc />
@@ -87,7 +72,7 @@ namespace RobinhoodLibrary.Services
                 throw new HttpResponseException("The symbol request is null or empty");
             }
 
-            InstrumentResult stockInfo = await _httpClientManager.GetAsync<InstrumentResult>(Constants.Routes.InstrumentsBase,
+            BaseResult<Instrument> stockInfo = await _httpClientManager.GetAsync<BaseResult<Instrument>>(Constants.Routes.InstrumentsBase,
                 query: new Dictionary<string, string> { { "symbol", symbol } });
 
             if (stockInfo?.Results == null || !stockInfo.Results.Any())
@@ -115,7 +100,7 @@ namespace RobinhoodLibrary.Services
             };
 
             //symbol, strike, expirationDate, optionType should uniquely define an option
-            OptionResult optionResult = await _httpClientManager.GetAsync<OptionResult>(Constants.Routes.OptionsInstrumentsBase, query: query);
+            BaseResult<Option> optionResult = await _httpClientManager.GetAsync<BaseResult<Option>>(Constants.Routes.OptionsInstrumentsBase, query: query);
 
             if (optionResult?.Results == null || !optionResult.Results.Any())
             {
