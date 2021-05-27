@@ -9,6 +9,8 @@ namespace RobinhoodLibrary.Data.Crypto
 
         public string CancelUrl { get; set; }
 
+        public string RoundedExecutedNotional { get; set; }
+
         public Guid CurrencyPairId { get; set; }
     }
 }

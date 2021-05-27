@@ -94,6 +94,28 @@ namespace RobinhoodLibrary.Services
         }
 
         /// <inheritdoc />
+        public async Task<T> PostJsonAsync<T>(string url, string jsonRequest, bool autoLog = true) where T : class
+        {
+            HttpResponseMessage response = await _httpClient.PostAsync(url, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized && autoLog)
+            {
+                ConfigureManager(await RefreshOauth2Async());
+
+                response = await _httpClient.PostAsync(url, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
+            }
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpResponseException($"The post call is faulted for {url} with status code : {response.StatusCode} and message : {result}");
+            }
+
+            return JsonSerializer.Deserialize<T>(result, _settings);
+        }
+
+        /// <inheritdoc />
         public async Task<(HttpStatusCode StatusCode, string Result)> PostAsync(string url,
             IDictionary<string, string> data, (string Name, string Value) specifiedHeader)
         {

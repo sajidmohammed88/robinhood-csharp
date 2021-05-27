@@ -7,6 +7,7 @@ using RobinhoodLibrary.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace RobinhoodLibrary.Services
@@ -19,11 +20,13 @@ namespace RobinhoodLibrary.Services
     {
         private readonly IHttpClientManager _httpClientManager;
         private readonly IPaginator _paginator;
+        private readonly JsonSerializerOptions _settings;
 
         public CryptoCurrencyService(IHttpClientManager httpClientManager, IPaginator paginator)
         {
             _httpClientManager = httpClientManager;
             _paginator = paginator;
+            _settings = CustomJsonSerializerOptions.Current;
         }
 
         /// <inheritdoc />
@@ -50,9 +53,9 @@ namespace RobinhoodLibrary.Services
         {
             BaseResult<CryptoAccount> cryptoAccountResult = await _httpClientManager.GetAsync<BaseResult<CryptoAccount>>(Constants.Routes.NummusAccounts);
 
-            if (cryptoAccountResult?.Results == null || !cryptoAccountResult.Results.Any())
+            if (cryptoAccountResult?.Results == null || !cryptoAccountResult.Results.Any() || cryptoAccountResult.Results.All(a => a.Status != "active"))
             {
-                throw new HttpResponseException("The crypto currency account for the user need to be approved.");
+                throw new HttpResponseException("The crypto currency account for the user need to be approved or disabled.");
             }
 
             return await _paginator.PaginateResultAsync(cryptoAccountResult);
@@ -66,11 +69,20 @@ namespace RobinhoodLibrary.Services
                 throw new CryptoCurrencyException("The pair is null, empty or not exist.");
             }
 
-            string accountId = (await GetAccounts()).First().Id;
-            var trade = await _httpClientManager.PostAsync<CryptoOrder>(Constants.Routes.NummusOrders,
-                RbHelper.BuildTradeContent(orderRequest, accountId, pair));
+            orderRequest.AccountId = (await GetAccounts()).First().Id;
+            orderRequest.CurrencyPairId = RbHelper.Pairs[pair];
 
-            return trade.Data;
+            try
+            {
+                return await _httpClientManager.PostJsonAsync<CryptoOrder>(Constants.Routes.NummusOrders, JsonSerializer.Serialize(orderRequest, _settings));
+            }
+            catch (System.Exception ex)
+            {
+                return new CryptoOrder
+                {
+                    Detail = ex.Message
+                };
+            }
         }
 
         /// <inheritdoc />

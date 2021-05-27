@@ -5,10 +5,8 @@ using System.Collections.Generic;
 
 namespace RobinhoodLibrary.Data.Base
 {
-    public class BaseOrder
+    public class BaseOrder : BaseDetail
     {
-        public string Detail { get; set; }
-
         public Guid Id { get; set; }
 
         public Guid? RefId { get; set; }
@@ -17,7 +15,7 @@ namespace RobinhoodLibrary.Data.Base
 
         public string CumulativeQuantity { get; set; }
 
-        public DateTime LastTransactionAt { get; set; }
+        public DateTime? LastTransactionAt { get; set; }
 
         public string Price { get; set; }
 
@@ -34,5 +32,7 @@ namespace RobinhoodLibrary.Data.Base
         public DateTime UpdatedAt { get; set; }
 
         public List<Execution> Executions { get; set; }
+
+        public string AveragePrice { get; set; }
     }
 }

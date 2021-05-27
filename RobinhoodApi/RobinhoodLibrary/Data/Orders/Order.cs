@@ -16,8 +16,6 @@ namespace RobinhoodLibrary.Data.Orders
 
         public string Instrument { get; set; }
 
-        public string AveragePrice { get; set; }
-
         public string Fees { get; set; }
 
         public Trigger Trigger { get; set; }

@@ -14,24 +14,24 @@ namespace RobinhoodConsoleApp
         {
             IList<CurrencyPair> currencyPairs = await _robinhood.GetCurrencyPairs();
 
-            Quotes quote = await _robinhood.GetQuotes("BTCUSD");
+            Quotes quote = await _robinhood.GetQuotes("LTCUSD");
 
             var accounts = await _robinhood.GetAccounts();
 
-            CryptoOrder order = await _robinhood.Trade("BTCUSD", new CryptoOrderRequest
+            CryptoOrder order = await _robinhood.Trade("LTCUSD", new CryptoOrderRequest
             {
-                OrderType = OrderType.Market,
-                Price = (Math.Round(float.Parse(quote.MarkPrice, CultureInfo.InvariantCulture) * 1.005, 3)).ToString(CultureInfo.InvariantCulture),
-                Quantity = "0.00005",
+                Type = OrderType.Market,
+                Price = "1",
+                Quantity = 1,
                 Side = Side.Buy,
-                TimeInForce = TimeInForce.Gfd
+                TimeInForce = TimeInForce.Gtc
             });
 
             IList<CryptoOrder> tradeHistory = await _robinhood.GetTradeHistory();
 
-            CryptoOrder orderStatus = await _robinhood.GetOrderStatus("");
+            CryptoOrder orderStatus = await _robinhood.GetOrderStatus("60afb549-abce-40bf-bda9-50f0715f0903");
 
-            bool isOrderCanceled = await _robinhood.CancelCryptoOrder("");
+            bool isOrderCanceled = await _robinhood.CancelCryptoOrder("60afb549-abce-40bf-bda9-50f0715f0903");
 
             CryptoHistoricalData historicalData = await _robinhood.Historicals("BTCUSD", "5minute", "day", "24_7");
 

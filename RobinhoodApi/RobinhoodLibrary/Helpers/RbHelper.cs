@@ -1,9 +1,7 @@
-﻿using RobinhoodLibrary.Data.Crypto.Request;
-using RobinhoodLibrary.Data.Orders.Request;
+﻿using RobinhoodLibrary.Data.Orders.Request;
 using RobinhoodLibrary.Data.Quote;
 using RobinhoodLibrary.Enum;
 using RobinhoodLibrary.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -39,26 +37,13 @@ namespace RobinhoodLibrary.Helpers
                 {"account", accountUrl},
                 {"instrument", orderRequest.InstrumentUrl},
                 {"symbol", orderRequest.Symbol},
-                {"type", orderRequest.OrderType.ToString().ToLower()},
+                {"type", orderRequest.Type.ToString().ToLower()},
                 {"time_in_force", orderRequest.TimeInForce.ToString().ToLower()},
                 {"trigger", orderRequest.Trigger.ToString().ToLower()},
                 {"price", orderRequest.Price},
                 {"stop_price", orderRequest.StopPrice},
                 {"quantity", orderRequest.Quantity.ToString()},
                 {"side", orderRequest.Side.ToString().ToLower()}
-            };
-
-        internal static IDictionary<string, string> BuildTradeContent(CryptoOrderRequest orderRequest, string accountId, string pair) =>
-            new Dictionary<string, string>
-            {
-                {"account_id", accountId},
-                {"currency_pair_id", Pairs[pair]},
-                {"ref_id", Guid.NewGuid().ToString()},
-                {"price", orderRequest.Price},
-                {"quantity", orderRequest.Quantity},
-                {"side", orderRequest.Side.ToString().ToLower()},
-                {"time_in_force", orderRequest.TimeInForce.ToString().ToLower()},
-                {"type", orderRequest.OrderType.ToString().ToLower()},
             };
 
         internal static OrderRequest BuildOrderRequestForMarket(string instrumentUrl, string symbol,
@@ -72,7 +57,7 @@ namespace RobinhoodLibrary.Helpers
                 Quantity = quantity,
                 Price = price,
                 StopPrice = stopPrice,
-                OrderType = orderType,
+                Type = orderType,
                 Trigger = trigger,
                 Side = side
             };
@@ -99,7 +84,7 @@ namespace RobinhoodLibrary.Helpers
                 throw new RequestCheckException("Symbol is empty.");
             }
 
-            if (orderRequest.OrderType == OrderType.Limit)
+            if (orderRequest.Type == OrderType.Limit)
             {
                 if (orderRequest.Price == null)
                 {
@@ -122,7 +107,7 @@ namespace RobinhoodLibrary.Helpers
 
             if (orderRequest.Price != null)
             {
-                if (orderRequest.OrderType == OrderType.Market)
+                if (orderRequest.Type == OrderType.Market)
                 {
                     throw new RequestCheckException("Market order has price limit.");
                 }
