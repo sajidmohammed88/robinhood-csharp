@@ -12,7 +12,5 @@ namespace RobinhoodLibrary.Data.Orders.Request
         public Trigger Trigger { get; set; }
 
         public string StopPrice { get; set; }
-
-        public int Quantity { get; set; }
     }
 }

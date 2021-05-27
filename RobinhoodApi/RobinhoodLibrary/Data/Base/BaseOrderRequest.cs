@@ -10,6 +10,8 @@ namespace RobinhoodLibrary.Data.Base
         
         public TimeInForce TimeInForce { get; set; }
         
-        public OrderType OrderType { get; set; }
+        public OrderType Type { get; set; }
+
+        public int Quantity { get; set; }
     }
 }
