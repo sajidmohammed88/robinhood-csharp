@@ -12,7 +12,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RobinhoodLibrary.Services
@@ -92,6 +91,28 @@ namespace RobinhoodLibrary.Services
             string responseValue = await response.Content.ReadAsStringAsync();
 
             return (response.StatusCode, !string.IsNullOrEmpty(responseValue) ? JsonSerializer.Deserialize<T>(responseValue, _settings) : null);
+        }
+
+        /// <inheritdoc />
+        public async Task<T> PostJsonAsync<T>(string url, string jsonRequest, bool autoLog = true) where T : class
+        {
+            HttpResponseMessage response = await _httpClient.PostAsync(url, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized && autoLog)
+            {
+                ConfigureManager(await RefreshOauth2Async());
+
+                response = await _httpClient.PostAsync(url, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
+            }
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpResponseException($"The post call is faulted for {url} with status code : {response.StatusCode} and message : {result}");
+            }
+
+            return JsonSerializer.Deserialize<T>(result, _settings);
         }
 
         /// <inheritdoc />
@@ -244,16 +265,16 @@ namespace RobinhoodLibrary.Services
         private HttpClient PrepareHttpClientHeader(IHttpClientFactory httpClientFactory)
         {
             HttpClient client = httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(Constants.Routes.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(_configuration.Timeout);
 
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.ConnectionClose = false;
             client.DefaultRequestHeaders.Add("Accept", "*/*");
             client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
-            client.DefaultRequestHeaders.Add("Accept-Language", "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.");
+            client.DefaultRequestHeaders.Add("Accept-Language", "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5");
             client.DefaultRequestHeaders.Add("X-Robinhood-API-Version", "1.0.0");
-            client.DefaultRequestHeaders.Add("User-Agent", "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)");
+            client.DefaultRequestHeaders.Add("Origin", "https://robinhood.com");
+            client.DefaultRequestHeaders.Add("User-Agent", "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00) Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 
             return client;
         }

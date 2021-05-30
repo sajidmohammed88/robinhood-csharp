@@ -1,16 +1,11 @@
 ﻿using RobinhoodLibrary.Data.Base;
 using RobinhoodLibrary.Enum;
 using System;
-using System.Collections.Generic;
 
 namespace RobinhoodLibrary.Data.Orders
 {
-    public class Order : BaseDetail
+    public class Order : BaseOrder
     {
-        public Guid Id { get; set; }
-
-        public Guid? RefId { get; set; }
-
         public string Url { get; set; }
 
         public string Account { get; set; }
@@ -21,37 +16,13 @@ namespace RobinhoodLibrary.Data.Orders
 
         public string Instrument { get; set; }
 
-        public string CumulativeQuantity { get; set; }
-
-        public string AveragePrice { get; set; }
-
         public string Fees { get; set; }
-
-        public string State { get; set; }
-
-        public OrderType Type { get; set; }
-
-        public Side Side { get; set; }
-
-        public TimeInForce TimeInForce { get; set; }
 
         public Trigger Trigger { get; set; }
 
-        public string Price { get; set; }
-
         public string StopPrice { get; set; }
 
-        public string Quantity { get; set; }
-
         public string RejectReason { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime UpdatedAt { get; set; }
-
-        public DateTime LastTransactionAt { get; set; }
-
-        public List<Execution> Executions { get; set; }
 
         public bool ExtendedHours { get; set; }
 

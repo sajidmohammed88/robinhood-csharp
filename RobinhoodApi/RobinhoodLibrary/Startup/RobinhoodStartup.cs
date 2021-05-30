@@ -21,6 +21,8 @@ namespace RobinhoodLibrary.Startup
             services.AddSingleton<IOptionsInformationService, OptionsInformationService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IRobinhood, Robinhood>();
+            services.AddSingleton<ICryptoCurrencyService, CryptoCurrencyService>();
+            services.AddSingleton<IPaginator, Paginator>();
         }
     }
 }
