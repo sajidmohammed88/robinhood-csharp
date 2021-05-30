@@ -31,6 +31,16 @@ namespace RobinhoodLibrary.Abstractions
             bool autoLog = true) where T : class;
 
         /// <summary>
+        /// Posts the json asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url">The URL.</param>
+        /// <param name="jsonRequest">The json request.</param>
+        /// <param name="autoLog">if set to <c>true</c> [automatic log].</param>
+        /// <returns>Post result.</returns>
+        Task<T> PostJsonAsync<T>(string url, string jsonRequest, bool autoLog = true) where T : class;
+
+        /// <summary>
         /// Posts the asynchronous.
         /// </summary>
         /// <param name="url">The URL.</param>

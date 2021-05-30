@@ -1,4 +1,5 @@
 ﻿using RobinhoodLibrary.Abstractions;
+using RobinhoodLibrary.Data.Base;
 using RobinhoodLibrary.Data.Orders;
 using RobinhoodLibrary.Data.Orders.Request;
 using RobinhoodLibrary.Data.Quote;
@@ -7,7 +8,6 @@ using RobinhoodLibrary.Exceptions;
 using RobinhoodLibrary.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,32 +21,21 @@ namespace RobinhoodLibrary.Services
     {
         private readonly IQuoteDataService _quoteDataService;
         private readonly IHttpClientManager _httpClientManager;
+        private readonly IPaginator _paginator;
 
-        public OrderService(IQuoteDataService quoteDataService, IHttpClientManager httpClientManager)
+        public OrderService(IQuoteDataService quoteDataService, IHttpClientManager httpClientManager, IPaginator paginator)
         {
             _quoteDataService = quoteDataService;
             _httpClientManager = httpClientManager;
+            _paginator = paginator;
         }
 
         /// <inheritdoc />
         public async Task<IList<Order>> GetOrdersHistory()
         {
-            OrderResult orderResult = await _httpClientManager.GetAsync<OrderResult>(Constants.Routes.OrdersBase);
-
-            if (orderResult?.Results == null || !orderResult.Results.Any() || orderResult.Next == null)
-            {
-                return orderResult?.Results;
-            }
-            List<Order> orders = new List<Order>();
-            orders.AddRange(orderResult.Results);
-
-            while (orderResult.Next != null)
-            {
-                orderResult = await _httpClientManager.GetAsync<OrderResult>(orderResult.Next);
-                orders.AddRange(orderResult.Results);
-            }
-
-            return orders;
+            BaseResult<Order> orderResult = await _httpClientManager.GetAsync<BaseResult<Order>>(Constants.Routes.Orders);
+            
+            return await _paginator.PaginateResultAsync(orderResult);
         }
 
         /// <inheritdoc />
@@ -57,7 +46,7 @@ namespace RobinhoodLibrary.Services
                 throw new HttpResponseException("The order identifier is empty.");
             }
 
-            return await _httpClientManager.GetAsync<Order>($"{Constants.Routes.OrdersBase}{orderId}/");
+            return await _httpClientManager.GetAsync<Order>($"{Constants.Routes.Orders}{orderId}/");
         }
 
         /// <inheritdoc />
@@ -91,7 +80,7 @@ namespace RobinhoodLibrary.Services
 
             try
             {
-                var submitResult = await _httpClientManager.PostAsync<Order>(Constants.Routes.OrdersBase,
+                var submitResult = await _httpClientManager.PostAsync<Order>(Constants.Routes.Orders,
                     RbHelper.BuildOrderContent(orderRequest, account.Url));
                 return submitResult.Data;
             }
@@ -122,7 +111,7 @@ namespace RobinhoodLibrary.Services
 
             try
             {
-                var response = await _httpClientManager.PostAsync<Order>(Constants.Routes.OrdersBase,
+                var response = await _httpClientManager.PostAsync<Order>(Constants.Routes.Orders,
                         RbHelper.BuildOrderContent(orderRequest, account.Url));
                 return response.Data;
             }
