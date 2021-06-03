@@ -107,7 +107,7 @@ namespace RobinhoodLibrary.Services
 
             string result = await response.Content.ReadAsStringAsync();
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (response.StatusCode != HttpStatusCode.Created)
             {
                 throw new HttpResponseException($"The post call is faulted for {url} with status code : {response.StatusCode} and message : {result}");
             }
