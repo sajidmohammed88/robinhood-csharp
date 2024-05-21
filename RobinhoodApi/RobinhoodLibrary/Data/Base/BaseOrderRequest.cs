@@ -1,17 +1,16 @@
-﻿using RobinhoodLibrary.Enum;
+﻿using RobinhoodApi.Enum;
 
-namespace RobinhoodLibrary.Data.Base
+namespace RobinhoodApi.Data.Base;
+
+public class BaseOrderRequest
 {
-    public class BaseOrderRequest
-    {
-        public string Price { get; set; }
-        
-        public Side Side { get; set; }
-        
-        public TimeInForce TimeInForce { get; set; }
-        
-        public OrderType Type { get; set; }
+	public string Price { get; set; }
 
-        public int Quantity { get; set; }
-    }
+	public Side Side { get; set; }
+
+	public TimeInForce TimeInForce { get; set; }
+
+	public OrderType Type { get; set; }
+
+	public int Quantity { get; set; }
 }

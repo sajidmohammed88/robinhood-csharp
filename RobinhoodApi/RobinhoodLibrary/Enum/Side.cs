@@ -1,8 +1,7 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum Side
 {
-    public enum Side
-    {
-        Buy,
-        Sell
-    }
+	Buy,
+	Sell
 }

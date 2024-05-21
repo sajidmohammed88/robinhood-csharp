@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace RobinhoodApi.Data.Quote;
 
-namespace RobinhoodLibrary.Data.Quote
+public class QuotesResult
 {
-    public class QuotesResult
-    {
-        public IList<QuoteData> Results { get; set; }
-    }
+	public IList<QuoteData> Results { get; set; }
 }

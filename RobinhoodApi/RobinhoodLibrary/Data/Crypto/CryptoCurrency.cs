@@ -1,9 +1,8 @@
-﻿using RobinhoodLibrary.Data.Base;
+﻿using RobinhoodApi.Data.Base;
 
-namespace RobinhoodLibrary.Data.Crypto
+namespace RobinhoodApi.Data.Crypto;
+
+public class CryptoCurrency : Currency
 {
-    public class CryptoCurrency : Currency
-    {
-        public string BrandColor { get; set; }
-    }
+	public string BrandColor { get; set; }
 }

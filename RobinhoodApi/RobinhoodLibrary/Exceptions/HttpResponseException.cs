@@ -1,15 +1,16 @@
-﻿using System;
+﻿namespace RobinhoodApi.Exceptions;
 
-namespace RobinhoodLibrary.Exceptions
+public class HttpResponseException : Exception
 {
-    internal class HttpResponseException : Exception
-    {
-        public HttpResponseException()
-        {
-        }
+	public HttpResponseException()
+	{
+	}
 
-        public HttpResponseException(string message) : base(message)
-        {
-        }
-    }
+	public HttpResponseException(string message) : base(message)
+	{
+	}
+
+	public HttpResponseException(string message, Exception innerException) : base(message, innerException)
+	{
+	}
 }

@@ -1,11 +1,10 @@
-﻿namespace RobinhoodLibrary.Data.Options
+﻿namespace RobinhoodApi.Data.Options;
+
+public class MinTicks
 {
-    public class MinTicks
-    {
-        public string AboveTick { get; set; }
+	public string AboveTick { get; set; }
 
-        public string BelowTick { get; set; }
+	public string BelowTick { get; set; }
 
-        public string CutoffPrice { get; set; }
-    }
+	public string CutoffPrice { get; set; }
 }

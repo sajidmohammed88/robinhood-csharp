@@ -1,19 +1,16 @@
-﻿using System.Collections.Generic;
+﻿namespace RobinhoodApi.Data.Quote;
 
-namespace RobinhoodLibrary.Data.Quote
+public class InstrumentsTag
 {
-    public class InstrumentsTag
-    {
-        public string CanonicalExamples { get; set; }
+	public string CanonicalExamples { get; set; }
 
-        public string Description { get; set; }
+	public string Description { get; set; }
 
-        public IList<string> Instruments { get; set; }
+	public IList<string> Instruments { get; set; }
 
-        public string Name { get; set; }
+	public string Name { get; set; }
 
-        public string Slug { get; set; }
+	public string Slug { get; set; }
 
-        public int MembershipCount { get; set; }
-    }
+	public int MembershipCount { get; set; }
 }

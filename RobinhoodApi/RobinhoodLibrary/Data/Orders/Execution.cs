@@ -1,19 +1,16 @@
-﻿using System;
+﻿namespace RobinhoodApi.Data.Orders;
 
-namespace RobinhoodLibrary.Data.Orders
+public class Execution
 {
-    public class Execution
-    {
-        public string Price { get; set; }
+	public string Price { get; set; }
 
-        public string Quantity { get; set; }
+	public string Quantity { get; set; }
 
-        public string SettlementDate { get; set; }
+	public string SettlementDate { get; set; }
 
-        public DateTime Timestamp { get; set; }
+	public DateTime Timestamp { get; set; }
 
-        public Guid Id { get; set; }
+	public Guid Id { get; set; }
 
-        public string IpoAccessExecutionRank { get; set; }
-    }
+	public string IpoAccessExecutionRank { get; set; }
 }

@@ -1,8 +1,7 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum Bounds
 {
-    public enum Bounds
-    {
-        Regular,
-        Extended
-    }
+	Regular,
+	Extended
 }

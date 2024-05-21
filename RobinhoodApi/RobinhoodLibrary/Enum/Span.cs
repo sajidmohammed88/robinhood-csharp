@@ -1,9 +1,8 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum Span
 {
-    public enum Span
-    {
-        Day,
-        Week,
-        Year
-    }
+	Day,
+	Week,
+	Year
 }

@@ -1,15 +1,16 @@
-﻿using System;
+﻿namespace RobinhoodApi.Exceptions;
 
-namespace RobinhoodLibrary.Exceptions
+public class AuthenticationException : Exception
 {
-    public class AuthenticationException : Exception
-    {
-        public AuthenticationException()
-        {
-        }
+	public AuthenticationException()
+	{
+	}
 
-        public AuthenticationException(string message) : base(message)
-        {
-        }
-    }
+	public AuthenticationException(string message) : base(message)
+	{
+	}
+
+	public AuthenticationException(string message, Exception innerException) : base(message, innerException)
+	{
+	}
 }
