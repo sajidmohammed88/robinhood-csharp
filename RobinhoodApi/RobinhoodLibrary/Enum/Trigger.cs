@@ -1,8 +1,7 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum Trigger
 {
-    public enum Trigger
-    {
-        Immediate,
-        Stop
-    }
+	Immediate,
+	Stop
 }

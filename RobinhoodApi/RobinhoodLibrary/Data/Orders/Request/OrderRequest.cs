@@ -1,16 +1,15 @@
-﻿using RobinhoodLibrary.Data.Base;
-using RobinhoodLibrary.Enum;
+﻿using RobinhoodApi.Data.Base;
+using RobinhoodApi.Enum;
 
-namespace RobinhoodLibrary.Data.Orders.Request
+namespace RobinhoodApi.Data.Orders.Request;
+
+public class OrderRequest : BaseOrderRequest
 {
-    public class OrderRequest : BaseOrderRequest
-    {
-        public string InstrumentUrl { get; set; }
+	public string InstrumentUrl { get; set; }
 
-        public string Symbol { get; set; }
+	public string Symbol { get; set; }
 
-        public Trigger Trigger { get; set; }
+	public Trigger Trigger { get; set; }
 
-        public string StopPrice { get; set; }
-    }
+	public string StopPrice { get; set; }
 }

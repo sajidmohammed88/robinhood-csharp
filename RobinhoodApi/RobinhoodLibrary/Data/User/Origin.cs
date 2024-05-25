@@ -1,7 +1,6 @@
-﻿namespace RobinhoodLibrary.Data.User
+﻿namespace RobinhoodApi.Data.User;
+
+public class Origin
 {
-    public class Origin
-    {
-        public string Locality { get; set; }
-    }
+	public string Locality { get; set; }
 }

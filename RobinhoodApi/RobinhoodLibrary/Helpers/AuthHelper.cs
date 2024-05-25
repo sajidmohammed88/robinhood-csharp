@@ -1,29 +1,31 @@
-﻿using RobinhoodLibrary.Configurations;
-using RobinhoodLibrary.Data.Authentication;
-using System;
-using System.Collections.Generic;
+﻿using RobinhoodApi.Configurations;
 
-namespace RobinhoodLibrary.Helpers
+namespace RobinhoodApi.Helpers;
+
+internal static class AuthHelper
 {
-    internal static class AuthHelper
-    {
-        internal static bool IsOauthValid(string token, string refreshToken) =>
-            !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(refreshToken);
+	internal static bool IsOauthValid(string token, string refreshToken)
+	{
+		return !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(refreshToken);
+	}
 
-        internal static bool IsBearerTokenAboutToExpire(DateTime expirationDate) =>
-            expirationDate == DateTime.MinValue || expirationDate <= DateTime.UtcNow;
+	internal static bool IsBearerTokenAboutToExpire(DateTime expirationDate)
+	{
+		return expirationDate == DateTime.MinValue || expirationDate <= DateTime.UtcNow;
+	}
 
-        internal static IDictionary<string, string> BuildAuthenticationContent(RobinhoodConfiguration configuration, Guid deviceToken) =>
-            new Dictionary<string, string>
-            {
-                {"password", configuration.Password},
-                {"username", configuration.UserName},
-                {"grant_type", "password"},
-                {"client_id", configuration.ClientId},
-                {"expires_in", configuration.ExpirationTime.ToString()},
-                {"scope", "internal"},
-                {"device_token", deviceToken.ToString()},
-                {"challenge_type", configuration.ChallengeType}
-            };
-    }
+	internal static IDictionary<string, string> BuildAuthenticationContent(RobinhoodConfiguration configuration, Guid deviceToken)
+	{
+		return new Dictionary<string, string>
+		{
+			{"password", configuration.Password},
+			{"username", configuration.UserName},
+			{"grant_type", "password"},
+			{"client_id", configuration.ClientId},
+			{"expires_in", configuration.ExpirationTime.ToString()},
+			{"scope", "internal"},
+			{"device_token", deviceToken.ToString()},
+			{"challenge_type", configuration.ChallengeType}
+		};
+	}
 }

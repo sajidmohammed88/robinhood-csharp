@@ -1,70 +1,80 @@
-﻿namespace RobinhoodLibrary
+﻿namespace RobinhoodApi;
+
+/// <summary>
+/// The constants used in the Library.
+/// </summary>
+internal static class Constants
 {
-    /// <summary>
-    /// The constants used in the Library.
-    /// </summary>
-    internal static class Constants
-    {
-        internal static class Routes
-        {
-            //Base
-            private const string RbApiBaseUrl = "https://api.robinhood.com/";
-            private const string RbCryptoCurrencyBaseUrl = "https://nummus.robinhood.com/";
-            private const string OrdersBase = "orders/";
-            private const string AccountsBase = "accounts/";
+	internal static class Routes
+	{
+		//Base
+		private const string _rbApiBaseUrl = "https://api.robinhood.com/";
+		private const string _rbCryptoCurrencyBaseUrl = "https://nummus.robinhood.com/";
+		private const string _ordersBase = "orders/";
+		private const string _accountsBase = "accounts/";
 
-            //Crypto
-            internal const string CurrencyPairs = RbCryptoCurrencyBaseUrl + "currency_pairs";
-            internal const string NummusOrders = RbCryptoCurrencyBaseUrl + OrdersBase;
-            internal const string OrderStatus = NummusOrders + "{0}/";
-            internal const string NummusAccounts = RbCryptoCurrencyBaseUrl + AccountsBase;
-            internal const string NummusHistoricals = MarketDataBase + "forex/historicals/{0}/?interval={1}&span={2}&bounds={3}";
-            internal const string Holdings = RbCryptoCurrencyBaseUrl + "holdings/";
-            internal const string NummusQuotes = MarketDataBase + "forex/quotes/{0}/";
+		//Crypto
+		internal const string CurrencyPairs = _rbCryptoCurrencyBaseUrl + "currency_pairs";
+		internal const string NummusOrders = _rbCryptoCurrencyBaseUrl + _ordersBase;
+		internal const string OrderStatus = NummusOrders + "{0}/";
+		internal const string NummusAccounts = _rbCryptoCurrencyBaseUrl + _accountsBase;
+		internal const string NummusHistoricals = MarketDataBase + "forex/historicals/{0}/?interval={1}&span={2}&bounds={3}";
+		internal const string Holdings = _rbCryptoCurrencyBaseUrl + "holdings/";
+		internal const string NummusQuotes = MarketDataBase + "forex/quotes/{0}/";
 
-            //General
-            internal const string Accounts = RbApiBaseUrl + AccountsBase;
-            internal const string Orders = RbApiBaseUrl + OrdersBase;
-            internal const string Portfolios = RbApiBaseUrl + "portfolios/";
-            internal const string Positions = RbApiBaseUrl + "positions/";
-            internal const string TagsBase = RbApiBaseUrl + "midlands/tags/tag/";
-            internal const string WatchLists = RbApiBaseUrl + "watchlists/";
-            internal const string MarketDataBase = RbApiBaseUrl + "marketdata/";
-            internal const string NewsBase = RbApiBaseUrl + "midlands/news/";
-            internal const string Dividends = RbApiBaseUrl + "dividends/";
-            internal const string FundamentalsBase = RbApiBaseUrl + "fundamentals/";
-            internal const string InstrumentsBase = RbApiBaseUrl + "instruments/";
-            internal const string Challenge = RbApiBaseUrl + "challenge/{0}/respond/";
+		//General
+		internal const string Accounts = _rbApiBaseUrl + _accountsBase;
+		internal const string Orders = _rbApiBaseUrl + _ordersBase;
+		internal const string Portfolios = _rbApiBaseUrl + "portfolios/";
+		internal const string Positions = _rbApiBaseUrl + "positions/";
+		internal const string TagsBase = _rbApiBaseUrl + "midlands/tags/tag/";
+		internal const string WatchLists = _rbApiBaseUrl + "watchlists/";
+		internal const string MarketDataBase = _rbApiBaseUrl + "marketdata/";
+		internal const string NewsBase = _rbApiBaseUrl + "midlands/news/";
+		internal const string Dividends = _rbApiBaseUrl + "dividends/";
+		internal const string FundamentalsBase = _rbApiBaseUrl + "fundamentals/";
+		internal const string InstrumentsBase = _rbApiBaseUrl + "instruments/";
+		internal const string Challenge = _rbApiBaseUrl + "challenge/{0}/respond/";
 
-            // not Implemented
-            internal const string AchBase = RbApiBaseUrl + "ach/";
-            internal const string Applications = RbApiBaseUrl + "applications/";
-            internal const string Documents = RbApiBaseUrl + "documents/";
-            internal const string DocumentRequests = RbApiBaseUrl + "upload/document_requests/";
-            internal const string MarginUpgrades = RbApiBaseUrl + "margin/upgrades/";
-            internal const string Markets = RbApiBaseUrl + "markets/";
-            internal const string Notifications = RbApiBaseUrl + "notifications/";
+		// not Implemented
+		internal const string AchBase = _rbApiBaseUrl + "ach/";
+		internal const string Applications = _rbApiBaseUrl + "applications/";
+		internal const string Documents = _rbApiBaseUrl + "documents/";
+		internal const string DocumentRequests = _rbApiBaseUrl + "upload/document_requests/";
+		internal const string MarginUpgrades = _rbApiBaseUrl + "margin/upgrades/";
+		internal const string Markets = _rbApiBaseUrl + "markets/";
+		internal const string Notifications = _rbApiBaseUrl + "notifications/";
 
-            // Options
-            internal const string OptionsBase = RbApiBaseUrl + "options/";
-            internal const string OptionsChainBase = RbApiBaseUrl + "options/chains/";
-            internal const string OptionsInstrumentsBase = RbApiBaseUrl + "options/instruments/";
+		// Options
+		internal const string OptionsBase = _rbApiBaseUrl + "options/";
+		internal const string OptionsChainBase = _rbApiBaseUrl + "options/chains/";
+		internal const string OptionsInstrumentsBase = _rbApiBaseUrl + "options/instruments/";
 
-            // User
-            internal const string User = RbApiBaseUrl + "user/";
-            internal const string InvestmentProfile = RbApiBaseUrl + "user/investment_profile/";
+		// User
+		internal const string User = _rbApiBaseUrl + "user/";
+		internal const string InvestmentProfile = _rbApiBaseUrl + "user/investment_profile/";
 
-            // Quotes
-            internal const string Quotes = RbApiBaseUrl + "quotes/";
-            internal const string Historicals = RbApiBaseUrl + "quotes/historicals/";
+		// Quotes
+		internal const string Quotes = _rbApiBaseUrl + "quotes/";
+		internal const string Historicals = _rbApiBaseUrl + "quotes/historicals/";
 
-            // Auth
-            internal const string Oauth = RbApiBaseUrl + "oauth2/token/";
-            internal const string OauthRevoke = RbApiBaseUrl + "oauth2/revoke_token/";
+		// Auth
+		internal const string Oauth = _rbApiBaseUrl + "oauth2/token/";
+		internal const string OauthRevoke = _rbApiBaseUrl + "oauth2/revoke_token/";
 
-            // not Implemented
-            internal const string MigrateToken = RbApiBaseUrl + "oauth2/migrate_token/";
-            internal const string PasswordReset = RbApiBaseUrl + "password_reset/request/";
-        }
-    }
+		// not Implemented
+		internal const string MigrateToken = _rbApiBaseUrl + "oauth2/migrate_token/";
+		internal const string PasswordReset = _rbApiBaseUrl + "password_reset/request/";
+	}
+
+	internal static readonly IDictionary<string, string> Pairs = new Dictionary<string, string>
+	{
+		{"BTCUSD", "3d961844-d360-45fc-989b-f6fca761d511"},
+		{"ETHUSD", "76637d50-c702-4ed1-bcb5-5b0732a81f48"},
+		{"ETCUSD", "7b577ce3-489d-4269-9408-796a0d1abb3a"},
+		{"BCHUSD", "2f2b77c4-e426-4271-ae49-18d5cb296d3a"},
+		{"BSVUSD", "086a8f9f-6c39-43fa-ac9f-57952f4a1ba6"},
+		{"LTCUSD", "383280b1-ff53-43fc-9c84-f01afd0989cd"},
+		{"DOGEUSD", "1ef78e1b-049b-4f12-90e5-555dcf2fe204"}
+	};
 }

@@ -1,27 +1,26 @@
-﻿namespace RobinhoodLibrary.Data.Crypto
+﻿namespace RobinhoodApi.Data.Crypto;
+
+public class CurrencyPair
 {
-    public class CurrencyPair
-    {
-        public CryptoCurrency AssetCurrency { get; set; }
+	public CryptoCurrency AssetCurrency { get; set; }
 
-        public bool DisplayOnly { get; set; }
+	public bool DisplayOnly { get; set; }
 
-        public string Id { get; set; }
+	public string Id { get; set; }
 
-        public string MaxOrderSize { get; set; }
+	public string MaxOrderSize { get; set; }
 
-        public string MinOrderPriceIncrement { get; set; }
+	public string MinOrderPriceIncrement { get; set; }
 
-        public string MinOrderQuantityIncrement { get; set; }
+	public string MinOrderQuantityIncrement { get; set; }
 
-        public string MinOrderSize { get; set; }
+	public string MinOrderSize { get; set; }
 
-        public string Name { get; set; }
+	public string Name { get; set; }
 
-        public CryptoCurrency QuoteCurrency { get; set; }
+	public CryptoCurrency QuoteCurrency { get; set; }
 
-        public string Symbol { get; set; }
+	public string Symbol { get; set; }
 
-        public string Tradability { get; set; }
-    }
+	public string Tradability { get; set; }
 }

@@ -1,8 +1,7 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum ChallengeType
 {
-    public enum ChallengeType
-    {
-        Web,
-        Sms
-    }
+	Web,
+	Sms
 }

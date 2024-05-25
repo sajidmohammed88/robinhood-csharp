@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
+﻿namespace RobinhoodApi.Data.Base;
 
-namespace RobinhoodLibrary.Data.Base
+public class BaseResult<T>
 {
-    public class BaseResult<T>
-    {
-        public string Next { get; set; }
+	public string Next { get; set; }
 
-        public string Previous { get; set; }
+	public string Previous { get; set; }
 
-        // Used just for news
-        public int Count { get; set; }
+	// Used just for news
+	public int Count { get; set; }
 
-        public IList<T> Results { get; set; }
-    }
+	public IList<T> Results { get; set; }
 }

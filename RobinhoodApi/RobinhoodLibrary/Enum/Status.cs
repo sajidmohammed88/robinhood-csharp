@@ -1,9 +1,8 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum Status
 {
-    public enum Status
-    {
-        Issued,
-        Validated,
-        Failed
-    }
+	Issued,
+	Validated,
+	Failed
 }

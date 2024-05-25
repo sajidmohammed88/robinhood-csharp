@@ -1,8 +1,7 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum OptionType
 {
-    public enum OptionType
-    {
-        Call,
-        Put
-    }
+	Call,
+	Put
 }
