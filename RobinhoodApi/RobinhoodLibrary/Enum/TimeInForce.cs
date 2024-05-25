@@ -1,8 +1,7 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum TimeInForce
 {
-    public enum TimeInForce
-    {
-        Gfd,
-        Gtc
-    }
+	Gfd,
+	Gtc
 }

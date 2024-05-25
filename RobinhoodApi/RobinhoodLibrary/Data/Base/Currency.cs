@@ -1,15 +1,14 @@
-﻿namespace RobinhoodLibrary.Data.Base
+﻿namespace RobinhoodApi.Data.Base;
+
+public class Currency
 {
-    public class Currency
-    {
-        public string Code { get; set; }
+	public string Code { get; set; }
 
-        public string Id { get; set; }
+	public string Id { get; set; }
 
-        public string Increment { get; set; }
+	public string Increment { get; set; }
 
-        public string Name { get; set; }
+	public string Name { get; set; }
 
-        public string Type { get; set; }
-    }
+	public string Type { get; set; }
 }

@@ -1,14 +1,11 @@
-﻿using RobinhoodLibrary.Data.Base;
-using RobinhoodLibrary.Data.Quote;
-using System;
-using System.Collections.Generic;
+﻿using RobinhoodApi.Data.Base;
+using RobinhoodApi.Data.Quote;
 
-namespace RobinhoodLibrary.Data.Crypto
+namespace RobinhoodApi.Data.Crypto;
+
+public class CryptoHistoricalData : BaseHistoricalData
 {
-    public class CryptoHistoricalData : BaseHistoricalData
-    {
-        public IList<Historical> DataPoints { get; set; }
+	public IList<Historical> DataPoints { get; set; }
 
-        public Guid Id { get; set; }
-    }
+	public Guid Id { get; set; }
 }

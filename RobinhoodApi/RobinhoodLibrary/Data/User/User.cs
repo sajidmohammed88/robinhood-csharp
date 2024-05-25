@@ -1,29 +1,26 @@
-﻿using System;
+﻿namespace RobinhoodApi.Data.User;
 
-namespace RobinhoodLibrary.Data.User
+public class User
 {
-    public class User
-    {
-        public string Url { get; set; }
+	public string Url { get; set; }
 
-        public Guid Id { get; set; }
+	public Guid Id { get; set; }
 
-        public string IdInfo { get; set; }
+	public string IdInfo { get; set; }
 
-        public string Username { get; set; }
+	public string Username { get; set; }
 
-        public string Email { get; set; }
+	public string Email { get; set; }
 
-        public bool EmailVerified { get; set; }
+	public bool EmailVerified { get; set; }
 
-        public string FirstName { get; set; }
+	public string FirstName { get; set; }
 
-        public string LastName { get; set; }
+	public string LastName { get; set; }
 
-        public Origin Origin { get; set; }
+	public Origin Origin { get; set; }
 
-        public string ProfileName { get; set; }
+	public string ProfileName { get; set; }
 
-        public DateTime CreatedAt { get; set; }
-    }
+	public DateTime CreatedAt { get; set; }
 }

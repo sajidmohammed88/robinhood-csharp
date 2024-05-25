@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace RobinhoodApi.Data.Quote;
 
-namespace RobinhoodLibrary.Data.Quote
+public class HistoricalsResult
 {
-    public class HistoricalsResult
-    {
-        public IList<HistoricalsData> Results { get; set; }
-    }
+	public IList<HistoricalsData> Results { get; set; }
 }

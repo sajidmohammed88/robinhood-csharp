@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace RobinhoodApi.Data.Portfolios;
 
-namespace RobinhoodLibrary.Data.Portfolios
+public class PortfolioResult
 {
-    public class PortfolioResult
-    {
-        public IList<Portfolio> Results { get; set; }
-    }
+	public IList<Portfolio> Results { get; set; }
 }

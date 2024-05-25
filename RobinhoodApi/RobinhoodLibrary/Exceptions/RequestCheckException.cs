@@ -1,14 +1,15 @@
-﻿using System;
+﻿namespace RobinhoodApi.Exceptions;
 
-namespace RobinhoodLibrary.Exceptions
+public class RequestCheckException : Exception
 {
-    public class RequestCheckException : Exception
-    {
-        public RequestCheckException()
-        {
-        }
-        public RequestCheckException(string message) : base(message)
-        {
-        }
-    }
+	public RequestCheckException()
+	{
+	}
+	public RequestCheckException(string message) : base(message)
+	{
+	}
+
+	public RequestCheckException(string message, Exception innerException) : base(message, innerException)
+	{
+	}
 }

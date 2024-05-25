@@ -1,14 +1,12 @@
-﻿using RobinhoodLibrary.Data.Base;
-using System;
+﻿using RobinhoodApi.Data.Base;
 
-namespace RobinhoodLibrary.Data.Crypto.Request
+namespace RobinhoodApi.Data.Crypto.Request;
+
+public class CryptoOrderRequest : BaseOrderRequest
 {
-    public class CryptoOrderRequest : BaseOrderRequest
-    {
-        public string AccountId { get; set; }
+	public string AccountId { get; set; }
 
-        public string CurrencyPairId { get; set; }
+	public string CurrencyPairId { get; set; }
 
-        public Guid RefId { get; set; } = Guid.NewGuid();
-    }
+	public Guid RefId { get; set; } = Guid.NewGuid();
 }

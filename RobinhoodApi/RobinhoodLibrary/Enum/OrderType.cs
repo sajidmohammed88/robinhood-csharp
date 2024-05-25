@@ -1,8 +1,7 @@
-﻿namespace RobinhoodLibrary.Enum
+﻿namespace RobinhoodApi.Enum;
+
+public enum OrderType
 {
-    public enum OrderType
-    {
-        Market,
-        Limit
-    }
+	Market,
+	Limit
 }

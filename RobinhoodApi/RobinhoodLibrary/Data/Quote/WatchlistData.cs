@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace RobinhoodApi.Data.Quote;
 
-namespace RobinhoodLibrary.Data.Quote
+public class WatchlistData
 {
-    public class WatchlistData
-    {
-        public string Instrument { get; set; }
+	public string Instrument { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+	public DateTime CreatedAt { get; set; }
 
-        public string Watchlist { get; set; }
+	public string Watchlist { get; set; }
 
-        public string Url { get; set; }
-    }
+	public string Url { get; set; }
 }
