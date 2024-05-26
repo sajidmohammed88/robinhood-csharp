@@ -16,7 +16,7 @@ namespace Rb.Integration.Api.Services;
 public class OrderService(IQuoteDataService quoteDataService, IHttpClientManager httpClientManager, IPaginator paginator) : IOrderService
 {
 	/// <inheritdoc />
-	public async Task<IList<Order>> GetOrdersHistory()
+	public async Task<IList<Order>> GetOrdersHistoryAsync()
 	{
 		BaseResult<Order> orderResult = await httpClientManager.GetAsync<BaseResult<Order>>(Constants.Routes.Orders);
 
@@ -24,7 +24,7 @@ public class OrderService(IQuoteDataService quoteDataService, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> GetOrderHistory(Guid orderId)
+	public async Task<Order> GetOrderHistoryAsync(Guid orderId)
 	{
 		if (orderId == Guid.Empty)
 		{
@@ -35,13 +35,13 @@ public class OrderService(IQuoteDataService quoteDataService, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> SubmitBuyOrder(OrderRequest orderRequest)
+	public async Task<Order> SubmitBuyOrderAsync(OrderRequest orderRequest)
 	{
 		return await SubmitOrder(orderRequest, true);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> SubmitSellOrder(OrderRequest orderRequest)
+	public async Task<Order> SubmitSellOrderAsync(OrderRequest orderRequest)
 	{
 		return await SubmitOrder(orderRequest, false);
 	}
@@ -56,10 +56,10 @@ public class OrderService(IQuoteDataService quoteDataService, IHttpClientManager
 	private async Task<Order> SubmitOrder(OrderRequest orderRequest, bool isBuy)
 	{
 		RbHelper.CheckOrderRequest(orderRequest);
-		Account account = await quoteDataService.GetAccount();
+		Account account = await quoteDataService.GetAccountAsync();
 		if (orderRequest.Price == null)
 		{
-			QuoteData quote = await quoteDataService.GetQuoteData(orderRequest.Symbol);
+			QuoteData quote = await quoteDataService.GetQuoteDataAsync(orderRequest.Symbol);
 			orderRequest.Price = (isBuy ? quote.AskPrice : quote.BidPrice) ?? quote.LastTradePrice;
 		}
 
@@ -76,17 +76,17 @@ public class OrderService(IQuoteDataService quoteDataService, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceOrder(OrderRequest orderRequest)
+	public async Task<Order> PlaceOrderAsync(OrderRequest orderRequest)
 	{
 		if (orderRequest == null)
 		{
 			throw new RequestCheckException("The order request is null in call to PlaceOrder");
 		}
 
-		Account account = await quoteDataService.GetAccount();
+		Account account = await quoteDataService.GetAccountAsync();
 		if (orderRequest.Price is null or "0.0")
 		{
-			QuoteData quote = await quoteDataService.GetQuoteData(orderRequest.Symbol);
+			QuoteData quote = await quoteDataService.GetQuoteDataAsync(orderRequest.Symbol);
 			orderRequest.Price = quote.BidPrice;
 			if (quote.BidPrice is null or "0.0")
 			{

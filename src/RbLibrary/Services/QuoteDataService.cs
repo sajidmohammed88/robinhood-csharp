@@ -15,7 +15,7 @@ namespace Rb.Integration.Api.Services;
 public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator paginator) : IQuoteDataService
 {
 	/// <inheritdoc />
-	public async Task<QuoteData> GetQuoteData(string stock)
+	public async Task<QuoteData> GetQuoteDataAsync(string stock)
 	{
 		if (string.IsNullOrEmpty(stock))
 		{
@@ -33,20 +33,20 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<string>> GetQuoteWithSpecifiedKeys(string stock, string keys)
+	public async Task<IList<string>> GetQuoteWithSpecifiedKeysAsync(string stock, string keys)
 	{
 		if (string.IsNullOrEmpty(stock) || string.IsNullOrEmpty(keys))
 		{
 			throw new HttpResponseException("Invalid request, reason : given stock or key are null or empty");
 		}
 
-		QuoteData quoteData = await GetQuoteData(stock);
+		QuoteData quoteData = await GetQuoteDataAsync(stock);
 
 		return RbHelper.GetValueByKeys(keys, quoteData);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<QuoteData>> GetQuotesData(IList<string> stocks)
+	public async Task<IList<QuoteData>> GetQuotesDataAsync(IList<string> stocks)
 	{
 		if (stocks == null || !stocks.Any())
 		{
@@ -66,14 +66,14 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	}
 
 	/// <inheritdoc />
-	public async Task<IDictionary<string, IList<string>>> GetQuotesWithSpecifiedKeys(IList<string> stocks, string keys)
+	public async Task<IDictionary<string, IList<string>>> GetQuotesWithSpecifiedKeysAsync(IList<string> stocks, string keys)
 	{
 		if (stocks == null || !stocks.Any() || string.IsNullOrEmpty(keys))
 		{
 			throw new HttpResponseException("Invalid request, reason : given stocks or keys are null or empty");
 		}
 
-		IList<QuoteData> quotesData = await GetQuotesData(stocks);
+		IList<QuoteData> quotesData = await GetQuotesDataAsync(stocks);
 
 		IDictionary<string, IList<string>> result = new Dictionary<string, IList<string>>();
 
@@ -86,7 +86,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<HistoricalsData>> GetHistoricalQuotes(IList<string> stocks, string interval, Span span,
+	public async Task<IList<HistoricalsData>> GetHistoricalQuotesAsync(IList<string> stocks, string interval, Span span,
 		Bounds bounds = Bounds.Regular)
 	{
 		/*Note: valid interval/ span configs
@@ -108,7 +108,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<NewsData>> GetNews(string stock)
+	public async Task<IList<NewsData>> GetNewsAsync(string stock)
 	{
 		BaseResult<NewsData> newsResult = await httpClientManager.GetAsync<BaseResult<NewsData>>($"{Constants.Routes.NewsBase}{stock}/");
 
@@ -116,7 +116,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	}
 
 	/// <inheritdoc />
-	public async Task<Instrument> GetInstrument(string url)
+	public async Task<Instrument> GetInstrumentAsync(string url)
 	{
 		if (string.IsNullOrEmpty(url))
 		{
@@ -127,7 +127,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<string>> GetTickersByTag(string tag)
+	public async Task<IList<string>> GetTickersByTagAsync(string tag)
 	{
 		/*tag - Tags may include but are not limited to:
 			*top-movers
@@ -147,7 +147,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 		IList<string> tickers = [];
 		foreach (string instrumentUrl in instrumentsTag.Instruments)
 		{
-			Instrument instrument = await GetInstrument(instrumentUrl);
+			Instrument instrument = await GetInstrumentAsync(instrumentUrl);
 
 			if (!string.IsNullOrEmpty(instrument?.Symbol))
 			{
@@ -159,7 +159,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	}
 
 	/// <inheritdoc />
-	public async Task<Account> GetAccount()
+	public async Task<Account> GetAccountAsync()
 	{
 		BaseResult<Account> accountResult = await httpClientManager.GetAsync<BaseResult<Account>>(Constants.Routes.Accounts);
 
@@ -172,7 +172,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Instrument>> GetWatchLists()
+	public async Task<IList<Instrument>> GetWatchListsAsync()
 	{
 		BaseResult<Watchlist> watchListResult = await httpClientManager.GetAsync<BaseResult<Watchlist>>(Constants.Routes.WatchLists);
 		if (watchListResult?.Results == null || !watchListResult.Results.Any())
@@ -194,7 +194,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 
 	/// <inheritdoc />
 	/// /!\ gives BadRequest, the same result for the python library.
-	public async Task<dynamic> GetStockMarketData(IList<string> instruments)
+	public async Task<dynamic> GetStockMarketDataAsync(IList<string> instruments)
 	{
 		if (instruments == null || !instruments.Any())
 		{
@@ -207,9 +207,9 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 
 	/// <inheritdoc />
 	/// /!\ gives 404, the route not exist in python, but exist in ruby code.
-	public async Task<dynamic> GetPopularity(string stock)
+	public async Task<dynamic> GetPopularityAsync(string stock)
 	{
-		QuoteData quoteData = await GetQuoteData(stock);
+		QuoteData quoteData = await GetQuoteDataAsync(stock);
 		if (string.IsNullOrEmpty(quoteData?.Instrument))
 		{
 			throw new HttpResponseException($"The stock {stock} don't have instrument");
