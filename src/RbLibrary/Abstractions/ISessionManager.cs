@@ -13,7 +13,7 @@ public interface ISessionManager
 	/// Login the user.
 	/// </summary>
 	/// <returns>The first authentication response.</returns>
-	Task<AuthenticationResponse> Login();
+	Task<AuthenticationResponse> LoginAsync();
 
 	/// <summary>
 	/// Challenge the oauth2.
@@ -21,14 +21,14 @@ public interface ISessionManager
 	/// <param name="challengeId">The challenge identifier.</param>
 	/// <param name="code">The code.</param>
 	/// <returns>The authentication response.</returns>
-	Task<AuthenticationResponse> ChallengeOauth2(Guid challengeId, string code);
+	Task<AuthenticationResponse> ChallengeOauth2Async(Guid challengeId, string code);
 
 	/// <summary>
 	/// Mfa oath2.
 	/// </summary>
 	/// <param name="code">The code.</param>
 	/// <returns>The mfa attempt result.</returns>
-	Task<(HttpStatusCode, AuthenticationResponse)> MfaOath2(string code);
+	Task<(HttpStatusCode, AuthenticationResponse)> MfaOath2Async(string code);
 
 	/// <summary>
 	/// Configure the manager.
@@ -39,5 +39,5 @@ public interface ISessionManager
 	/// <summary>
 	/// Logout.
 	/// </summary>
-	Task Logout();
+	Task LogoutAsync();
 }

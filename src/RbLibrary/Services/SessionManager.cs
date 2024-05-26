@@ -132,7 +132,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task<AuthenticationResponse> Login()
+	public async Task<AuthenticationResponse> LoginAsync()
 	{
 		if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))
 		{
@@ -153,7 +153,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task<AuthenticationResponse> ChallengeOauth2(Guid challengeId, string code)
+	public async Task<AuthenticationResponse> ChallengeOauth2Async(Guid challengeId, string code)
 	{
 		var (statusCode, result) = await PostAsync(string.Format(Constants.Routes.Challenge, challengeId),
 				new Dictionary<string, string> { { "response", code } },
@@ -178,7 +178,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task<(HttpStatusCode, AuthenticationResponse)> MfaOath2(string code)
+	public async Task<(HttpStatusCode, AuthenticationResponse)> MfaOath2Async(string code)
 	{
 		IDictionary<string, string> authContent = AuthHelper.BuildAuthenticationContent(_configuration, _deviceToken);
 		authContent.Add("mfa_code", code);
@@ -202,7 +202,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task Logout()
+	public async Task LogoutAsync()
 	{
 		IDictionary<string, string> logoutContent = new Dictionary<string, string>
 					{

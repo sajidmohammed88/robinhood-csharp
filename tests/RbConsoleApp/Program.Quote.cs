@@ -11,16 +11,16 @@ namespace RobinhoodConsoleApp;
 
 public static partial class Program
 {
-	public static async Task FetchQuoteData()
+	public static async Task FetchQuoteDataAsync()
 	{
-		QuoteData quoteData = await _robinhood.GetQuoteData("AAPL");
-		IList<QuoteData> quotesData = await _robinhood.GetQuotesData(["AAPL", "SNAP"]);
+		QuoteData quoteData = await _robinhood.GetQuoteDataAsync("AAPL");
+		IList<QuoteData> quotesData = await _robinhood.GetQuotesDataAsync(["AAPL", "SNAP"]);
 
-		IList<string> valuesByStock = await _robinhood.GetQuoteWithSpecifiedKeys("AAPL", "symbol,last_trade_price");
+		IList<string> valuesByStock = await _robinhood.GetQuoteWithSpecifiedKeysAsync("AAPL", "symbol,last_trade_price");
 		Console.WriteLine($"{valuesByStock[0]}:{valuesByStock[1]}");
 
 		IDictionary<string, IList<string>> valuesByStocks = await _robinhood
-			.GetQuotesWithSpecifiedKeys(["AAPL", "SNAP"], "symbol,last_trade_price")
+			.GetQuotesWithSpecifiedKeysAsync(["AAPL", "SNAP"], "symbol,last_trade_price")
 			;
 		foreach ((string key, IList<string> value) in valuesByStocks)
 		{
@@ -28,26 +28,26 @@ public static partial class Program
 		}
 
 		IList<HistoricalsData> historicalsData = await _robinhood
-			.GetHistoricalQuotes(["AAPL", "SNAP"], "5minute", Span.Day);
+			.GetHistoricalQuotesAsync(["AAPL", "SNAP"], "5minute", Span.Day);
 
-		IList<NewsData> news = await _robinhood.GetNews("AAPL");
+		IList<NewsData> news = await _robinhood.GetNewsAsync("AAPL");
 
 		// to ask price, call common method GetQuoteWithSpecifiedKeysAsync and use the same thing for all other keys like : ask_size,bid_price etc.
-		string askPrice = await _robinhood.AskPrice("AAPL");
-		string bidPrice = await _robinhood.BidPrice("AAPL");
+		string askPrice = await _robinhood.AskPriceAsync("AAPL");
+		string bidPrice = await _robinhood.BidPriceAsync("AAPL");
 
-		IList<string> tickers = await _robinhood.GetTickersByTag("top-movers");
+		IList<string> tickers = await _robinhood.GetTickersByTagAsync("top-movers");
 
-		Account account = await _robinhood.GetAccount();
-		IList<Instrument> watchList = await _robinhood.GetWatchLists();
+		Account account = await _robinhood.GetAccountAsync();
+		IList<Instrument> watchList = await _robinhood.GetWatchListsAsync();
 
 		// not worked routes:
-		dynamic marketData = await _robinhood.GetStockMarketData(
+		dynamic marketData = await _robinhood.GetStockMarketDataAsync(
 		[
 			"450dfc6d-5510-4d40-abfb-f633b7d9be3e",
 			"1e513292-5926-4dc4-8c3d-4af6b5836704"
 		]);
 
-		dynamic popularity = await _robinhood.GetPopularity("F");
+		dynamic popularity = await _robinhood.GetPopularityAsync("F");
 	}
 }
