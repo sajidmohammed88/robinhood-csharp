@@ -28,21 +28,21 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	#region USER
 
 	/// <inheritdoc />
-	public async Task<AuthenticationResponse> Login()
+	public async Task<AuthenticationResponse> LoginAsync()
 	{
-		return await sessionManager.Login();
+		return await sessionManager.LoginAsync();
 	}
 
 	/// <inheritdoc />
-	public async Task<AuthenticationResponse> ChallengeOauth2(Guid challengeId, string code)
+	public async Task<AuthenticationResponse> ChallengeOauth2Async(Guid challengeId, string code)
 	{
-		return await sessionManager.ChallengeOauth2(challengeId, code);
+		return await sessionManager.ChallengeOauth2Async(challengeId, code);
 	}
 
 	/// <inheritdoc />
-	public async Task<(HttpStatusCode, AuthenticationResponse)> MfaOath2(string code)
+	public async Task<(HttpStatusCode, AuthenticationResponse)> MfaOath2Async(string code)
 	{
-		return await sessionManager.MfaOath2(code);
+		return await sessionManager.MfaOath2Async(code);
 	}
 
 	/// <inheritdoc />
@@ -52,19 +52,19 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	}
 
 	/// <inheritdoc />
-	public async Task Logout()
+	public async Task LogoutAsync()
 	{
-		await sessionManager.Logout();
+		await sessionManager.LogoutAsync();
 	}
 
 	/// <inheritdoc />
-	public async Task<User> GetUser()
+	public async Task<User> GetUserAsync()
 	{
 		return await httpClientManager.GetAsync<User>(Constants.Routes.User);
 	}
 
 	/// <inheritdoc />
-	public async Task<InvestmentProfile> GetInvestmentProfile()
+	public async Task<InvestmentProfile> GetInvestmentProfileAsync()
 	{
 		return await httpClientManager.GetAsync<InvestmentProfile>(Constants.Routes.InvestmentProfile);
 	}
@@ -72,97 +72,97 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	#region QUOTEDATA
 
 	/// <inheritdoc />
-	public async Task<QuoteData> GetQuoteData(string stock)
+	public async Task<QuoteData> GetQuoteDataAsync(string stock)
 	{
-		return await quoteDataService.GetQuoteData(stock);
+		return await quoteDataService.GetQuoteDataAsync(stock);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<string>> GetQuoteWithSpecifiedKeys(string stock, string keys)
+	public async Task<IList<string>> GetQuoteWithSpecifiedKeysAsync(string stock, string keys)
 	{
-		return await quoteDataService.GetQuoteWithSpecifiedKeys(stock, keys);
+		return await quoteDataService.GetQuoteWithSpecifiedKeysAsync(stock, keys);
 	}
 
 	/// <inheritdoc />
-	public async Task<string> AskPrice(string stock)
+	public async Task<string> AskPriceAsync(string stock)
 	{
-		return (await quoteDataService.GetQuoteWithSpecifiedKeys(stock, "ask_price"))
+		return (await quoteDataService.GetQuoteWithSpecifiedKeysAsync(stock, "ask_price"))
 			.FirstOrDefault();
 	}
 
 	/// <inheritdoc />
-	public async Task<string> BidPrice(string stock)
+	public async Task<string> BidPriceAsync(string stock)
 	{
-		return (await quoteDataService.GetQuoteWithSpecifiedKeys(stock, "bid_price"))
+		return (await quoteDataService.GetQuoteWithSpecifiedKeysAsync(stock, "bid_price"))
 			.FirstOrDefault();
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<QuoteData>> GetQuotesData(IList<string> stocks)
+	public async Task<IList<QuoteData>> GetQuotesDataAsync(IList<string> stocks)
 	{
-		return await quoteDataService.GetQuotesData(stocks);
+		return await quoteDataService.GetQuotesDataAsync(stocks);
 	}
 
 	/// <inheritdoc />
-	public async Task<IDictionary<string, IList<string>>> GetQuotesWithSpecifiedKeys(IList<string> stocks, string keys)
+	public async Task<IDictionary<string, IList<string>>> GetQuotesWithSpecifiedKeysAsync(IList<string> stocks, string keys)
 	{
-		return await quoteDataService.GetQuotesWithSpecifiedKeys(stocks, keys);
+		return await quoteDataService.GetQuotesWithSpecifiedKeysAsync(stocks, keys);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<HistoricalsData>> GetHistoricalQuotes(IList<string> stocks, string interval, Span span, Bounds bounds = Bounds.Regular)
+	public async Task<IList<HistoricalsData>> GetHistoricalQuotesAsync(IList<string> stocks, string interval, Span span, Bounds bounds = Bounds.Regular)
 	{
-		return await quoteDataService.GetHistoricalQuotes(stocks, interval, span, bounds);
+		return await quoteDataService.GetHistoricalQuotesAsync(stocks, interval, span, bounds);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<string>> GetTickersByTag(string tag)
+	public async Task<IList<string>> GetTickersByTagAsync(string tag)
 	{
-		return await quoteDataService.GetTickersByTag(tag);
+		return await quoteDataService.GetTickersByTagAsync(tag);
 	}
 
 	/// <inheritdoc />
-	public async Task<Instrument> GetInstrument(string url)
+	public async Task<Instrument> GetInstrumentAsync(string url)
 	{
-		return await quoteDataService.GetInstrument(url);
+		return await quoteDataService.GetInstrumentAsync(url);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<NewsData>> GetNews(string stock)
+	public async Task<IList<NewsData>> GetNewsAsync(string stock)
 	{
-		return await quoteDataService.GetNews(stock);
+		return await quoteDataService.GetNewsAsync(stock);
 	}
 
 	/// <inheritdoc />
-	public async Task<Account> GetAccount()
+	public async Task<Account> GetAccountAsync()
 	{
-		return await quoteDataService.GetAccount();
+		return await quoteDataService.GetAccountAsync();
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Instrument>> GetWatchLists()
+	public async Task<IList<Instrument>> GetWatchListsAsync()
 	{
-		return await quoteDataService.GetWatchLists();
+		return await quoteDataService.GetWatchListsAsync();
 	}
 
 	/// <inheritdoc />
-	public async Task<dynamic> GetStockMarketData(IList<string> instruments)
+	public async Task<dynamic> GetStockMarketDataAsync(IList<string> instruments)
 	{
-		return await quoteDataService.GetStockMarketData(instruments);
+		return await quoteDataService.GetStockMarketDataAsync(instruments);
 	}
 
 	/// <inheritdoc />
-	public async Task<dynamic> GetPopularity(string stock)
+	public async Task<dynamic> GetPopularityAsync(string stock)
 	{
-		return await quoteDataService.GetPopularity(stock);
+		return await quoteDataService.GetPopularityAsync(stock);
 	}
 
 	#endregion
 	#region OPTIONS
 	/// <inheritdoc />
-	public async Task<IList<Option>> GetOptions(string stock, IList<string> expirationDates, OptionType optionType)
+	public async Task<IList<Option>> GetOptionsAsync(string stock, IList<string> expirationDates, OptionType optionType)
 	{
-		QuoteData quoteData = await quoteDataService.GetQuoteData(stock);
+		QuoteData quoteData = await quoteDataService.GetQuoteDataAsync(stock);
 
 		if (string.IsNullOrEmpty(quoteData?.Instrument) || expirationDates == null || !expirationDates.Any())
 		{
@@ -171,44 +171,44 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 
 		string instrumentId = quoteData.Instrument.Split("/")[4];
 
-		Chain chain = await optionsInformationService.GetChain(instrumentId);
+		Chain chain = await optionsInformationService.GetChainAsync(instrumentId);
 
 		if (chain == null)
 		{
 			throw new HttpResponseException($"No chain result for the instrument : {instrumentId}");
 		}
 
-		return await optionsInformationService.GetOptionsByChainId(chain.Id, expirationDates, optionType);
+		return await optionsInformationService.GetOptionsByChainIdAsync(chain.Id, expirationDates, optionType);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Option>> GetOwnedOptions()
+	public async Task<IList<Option>> GetOwnedOptionsAsync()
 	{
-		return await optionsInformationService.GetOwnedOptions();
+		return await optionsInformationService.GetOwnedOptionsAsync();
 	}
 
 	/// <inheritdoc />
-	public async Task<Guid> GetOptionChainId(string symbol)
+	public async Task<Guid> GetOptionChainIdAsync(string symbol)
 	{
-		return await optionsInformationService.GetOptionChainId(symbol);
+		return await optionsInformationService.GetOptionChainIdAsync(symbol);
 	}
 
 	/// <inheritdoc />
-	public async Task<Guid> GetOptionQuote(string symbol, string strike, string expirationDate, OptionType optionType)
+	public async Task<Guid> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType)
 	{
-		return await optionsInformationService.GetOptionQuote(symbol, strike, expirationDate, optionType);
+		return await optionsInformationService.GetOptionQuoteAsync(symbol, strike, expirationDate, optionType);
 	}
 
 	/// <inheritdoc />
-	public async Task<dynamic> GetOptionMarketData(Guid optionId)
+	public async Task<dynamic> GetOptionMarketDataAsync(Guid optionId)
 	{
-		return await optionsInformationService.GetOptionMarketData(optionId.ToString());
+		return await optionsInformationService.GetOptionMarketDataAsync(optionId.ToString());
 	}
 	#endregion
 	#region FUNDAMENTALS
 
 	/// <inheritdoc />
-	public async Task<Fundamental> GetFundamentals(string stock)
+	public async Task<Fundamental> GetFundamentalsAsync(string stock)
 	{
 		if (string.IsNullOrEmpty(stock))
 		{
@@ -228,7 +228,7 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	#region PORTFOLIO
 
 	/// <inheritdoc />
-	public async Task<IList<Portfolio>> GetPortfolio()
+	public async Task<IList<Portfolio>> GetPortfolioAsync()
 	{
 		PortfolioResult portfolioResult = await httpClientManager.GetAsync<PortfolioResult>(Constants.Routes.Portfolios);
 
@@ -236,7 +236,7 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Dividends>> GetDividends()
+	public async Task<IList<Dividends>> GetDividendsAsync()
 	{
 		BaseResult<Dividends> dividendsResult = await httpClientManager.GetAsync<BaseResult<Dividends>>(Constants.Routes.Dividends);
 		return await paginator.PaginateResultAsync(dividendsResult);
@@ -245,7 +245,7 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	#region POSITIONS
 
 	/// <inheritdoc />
-	public async Task<IList<Position>> GetPositions()
+	public async Task<IList<Position>> GetPositionsAsync()
 	{
 		BaseResult<Position> positionResult = await httpClientManager
 			.GetAsync<BaseResult<Position>>(Constants.Routes.Positions);
@@ -254,7 +254,7 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Position>> GetOwnedSecurities()
+	public async Task<IList<Position>> GetOwnedSecuritiesAsync()
 	{
 		BaseResult<Position> result = await httpClientManager
 			.GetAsync<BaseResult<Position>>($"{Constants.Routes.Positions}?nonzero=true");
@@ -265,30 +265,30 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	#region ORDER
 
 	/// <inheritdoc />
-	public async Task<Order> GetOrderHistory(Guid orderId)
+	public async Task<Order> GetOrderHistoryAsync(Guid orderId)
 	{
-		return await orderService.GetOrderHistory(orderId);
+		return await orderService.GetOrderHistoryAsync(orderId);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Order>> GetOrdersHistory()
+	public async Task<IList<Order>> GetOrdersHistoryAsync()
 	{
-		return await orderService.GetOrdersHistory();
+		return await orderService.GetOrdersHistoryAsync();
 	}
 
 	/// <inheritdoc />
 	public async Task<IList<Order>> GetOpenOrders()
 	{
-		IList<Order> orders = await orderService.GetOrdersHistory();
+		IList<Order> orders = await orderService.GetOrdersHistoryAsync();
 		return orders != null && orders.Any(o => o.Cancel != null)
 			? orders.Where(o => o.Cancel != null).ToList()
 			: new List<Order>();
 	}
 
 	/// <inheritdoc />
-	public async Task<bool> CancelOrder(Guid orderId)
+	public async Task<bool> CancelOrderAsync(Guid orderId)
 	{
-		Order order = await orderService.GetOrderHistory(orderId);
+		Order order = await orderService.GetOrderHistoryAsync(orderId);
 		if (order == null)
 		{
 			throw new HttpResponseException($"The order {orderId} not exist.");
@@ -305,144 +305,144 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceMarketBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
+	public async Task<Order> PlaceMarketBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
 			OrderType.Market, Trigger.Immediate, Side.Buy);
 
-		return await orderService.SubmitBuyOrder(orderRequest);
+		return await orderService.SubmitBuyOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceMarketSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
+	public async Task<Order> PlaceMarketSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
 			OrderType.Market, Trigger.Immediate, Side.Sell);
 
-		return await orderService.SubmitSellOrder(orderRequest);
+		return await orderService.SubmitSellOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	public async Task<Order> PlaceLimitBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string price, int quantity)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
 			OrderType.Limit, Trigger.Immediate, Side.Buy, price);
 
-		return await orderService.SubmitBuyOrder(orderRequest);
+		return await orderService.SubmitBuyOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	public async Task<Order> PlaceLimitSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string price, int quantity)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
 			OrderType.Limit, Trigger.Immediate, Side.Sell, price);
 
-		return await orderService.SubmitSellOrder(orderRequest);
+		return await orderService.SubmitSellOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceStopLossBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	public async Task<Order> PlaceStopLossBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string stopPrice, int quantity)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
 			OrderType.Market, Trigger.Stop, Side.Buy, stopPrice: stopPrice);
 
-		return await orderService.SubmitBuyOrder(orderRequest);
+		return await orderService.SubmitBuyOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceStopLossSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	public async Task<Order> PlaceStopLossSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string stopPrice, int quantity)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
 			OrderType.Market, Trigger.Stop, Side.Sell, stopPrice: stopPrice);
 
-		return await orderService.SubmitSellOrder(orderRequest);
+		return await orderService.SubmitSellOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceStopLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	public async Task<Order> PlaceStopLimitBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string price, string stopPrice, int quantity)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
 			OrderType.Limit, Trigger.Stop, Side.Buy, price, stopPrice);
 
-		return await orderService.SubmitBuyOrder(orderRequest);
+		return await orderService.SubmitBuyOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceStopLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	public async Task<Order> PlaceStopLimitSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string price, string stopPrice, int quantity)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
 			OrderType.Limit, Trigger.Stop, Side.Sell, price, stopPrice);
 
-		return await orderService.SubmitBuyOrder(orderRequest);
+		return await orderService.SubmitBuyOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceBuyOrder(string instrumentUrl, string symbol, string price)
+	public async Task<Order> PlaceBuyOrderAsync(string instrumentUrl, string symbol, string price)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
 			OrderType.Market, Trigger.Immediate, Side.Buy, price ?? "0.0");
 
-		return await orderService.PlaceOrder(orderRequest);
+		return await orderService.PlaceOrderAsync(orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceSellOrder(string instrumentUrl, string symbol, string price)
+	public async Task<Order> PlaceSellOrderAsync(string instrumentUrl, string symbol, string price)
 	{
 		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
 			OrderType.Market, Trigger.Immediate, Side.Sell, price ?? "0.0");
 
-		return await orderService.PlaceOrder(orderRequest);
+		return await orderService.PlaceOrderAsync(orderRequest);
 	}
 	#endregion
 
 	#region CRYPTO
 
 	/// <inheritdoc />
-	public async Task<IList<CurrencyPair>> GetCurrencyPairs()
+	public async Task<IList<CurrencyPair>> GetCurrencyPairsAsync()
 	{
-		return await cryptoCurrencyService.GetCurrencyPairs();
+		return await cryptoCurrencyService.GetCurrencyPairsAsync();
 	}
 
 	/// <inheritdoc />
-	public async Task<Quotes> GetQuotes(string pair)
+	public async Task<Quotes> GetQuotesAsync(string pair)
 	{
-		return await cryptoCurrencyService.GetQuotes(pair);
+		return await cryptoCurrencyService.GetQuotesAsync(pair);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<CryptoAccount>> GetAccounts()
+	public async Task<IList<CryptoAccount>> GetAccountsAsync()
 	{
-		return await cryptoCurrencyService.GetAccounts();
+		return await cryptoCurrencyService.GetAccountsAsync();
 	}
 
 	/// <inheritdoc />
-	public async Task<CryptoOrder> Trade(string pair, CryptoOrderRequest orderRequest)
+	public async Task<CryptoOrder> TradeAsync(string pair, CryptoOrderRequest orderRequest)
 	{
-		return await cryptoCurrencyService.Trade(pair, orderRequest);
+		return await cryptoCurrencyService.TradeAsync(pair, orderRequest);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<CryptoOrder>> GetTradeHistory()
+	public async Task<IList<CryptoOrder>> GetTradeHistoryAsync()
 	{
-		return await cryptoCurrencyService.GetTradeHistory();
+		return await cryptoCurrencyService.GetTradeHistoryAsync();
 	}
 
 	/// <inheritdoc />
-	public async Task<CryptoOrder> GetOrderStatus(string orderId)
+	public async Task<CryptoOrder> GetOrderStatusAsync(string orderId)
 	{
-		return await cryptoCurrencyService.GetOrderStatus(orderId);
+		return await cryptoCurrencyService.GetOrderStatusAsync(orderId);
 	}
 
 	/// <inheritdoc />
-	public async Task<bool> CancelCryptoOrder(string orderId)
+	public async Task<bool> CancelCryptoOrderAsync(string orderId)
 	{
-		return await cryptoCurrencyService.CancelCryptoOrder(orderId);
+		return await cryptoCurrencyService.CancelCryptoOrderAsync(orderId);
 	}
 
 	/// <inheritdoc />
@@ -450,15 +450,15 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	///:param interval: optional 15second,5minute,10minute,hour,day,week
 	///:param span: optional hour, day, year,5year,all
 	///:param bounds: 24_7, regular, extended, trading
-	public async Task<CryptoHistoricalData> Historicals(string pair, string interval, string span, string bounds)
+	public async Task<CryptoHistoricalData> HistoricalsAsync(string pair, string interval, string span, string bounds)
 	{
-		return await cryptoCurrencyService.Historicals(pair, interval, span, bounds);
+		return await cryptoCurrencyService.HistoricalsAsync(pair, interval, span, bounds);
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Holding>> Holdings()
+	public async Task<IList<Holding>> HoldingsAsync()
 	{
-		return await cryptoCurrencyService.Holdings();
+		return await cryptoCurrencyService.HoldingsAsync();
 	}
 
 	#endregion

@@ -28,7 +28,7 @@ public static partial class Program
 
 		_robinhood = _serviceProvider.GetRequiredService<IRobinhood>();
 
-		AuthenticationResponse authResponse = await _robinhood.Login();
+		AuthenticationResponse authResponse = await _robinhood.LoginAsync();
 
 		if (authResponse.IsChallenge)
 		{
@@ -39,7 +39,7 @@ public static partial class Program
 				Console.WriteLine($"Input challenge code from {challenge.Type} ({challenge.RemainingAttempts}/{challenge.RemainingRetries}):");
 				string code = Console.ReadLine();
 
-				authResponse = await _robinhood.ChallengeOauth2(challenge.Id, code);
+				authResponse = await _robinhood.ChallengeOauth2Async(challenge.Id, code);
 			} while (authResponse.IsChallenge && authResponse.Challenge.CanRetry);
 		}
 
@@ -52,7 +52,7 @@ public static partial class Program
 				Console.WriteLine($"Input the MFA code:");
 				string code = Console.ReadLine();
 
-				mfaResponse = await _robinhood.MfaOath2(code);
+				mfaResponse = await _robinhood.MfaOath2Async(code);
 				attempts--;
 			} while (attempts > 0 && mfaResponse.statusCode != HttpStatusCode.OK);
 
@@ -77,53 +77,53 @@ public static partial class Program
 
 		_robinhood.ConfigureManager(authResponse);
 
-		User user = await _robinhood.GetUser();
-		InvestmentProfile investmentProfile = await _robinhood.GetInvestmentProfile();
+		User user = await _robinhood.GetUserAsync();
+		InvestmentProfile investmentProfile = await _robinhood.GetInvestmentProfileAsync();
 
 		//crypto currency
-		await FetchCryptoData();
+		await FetchCryptoDataAsync();
 
 		//quote data
-		await FetchQuoteData();
+		await FetchQuoteDataAsync();
 
 		//options
-		await FetchOptions();
+		await FetchOptionsAsync();
 
 		//fundamentals
-		Fundamental fundamental = await _robinhood.GetFundamentals("AAPL");
+		Fundamental fundamental = await _robinhood.GetFundamentalsAsync("AAPL");
 
 		//Portfolio
-		IList<Portfolio> portfolios = await _robinhood.GetPortfolio();
-		IList<Dividends> dividends = await _robinhood.GetDividends();
+		IList<Portfolio> portfolios = await _robinhood.GetPortfolioAsync();
+		IList<Dividends> dividends = await _robinhood.GetDividendsAsync();
 
 		//Positions
-		IList<Position> positions = await _robinhood.GetPositions();
-		IList<Position> securities = await _robinhood.GetOwnedSecurities();
+		IList<Position> positions = await _robinhood.GetPositionsAsync();
+		IList<Position> securities = await _robinhood.GetOwnedSecuritiesAsync();
 
 		//orders
-		IList<Order> ordersHistory = await _robinhood.GetOrdersHistory();
-		Order orderHistory = await _robinhood.GetOrderHistory(new Guid("6081bf8f-cc7c-4960-bed9-04440614aa83"));
+		IList<Order> ordersHistory = await _robinhood.GetOrdersHistoryAsync();
+		Order orderHistory = await _robinhood.GetOrderHistoryAsync(new Guid("6081bf8f-cc7c-4960-bed9-04440614aa83"));
 		IList<Order> openedOrders = await _robinhood.GetOpenOrders();
-		bool isOrderCanceled = await _robinhood.CancelOrder(new Guid("6081c6f3-0d58-4532-a9a8-773ced6bec70"));
+		bool isOrderCanceled = await _robinhood.CancelOrderAsync(new Guid("6081c6f3-0d58-4532-a9a8-773ced6bec70"));
 
-		Order placeBuyOrder = await _robinhood.PlaceBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
-		Order placeSellOrder = await _robinhood.PlaceSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
+		Order placeBuyOrder = await _robinhood.PlaceBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
+		Order placeSellOrder = await _robinhood.PlaceSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
 		Order marketBuyOrder = await _robinhood
-			.PlaceMarketBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, 1);
+			.PlaceMarketBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, 1);
 		Order marketSellOrder = await _robinhood
-			.PlaceMarketSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, 1);
+			.PlaceMarketSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, 1);
 		Order limitBuyOrder = await _robinhood
-			.PlaceLimitBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "1.1", 1);
+			.PlaceLimitBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "1.1", 1);
 		Order limitSellOrder = await _robinhood
-			.PlaceLimitSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "20", 1);
+			.PlaceLimitSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "20", 1);
 		Order stopMarketBuyOrder = await _robinhood
-			.PlaceStopLossBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "2.1", 1);
+			.PlaceStopLossBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "2.1", 1);
 		Order stopMarketSellOrder = await _robinhood
-			.PlaceStopLossSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "21", 1);
+			.PlaceStopLossSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "21", 1);
 		Order stopLimitBuyOrder = await _robinhood
-			.PlaceStopLimitBuyOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "1.5", "21", 1);
+			.PlaceStopLimitBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "1.5", "21", 1);
 		Order stopLimitSellOrder = await _robinhood
-			.PlaceStopLimitSellOrder("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "15", "21", 1);
+			.PlaceStopLimitSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "15", "21", 1);
 
 		//await _robinhood.Logout();
 	}

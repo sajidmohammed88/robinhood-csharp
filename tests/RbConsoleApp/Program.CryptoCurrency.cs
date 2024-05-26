@@ -9,15 +9,15 @@ namespace RobinhoodConsoleApp;
 
 public static partial class Program
 {
-	public static async Task FetchCryptoData()
+	public static async Task FetchCryptoDataAsync()
 	{
-		IList<CurrencyPair> currencyPairs = await _robinhood.GetCurrencyPairs();
+		IList<CurrencyPair> currencyPairs = await _robinhood.GetCurrencyPairsAsync();
 
-		Quotes quote = await _robinhood.GetQuotes("LTCUSD");
+		Quotes quote = await _robinhood.GetQuotesAsync("LTCUSD");
 
-		var accounts = await _robinhood.GetAccounts();
+		var accounts = await _robinhood.GetAccountsAsync();
 
-		CryptoOrder order = await _robinhood.Trade("LTCUSD", new CryptoOrderRequest
+		CryptoOrder order = await _robinhood.TradeAsync("LTCUSD", new CryptoOrderRequest
 		{
 			Type = OrderType.Market,
 			Price = "1",
@@ -26,14 +26,14 @@ public static partial class Program
 			TimeInForce = TimeInForce.Gtc
 		});
 
-		IList<CryptoOrder> tradeHistory = await _robinhood.GetTradeHistory();
+		IList<CryptoOrder> tradeHistory = await _robinhood.GetTradeHistoryAsync();
 
-		CryptoOrder orderStatus = await _robinhood.GetOrderStatus("60afb549-abce-40bf-bda9-50f0715f0903");
+		CryptoOrder orderStatus = await _robinhood.GetOrderStatusAsync("60afb549-abce-40bf-bda9-50f0715f0903");
 
-		bool isOrderCanceled = await _robinhood.CancelCryptoOrder("60afb549-abce-40bf-bda9-50f0715f0903");
+		bool isOrderCanceled = await _robinhood.CancelCryptoOrderAsync("60afb549-abce-40bf-bda9-50f0715f0903");
 
-		CryptoHistoricalData historicalData = await _robinhood.Historicals("BTCUSD", "5minute", "day", "24_7");
+		CryptoHistoricalData historicalData = await _robinhood.HistoricalsAsync("BTCUSD", "5minute", "day", "24_7");
 
-		IList<Holding> holdings = await _robinhood.Holdings();
+		IList<Holding> holdings = await _robinhood.HoldingsAsync();
 	}
 }

@@ -16,7 +16,7 @@ namespace Rb.Integration.Api.Services;
 public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPaginator paginator) : ICryptoCurrencyService
 {
 	/// <inheritdoc />
-	public async Task<IList<CurrencyPair>> GetCurrencyPairs()
+	public async Task<IList<CurrencyPair>> GetCurrencyPairsAsync()
 	{
 		BaseResult<CurrencyPair> currencyPairResult = await httpClientManager.GetAsync<BaseResult<CurrencyPair>>(Constants.Routes.CurrencyPairs);
 
@@ -24,7 +24,7 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 	}
 
 	/// <inheritdoc />
-	public async Task<Quotes> GetQuotes(string pair)
+	public async Task<Quotes> GetQuotesAsync(string pair)
 	{
 		if (string.IsNullOrEmpty(pair) || !Constants.Pairs.TryGetValue(pair, out string value))
 		{
@@ -35,7 +35,7 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<CryptoAccount>> GetAccounts()
+	public async Task<IList<CryptoAccount>> GetAccountsAsync()
 	{
 		BaseResult<CryptoAccount> cryptoAccountResult = await httpClientManager.GetAsync<BaseResult<CryptoAccount>>(Constants.Routes.NummusAccounts);
 
@@ -48,14 +48,14 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 	}
 
 	/// <inheritdoc />
-	public async Task<CryptoOrder> Trade(string pair, CryptoOrderRequest orderRequest)
+	public async Task<CryptoOrder> TradeAsync(string pair, CryptoOrderRequest orderRequest)
 	{
 		if (string.IsNullOrEmpty(pair) || !Constants.Pairs.ContainsKey(pair))
 		{
 			throw new CryptoCurrencyException("The pair is null, empty or not exist.");
 		}
 
-		orderRequest.AccountId = (await GetAccounts()).First().Id;
+		orderRequest.AccountId = (await GetAccountsAsync()).First().Id;
 		orderRequest.CurrencyPairId = Constants.Pairs[pair];
 
 		try
@@ -72,22 +72,22 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<CryptoOrder>> GetTradeHistory()
+	public async Task<IList<CryptoOrder>> GetTradeHistoryAsync()
 	{
 		BaseResult<CryptoOrder> cryptoOrderResult = await httpClientManager.GetAsync<BaseResult<CryptoOrder>>(Constants.Routes.NummusOrders);
 		return await paginator.PaginateResultAsync(cryptoOrderResult);
 	}
 
 	/// <inheritdoc />
-	public async Task<CryptoOrder> GetOrderStatus(string orderId)
+	public async Task<CryptoOrder> GetOrderStatusAsync(string orderId)
 	{
 		return await httpClientManager.GetAsync<CryptoOrder>(string.Format(Constants.Routes.OrderStatus, orderId));
 	}
 
 	/// <inheritdoc />
-	public async Task<bool> CancelCryptoOrder(string orderId)
+	public async Task<bool> CancelCryptoOrderAsync(string orderId)
 	{
-		CryptoOrder order = await GetOrderStatus(orderId);
+		CryptoOrder order = await GetOrderStatusAsync(orderId);
 		if (order == null)
 		{
 			throw new HttpResponseException($"The order {orderId} not exist.");
@@ -104,7 +104,7 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 	}
 
 	/// <inheritdoc />
-	public async Task<CryptoHistoricalData> Historicals(string pair, string interval, string span, string bounds)
+	public async Task<CryptoHistoricalData> HistoricalsAsync(string pair, string interval, string span, string bounds)
 	{
 		if (string.IsNullOrEmpty(pair) || !Constants.Pairs.ContainsKey(pair))
 		{
@@ -116,7 +116,7 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Holding>> Holdings()
+	public async Task<IList<Holding>> HoldingsAsync()
 	{
 		BaseResult<Holding> result = await httpClientManager.GetAsync<BaseResult<Holding>>(Constants.Routes.Holdings);
 
