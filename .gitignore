@@ -3,8 +3,8 @@
 ################################################################################
 
 
-/RobinhoodApi/RbLibrary/obj
-/RobinhoodApi/RbLibrary/bin
-/RobinhoodApi/RbConsoleApp/obj
+/src/RbLibrary/obj
+/src/RbLibrary/bin
+/tests/RbConsoleApp/obj
 /.vs
-/RobinhoodApi/RbConsoleApp/bin
+/tests/RbConsoleApp/bin
