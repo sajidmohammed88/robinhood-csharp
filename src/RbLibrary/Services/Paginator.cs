@@ -1,7 +1,7 @@
-﻿using RobinhoodApi.Abstractions;
-using RobinhoodApi.Data.Base;
+﻿using Rb.Integration.Api.Abstractions;
+using Rb.Integration.Api.Data.Base;
 
-namespace RobinhoodApi.Services;
+namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// The paginator class

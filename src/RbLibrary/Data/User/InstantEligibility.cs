@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.User;
+﻿namespace Rb.Integration.Api.Data.User;
 
 public class InstantEligibility
 {

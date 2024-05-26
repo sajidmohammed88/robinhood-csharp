@@ -1,13 +1,13 @@
-﻿using RobinhoodApi.Abstractions;
-using RobinhoodApi.Data.Base;
-using RobinhoodApi.Data.News;
-using RobinhoodApi.Data.Quote;
-using RobinhoodApi.Data.User;
-using RobinhoodApi.Enum;
-using RobinhoodApi.Exceptions;
-using RobinhoodApi.Helpers;
+﻿using Rb.Integration.Api.Abstractions;
+using Rb.Integration.Api.Data.Base;
+using Rb.Integration.Api.Data.News;
+using Rb.Integration.Api.Data.Quote;
+using Rb.Integration.Api.Data.User;
+using Rb.Integration.Api.Enum;
+using Rb.Integration.Api.Exceptions;
+using Rb.Integration.Api.Helpers;
 
-namespace RobinhoodApi.Services;
+namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// Quote data service that responsible on quote data endpoints call.

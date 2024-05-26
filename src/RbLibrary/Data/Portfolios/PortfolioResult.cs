@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.Portfolios;
+﻿namespace Rb.Integration.Api.Data.Portfolios;
 
 public class PortfolioResult
 {

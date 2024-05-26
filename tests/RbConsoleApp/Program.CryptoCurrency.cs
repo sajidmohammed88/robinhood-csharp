@@ -1,13 +1,13 @@
-﻿using RobinhoodApi.Data.Crypto;
-using RobinhoodApi.Data.Crypto.Request;
-using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Data.Crypto;
+using Rb.Integration.Api.Data.Crypto.Request;
+using Rb.Integration.Api.Enum;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RobinhoodConsoleApp;
 
-public partial class Program
+public static partial class Program
 {
 	public static async Task FetchCryptoData()
 	{

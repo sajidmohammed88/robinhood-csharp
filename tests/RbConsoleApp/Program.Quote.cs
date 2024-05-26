@@ -1,7 +1,7 @@
-﻿using RobinhoodApi.Data.News;
-using RobinhoodApi.Data.Quote;
-using RobinhoodApi.Data.User;
-using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Data.News;
+using Rb.Integration.Api.Data.Quote;
+using Rb.Integration.Api.Data.User;
+using Rb.Integration.Api.Enum;
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RobinhoodConsoleApp;
 
-public partial class Program
+public static partial class Program
 {
 	public static async Task FetchQuoteData()
 	{

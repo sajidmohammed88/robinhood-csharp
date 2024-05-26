@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Enum;
+﻿namespace Rb.Integration.Api.Enum;
 
 public enum Side
 {

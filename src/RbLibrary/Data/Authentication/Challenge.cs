@@ -1,8 +1,8 @@
-﻿using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Enum;
 
 using System.Text.Json.Serialization;
 
-namespace RobinhoodApi.Data.Authentication;
+namespace Rb.Integration.Api.Data.Authentication;
 
 public class Challenge
 {

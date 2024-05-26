@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
-using RobinhoodApi.Abstractions;
-using RobinhoodApi.Configurations;
-using RobinhoodApi.Data.Authentication;
-using RobinhoodApi.Exceptions;
-using RobinhoodApi.Helpers;
+using Rb.Integration.Api.Abstractions;
+using Rb.Integration.Api.Configurations;
+using Rb.Integration.Api.Data.Authentication;
+using Rb.Integration.Api.Exceptions;
+using Rb.Integration.Api.Helpers;
 
 using System.Net;
 using System.Text;
 using System.Text.Json;
 
-namespace RobinhoodApi.Services;
+namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// The session manager, that manage the authentication to robinhood API.
@@ -19,7 +19,7 @@ namespace RobinhoodApi.Services;
 /// <seealso cref="ISessionManager" />
 public class SessionManager : ISessionManager, IHttpClientManager
 {
-	private readonly RobinhoodConfiguration _configuration;
+	private readonly AuthConfiguration _configuration;
 	private readonly JsonSerializerOptions _settings;
 	private readonly HttpClient _httpClient;
 	private DateTime _expirationDate;
@@ -29,7 +29,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	private readonly Guid _deviceToken;
 	private bool _disposedValue;
 
-	public SessionManager(IOptions<RobinhoodConfiguration> options, IHttpClientFactory httpClientFactory)
+	public SessionManager(IOptions<AuthConfiguration> options, IHttpClientFactory httpClientFactory)
 	{
 		ArgumentNullException.ThrowIfNull(httpClientFactory);
 		_configuration = options?.Value ?? throw new ArgumentNullException(nameof(options));

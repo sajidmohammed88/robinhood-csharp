@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.News;
+﻿namespace Rb.Integration.Api.Data.News;
 
 public class NewsData
 {

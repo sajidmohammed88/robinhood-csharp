@@ -1,7 +1,7 @@
-﻿using RobinhoodApi.Data.Orders;
-using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Data.Orders;
+using Rb.Integration.Api.Enum;
 
-namespace RobinhoodApi.Data.Base;
+namespace Rb.Integration.Api.Data.Base;
 
 public class BaseOrder : BaseDetail
 {

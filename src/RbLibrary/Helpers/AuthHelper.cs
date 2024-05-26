@@ -1,6 +1,6 @@
-﻿using RobinhoodApi.Configurations;
+﻿using Rb.Integration.Api.Configurations;
 
-namespace RobinhoodApi.Helpers;
+namespace Rb.Integration.Api.Helpers;
 
 internal static class AuthHelper
 {
@@ -14,7 +14,7 @@ internal static class AuthHelper
 		return expirationDate == DateTime.MinValue || expirationDate <= DateTime.UtcNow;
 	}
 
-	internal static IDictionary<string, string> BuildAuthenticationContent(RobinhoodConfiguration configuration, Guid deviceToken)
+	internal static IDictionary<string, string> BuildAuthenticationContent(AuthConfiguration configuration, Guid deviceToken)
 	{
 		return new Dictionary<string, string>
 		{

@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.Crypto;
+﻿namespace Rb.Integration.Api.Data.Crypto;
 
 public class Quotes
 {

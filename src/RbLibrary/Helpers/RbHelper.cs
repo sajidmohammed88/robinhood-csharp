@@ -1,12 +1,12 @@
-﻿using RobinhoodApi.Data.Orders.Request;
-using RobinhoodApi.Data.Quote;
-using RobinhoodApi.Enum;
-using RobinhoodApi.Exceptions;
+﻿using Rb.Integration.Api.Data.Orders.Request;
+using Rb.Integration.Api.Data.Quote;
+using Rb.Integration.Api.Enum;
+using Rb.Integration.Api.Exceptions;
 
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace RobinhoodApi.Helpers;
+namespace Rb.Integration.Api.Helpers;
 
 /// <summary>
 /// Class used to help build static functions.

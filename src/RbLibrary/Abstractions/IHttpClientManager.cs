@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace RobinhoodApi.Abstractions;
+namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// HTTP client manager interface.

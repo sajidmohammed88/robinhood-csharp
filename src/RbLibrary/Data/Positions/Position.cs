@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.Positions;
+﻿namespace Rb.Integration.Api.Data.Positions;
 
 public class Position
 {

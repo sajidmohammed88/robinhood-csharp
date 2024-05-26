@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace RobinhoodApi.Data.Fundamentals;
+namespace Rb.Integration.Api.Data.Fundamentals;
 
 public class Fundamental
 {

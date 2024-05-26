@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.Dividends;
+﻿namespace Rb.Integration.Api.Data.Dividends;
 
 public class Dividends
 {

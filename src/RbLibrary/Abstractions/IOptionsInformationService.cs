@@ -1,7 +1,7 @@
-﻿using RobinhoodApi.Data.Options;
-using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Data.Options;
+using Rb.Integration.Api.Enum;
 
-namespace RobinhoodApi.Abstractions;
+namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// Options information service that responsible on options endpoints call.

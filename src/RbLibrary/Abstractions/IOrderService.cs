@@ -1,7 +1,7 @@
-﻿using RobinhoodApi.Data.Orders;
-using RobinhoodApi.Data.Orders.Request;
+﻿using Rb.Integration.Api.Data.Orders;
+using Rb.Integration.Api.Data.Orders.Request;
 
-namespace RobinhoodApi.Abstractions;
+namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// Order service that responsible on orders endpoints call.

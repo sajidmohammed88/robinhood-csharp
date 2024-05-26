@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace RobinhoodApi.Configurations;
+namespace Rb.Integration.Api.Configurations;
 
 /// <summary>
 /// The robinhood configuration.
 /// </summary>
 /// <seealso cref="IOptions{RobinhoodAuthentication}" />
-public class RobinhoodConfiguration : IOptions<RobinhoodConfiguration>
+public class AuthConfiguration : IOptions<AuthConfiguration>
 {
 	public const string Authentication = "Authentication";
 
@@ -22,5 +22,5 @@ public class RobinhoodConfiguration : IOptions<RobinhoodConfiguration>
 
 	public string ChallengeType { get; set; }
 
-	RobinhoodConfiguration IOptions<RobinhoodConfiguration>.Value => this;
+	AuthConfiguration IOptions<AuthConfiguration>.Value => this;
 }

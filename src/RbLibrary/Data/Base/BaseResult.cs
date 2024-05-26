@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.Base;
+﻿namespace Rb.Integration.Api.Data.Base;
 
 public class BaseResult<T>
 {

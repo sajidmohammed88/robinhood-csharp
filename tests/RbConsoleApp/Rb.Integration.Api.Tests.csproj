@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RbLibrary\RobinhoodApi.csproj" />
+    <ProjectReference Include="..\..\src\RbLibrary\Rb.Integration.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

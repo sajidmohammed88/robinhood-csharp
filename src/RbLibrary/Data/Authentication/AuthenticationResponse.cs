@@ -1,8 +1,8 @@
-﻿using RobinhoodApi.Data.Base;
+﻿using Rb.Integration.Api.Data.Base;
 
 using System.Text.Json.Serialization;
 
-namespace RobinhoodApi.Data.Authentication;
+namespace Rb.Integration.Api.Data.Authentication;
 
 public class AuthenticationResponse : BaseDetail
 {

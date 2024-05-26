@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using RobinhoodApi.Startup;
+using Rb.Integration.Api.Startup;
 
 using System;
 using System.IO;
@@ -12,7 +12,7 @@ namespace RobinhoodConsoleApp;
 /// <summary>
 /// Configure the console App to use DI.
 /// </summary>
-public partial class Program
+public static partial class Program
 {
 	private static IConfiguration _configuration;
 	private static IServiceProvider _serviceProvider;
@@ -23,7 +23,7 @@ public partial class Program
 			.ConfigureHostConfiguration(AddConfiguration)
 			.ConfigureServices(services =>
 			{
-				RobinhoodStartup.Startup(services, _configuration);
+				ConfigurationStartup.Startup(services, _configuration);
 				_serviceProvider = services.BuildServiceProvider();
 			});
 	}

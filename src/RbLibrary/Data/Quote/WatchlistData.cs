@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.Quote;
+﻿namespace Rb.Integration.Api.Data.Quote;
 
 public class WatchlistData
 {

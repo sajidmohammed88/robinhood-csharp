@@ -1,8 +1,8 @@
-﻿using RobinhoodApi.Data.Authentication;
+﻿using Rb.Integration.Api.Data.Authentication;
 
 using System.Net;
 
-namespace RobinhoodApi.Abstractions;
+namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// The session manager, that manage the authentication to robinhood API.

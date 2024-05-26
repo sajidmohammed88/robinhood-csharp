@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using RobinhoodApi.Abstractions;
-using RobinhoodApi.Data.Authentication;
-using RobinhoodApi.Data.Dividends;
-using RobinhoodApi.Data.Fundamentals;
-using RobinhoodApi.Data.Orders;
-using RobinhoodApi.Data.Portfolios;
-using RobinhoodApi.Data.Positions;
-using RobinhoodApi.Data.User;
-using RobinhoodApi.Enum;
-using RobinhoodApi.Exceptions;
+using Rb.Integration.Api.Abstractions;
+using Rb.Integration.Api.Data.Authentication;
+using Rb.Integration.Api.Data.Dividends;
+using Rb.Integration.Api.Data.Fundamentals;
+using Rb.Integration.Api.Data.Orders;
+using Rb.Integration.Api.Data.Portfolios;
+using Rb.Integration.Api.Data.Positions;
+using Rb.Integration.Api.Data.User;
+using Rb.Integration.Api.Enum;
+using Rb.Integration.Api.Exceptions;
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace RobinhoodConsoleApp;
 
-public partial class Program
+public static partial class Program
 {
 	private static IRobinhood _robinhood;
 
@@ -66,13 +66,9 @@ public partial class Program
 			{
 				message = authResponse.Error;
 			}
-			else if (!string.IsNullOrEmpty(authResponse.Detail))
-			{
-				message = authResponse.Detail;
-			}
 			else
 			{
-				message = "Unknown login error";
+				message = !string.IsNullOrEmpty(authResponse.Detail) ? authResponse.Detail : "Unknown login error";
 			}
 
 			Console.WriteLine(message);

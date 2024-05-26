@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobinhoodApi", "src\RbLibrary\RobinhoodApi.csproj", "{C0822790-3C3E-4453-9546-CC245E2FEA37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rb.Integration.Api", "src\RbLibrary\Rb.Integration.Api.csproj", "{C0822790-3C3E-4453-9546-CC245E2FEA37}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobinhoodConsoleApp", "tests\RbConsoleApp\RobinhoodConsoleApp.csproj", "{206AA3AB-1BB6-449F-B748-430B70A83214}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rb.Integration.Api.Tests", "tests\RbConsoleApp\Rb.Integration.Api.Tests.csproj", "{206AA3AB-1BB6-449F-B748-430B70A83214}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{56256E35-C901-4438-9B2B-CD0D0D90C3F2}"
 EndProject

@@ -1,6 +1,6 @@
-﻿using RobinhoodApi.Data.Base;
+﻿using Rb.Integration.Api.Data.Base;
 
-namespace RobinhoodApi.Abstractions;
+namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// The paginator interface.

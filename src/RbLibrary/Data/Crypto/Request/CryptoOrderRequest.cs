@@ -1,6 +1,6 @@
-﻿using RobinhoodApi.Data.Base;
+﻿using Rb.Integration.Api.Data.Base;
 
-namespace RobinhoodApi.Data.Crypto.Request;
+namespace Rb.Integration.Api.Data.Crypto.Request;
 
 public class CryptoOrderRequest : BaseOrderRequest
 {

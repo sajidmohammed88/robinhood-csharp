@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.Orders;
+﻿namespace Rb.Integration.Api.Data.Orders;
 
 public class TotalNotional
 {

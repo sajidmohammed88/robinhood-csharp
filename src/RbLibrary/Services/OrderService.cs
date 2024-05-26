@@ -1,13 +1,13 @@
-﻿using RobinhoodApi.Abstractions;
-using RobinhoodApi.Data.Base;
-using RobinhoodApi.Data.Orders;
-using RobinhoodApi.Data.Orders.Request;
-using RobinhoodApi.Data.Quote;
-using RobinhoodApi.Data.User;
-using RobinhoodApi.Exceptions;
-using RobinhoodApi.Helpers;
+﻿using Rb.Integration.Api.Abstractions;
+using Rb.Integration.Api.Data.Base;
+using Rb.Integration.Api.Data.Orders;
+using Rb.Integration.Api.Data.Orders.Request;
+using Rb.Integration.Api.Data.Quote;
+using Rb.Integration.Api.Data.User;
+using Rb.Integration.Api.Exceptions;
+using Rb.Integration.Api.Helpers;
 
-namespace RobinhoodApi.Services;
+namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// Order service that responsible on orders endpoints call.

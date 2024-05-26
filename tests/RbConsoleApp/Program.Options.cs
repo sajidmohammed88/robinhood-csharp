@@ -1,5 +1,5 @@
-﻿using RobinhoodApi.Data.Options;
-using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Data.Options;
+using Rb.Integration.Api.Enum;
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RobinhoodConsoleApp;
 
-public partial class Program
+public static partial class Program
 {
 	public static async Task FetchOptions()
 	{

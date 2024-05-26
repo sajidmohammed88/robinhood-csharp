@@ -1,13 +1,13 @@
-﻿using RobinhoodApi.Data.Dividends;
-using RobinhoodApi.Data.Fundamentals;
-using RobinhoodApi.Data.Options;
-using RobinhoodApi.Data.Orders;
-using RobinhoodApi.Data.Portfolios;
-using RobinhoodApi.Data.Positions;
-using RobinhoodApi.Data.User;
-using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Data.Dividends;
+using Rb.Integration.Api.Data.Fundamentals;
+using Rb.Integration.Api.Data.Options;
+using Rb.Integration.Api.Data.Orders;
+using Rb.Integration.Api.Data.Portfolios;
+using Rb.Integration.Api.Data.Positions;
+using Rb.Integration.Api.Data.User;
+using Rb.Integration.Api.Enum;
 
-namespace RobinhoodApi.Abstractions;
+namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// The robinhood interface.

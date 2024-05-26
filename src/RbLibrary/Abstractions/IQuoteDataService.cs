@@ -1,9 +1,9 @@
-﻿using RobinhoodApi.Data.News;
-using RobinhoodApi.Data.Quote;
-using RobinhoodApi.Data.User;
-using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Data.News;
+using Rb.Integration.Api.Data.Quote;
+using Rb.Integration.Api.Data.User;
+using Rb.Integration.Api.Enum;
 
-namespace RobinhoodApi.Abstractions;
+namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// Quote interface that responsible on quote data endpoints.

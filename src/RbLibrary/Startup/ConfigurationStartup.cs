@@ -1,19 +1,20 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using RobinhoodApi.Abstractions;
-using RobinhoodApi.Configurations;
-using RobinhoodApi.Services;
+using Rb.Integration.Api;
+using Rb.Integration.Api.Abstractions;
+using Rb.Integration.Api.Configurations;
+using Rb.Integration.Api.Services;
 
-namespace RobinhoodApi.Startup;
+namespace Rb.Integration.Api.Startup;
 
-public static class RobinhoodStartup
+public static class ConfigurationStartup
 {
 	public static void Startup(IServiceCollection services, IConfiguration configuration)
 	{
 		services.AddHttpClient();
 
-		services.Configure<RobinhoodConfiguration>(configuration.GetSection(RobinhoodConfiguration.Authentication));
+		services.Configure<AuthConfiguration>(configuration.GetSection(AuthConfiguration.Authentication));
 
 		services.AddSingleton<SessionManager>();
 		services.AddSingleton<ISessionManager>(_ => _.GetRequiredService<SessionManager>());

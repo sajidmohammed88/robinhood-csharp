@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi;
+﻿namespace Rb.Integration.Api;
 
 /// <summary>
 /// The constants used in the Library.

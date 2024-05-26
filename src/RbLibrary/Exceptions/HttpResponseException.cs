@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Exceptions;
+﻿namespace Rb.Integration.Api.Exceptions;
 
 public class HttpResponseException : Exception
 {

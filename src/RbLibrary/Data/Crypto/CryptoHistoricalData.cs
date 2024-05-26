@@ -1,7 +1,7 @@
-﻿using RobinhoodApi.Data.Base;
-using RobinhoodApi.Data.Quote;
+﻿using Rb.Integration.Api.Data.Base;
+using Rb.Integration.Api.Data.Quote;
 
-namespace RobinhoodApi.Data.Crypto;
+namespace Rb.Integration.Api.Data.Crypto;
 
 public class CryptoHistoricalData : BaseHistoricalData
 {

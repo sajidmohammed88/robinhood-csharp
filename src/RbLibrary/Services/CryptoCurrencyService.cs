@@ -1,61 +1,50 @@
-﻿using RobinhoodApi.Abstractions;
-using RobinhoodApi.Data.Base;
-using RobinhoodApi.Data.Crypto;
-using RobinhoodApi.Data.Crypto.Request;
-using RobinhoodApi.Exceptions;
+﻿using Rb.Integration.Api.Abstractions;
+using Rb.Integration.Api.Data.Base;
+using Rb.Integration.Api.Data.Crypto;
+using Rb.Integration.Api.Data.Crypto.Request;
+using Rb.Integration.Api.Exceptions;
 
 using System.Net;
 using System.Text.Json;
 
-namespace RobinhoodApi.Services;
+namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// The robinhood crypto currency service.
 /// </summary>
 /// <seealso cref="ICryptoCurrencyService" />
-public class CryptoCurrencyService : ICryptoCurrencyService
+public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPaginator paginator) : ICryptoCurrencyService
 {
-	private readonly IHttpClientManager _httpClientManager;
-	private readonly IPaginator _paginator;
-	private readonly JsonSerializerOptions _settings;
-
-	public CryptoCurrencyService(IHttpClientManager httpClientManager, IPaginator paginator)
-	{
-		_httpClientManager = httpClientManager;
-		_paginator = paginator;
-		_settings = CustomJsonSerializerOptions.Current;
-	}
-
 	/// <inheritdoc />
 	public async Task<IList<CurrencyPair>> GetCurrencyPairs()
 	{
-		BaseResult<CurrencyPair> currencyPairResult = await _httpClientManager.GetAsync<BaseResult<CurrencyPair>>(Constants.Routes.CurrencyPairs);
+		BaseResult<CurrencyPair> currencyPairResult = await httpClientManager.GetAsync<BaseResult<CurrencyPair>>(Constants.Routes.CurrencyPairs);
 
-		return await _paginator.PaginateResultAsync(currencyPairResult);
+		return await paginator.PaginateResultAsync(currencyPairResult);
 	}
 
 	/// <inheritdoc />
 	public async Task<Quotes> GetQuotes(string pair)
 	{
-		if (string.IsNullOrEmpty(pair) || !Constants.Pairs.ContainsKey(pair))
+		if (string.IsNullOrEmpty(pair) || !Constants.Pairs.TryGetValue(pair, out string value))
 		{
 			throw new CryptoCurrencyException("The pair is null, empty or not exist.");
 		}
 
-		return await _httpClientManager.GetAsync<Quotes>(string.Format(Constants.Routes.NummusQuotes, Constants.Pairs[pair]));
+		return await httpClientManager.GetAsync<Quotes>(string.Format(Constants.Routes.NummusQuotes, value));
 	}
 
 	/// <inheritdoc />
 	public async Task<IList<CryptoAccount>> GetAccounts()
 	{
-		BaseResult<CryptoAccount> cryptoAccountResult = await _httpClientManager.GetAsync<BaseResult<CryptoAccount>>(Constants.Routes.NummusAccounts);
+		BaseResult<CryptoAccount> cryptoAccountResult = await httpClientManager.GetAsync<BaseResult<CryptoAccount>>(Constants.Routes.NummusAccounts);
 
 		if (cryptoAccountResult?.Results == null || !cryptoAccountResult.Results.Any() || cryptoAccountResult.Results.All(a => a.Status != "active"))
 		{
 			throw new HttpResponseException("The crypto currency account for the user need to be approved or disabled.");
 		}
 
-		return await _paginator.PaginateResultAsync(cryptoAccountResult);
+		return await paginator.PaginateResultAsync(cryptoAccountResult);
 	}
 
 	/// <inheritdoc />
@@ -71,7 +60,7 @@ public class CryptoCurrencyService : ICryptoCurrencyService
 
 		try
 		{
-			return await _httpClientManager.PostJsonAsync<CryptoOrder>(Constants.Routes.NummusOrders, JsonSerializer.Serialize(orderRequest, _settings));
+			return await httpClientManager.PostJsonAsync<CryptoOrder>(Constants.Routes.NummusOrders, JsonSerializer.Serialize(orderRequest, CustomJsonSerializerOptions.Current));
 		}
 		catch (Exception ex)
 		{
@@ -85,14 +74,14 @@ public class CryptoCurrencyService : ICryptoCurrencyService
 	/// <inheritdoc />
 	public async Task<IList<CryptoOrder>> GetTradeHistory()
 	{
-		BaseResult<CryptoOrder> cryptoOrderResult = await _httpClientManager.GetAsync<BaseResult<CryptoOrder>>(Constants.Routes.NummusOrders);
-		return await _paginator.PaginateResultAsync(cryptoOrderResult);
+		BaseResult<CryptoOrder> cryptoOrderResult = await httpClientManager.GetAsync<BaseResult<CryptoOrder>>(Constants.Routes.NummusOrders);
+		return await paginator.PaginateResultAsync(cryptoOrderResult);
 	}
 
 	/// <inheritdoc />
 	public async Task<CryptoOrder> GetOrderStatus(string orderId)
 	{
-		return await _httpClientManager.GetAsync<CryptoOrder>(string.Format(Constants.Routes.OrderStatus, orderId));
+		return await httpClientManager.GetAsync<CryptoOrder>(string.Format(Constants.Routes.OrderStatus, orderId));
 	}
 
 	/// <inheritdoc />
@@ -109,7 +98,7 @@ public class CryptoCurrencyService : ICryptoCurrencyService
 			throw new HttpResponseException($"The order {orderId} can't be canceled.");
 		}
 
-		var (statusCode, _) = await _httpClientManager.PostAsync(order.CancelUrl, null, (null, null));
+		var (statusCode, _) = await httpClientManager.PostAsync(order.CancelUrl, null, (null, null));
 
 		return statusCode == HttpStatusCode.OK;
 	}
@@ -122,15 +111,15 @@ public class CryptoCurrencyService : ICryptoCurrencyService
 			throw new CryptoCurrencyException("The pair is null, empty or not exist.");
 		}
 
-		return await _httpClientManager.GetAsync<CryptoHistoricalData>(
+		return await httpClientManager.GetAsync<CryptoHistoricalData>(
 			string.Format(Constants.Routes.NummusHistoricals, Constants.Pairs[pair], interval, span, bounds));
 	}
 
 	/// <inheritdoc />
 	public async Task<IList<Holding>> Holdings()
 	{
-		BaseResult<Holding> result = await _httpClientManager.GetAsync<BaseResult<Holding>>(Constants.Routes.Holdings);
+		BaseResult<Holding> result = await httpClientManager.GetAsync<BaseResult<Holding>>(Constants.Routes.Holdings);
 
-		return await _paginator.PaginateResultAsync(result);
+		return await paginator.PaginateResultAsync(result);
 	}
 }

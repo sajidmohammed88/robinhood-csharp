@@ -1,6 +1,6 @@
-﻿using RobinhoodApi.Data.Base;
+﻿using Rb.Integration.Api.Data.Base;
 
-namespace RobinhoodApi.Data.Crypto;
+namespace Rb.Integration.Api.Data.Crypto;
 
 public class Holding
 {

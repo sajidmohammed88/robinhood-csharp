@@ -1,7 +1,7 @@
-﻿using RobinhoodApi.Data.Base;
-using RobinhoodApi.Enum;
+﻿using Rb.Integration.Api.Data.Base;
+using Rb.Integration.Api.Enum;
 
-namespace RobinhoodApi.Data.Orders.Request;
+namespace Rb.Integration.Api.Data.Orders.Request;
 
 public class OrderRequest : BaseOrderRequest
 {

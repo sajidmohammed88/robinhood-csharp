@@ -1,4 +1,4 @@
-﻿namespace RobinhoodApi.Data.Options;
+﻿namespace Rb.Integration.Api.Data.Options;
 
 public class MinTicks
 {
