@@ -12,20 +12,20 @@ public interface ICryptoCurrencyService
 	/// Get the currency pairs.
 	/// </summary>
 	/// <returns>The currency pairs.</returns>
-	Task<IList<CurrencyPair>> GetCurrencyPairs();
+	Task<IList<CurrencyPair>> GetCurrencyPairsAsync();
 
 	/// <summary>
 	/// Get the crypto currency quotes.
 	/// </summary>
 	/// <param name="pair">The pair.</param>
 	/// <returns>The quotes</returns>
-	Task<Quotes> GetQuotes(string pair);
+	Task<Quotes> GetQuotesAsync(string pair);
 
 	/// <summary>
 	/// Get the crypto accounts.
 	/// </summary>
 	/// <returns>The accounts.</returns>
-	Task<IList<CryptoAccount>> GetAccounts();
+	Task<IList<CryptoAccount>> GetAccountsAsync();
 
 	/// <summary>
 	/// Trade the specified pair.
@@ -33,27 +33,27 @@ public interface ICryptoCurrencyService
 	/// <param name="pair">The pair.</param>
 	/// <param name="orderRequest">The order request.</param>
 	/// <returns>The crypto order.</returns>
-	Task<CryptoOrder> Trade(string pair, CryptoOrderRequest orderRequest);
+	Task<CryptoOrder> TradeAsync(string pair, CryptoOrderRequest orderRequest);
 
 	/// <summary>
 	/// Gets the trade history.
 	/// </summary>
 	/// <returns>The crypto order list.</returns>
-	Task<IList<CryptoOrder>> GetTradeHistory();
+	Task<IList<CryptoOrder>> GetTradeHistoryAsync();
 
 	/// <summary>
 	/// Get the order status.
 	/// </summary>
 	/// <param name="orderId">The order identifier.</param>
 	/// <returns>The crypto order.</returns>
-	Task<CryptoOrder> GetOrderStatus(string orderId);
+	Task<CryptoOrder> GetOrderStatusAsync(string orderId);
 
 	/// <summary>
 	/// Cancel the crypto order.
 	/// </summary>
 	/// <param name="orderId">The order identifier.</param>
 	/// <returns>true, if the order is canceled, otherwise false.</returns>
-	Task<bool> CancelCryptoOrder(string orderId);
+	Task<bool> CancelCryptoOrderAsync(string orderId);
 
 	/// <summary>
 	/// Historical for crypto order.
@@ -63,11 +63,11 @@ public interface ICryptoCurrencyService
 	/// <param name="span">The span.</param>
 	/// <param name="bounds">The bounds.</param>
 	/// <returns>Historical data.</returns>
-	Task<CryptoHistoricalData> Historicals(string pair, string interval, string span, string bounds);
+	Task<CryptoHistoricalData> HistoricalsAsync(string pair, string interval, string span, string bounds);
 
 	/// <summary>
 	/// Get holdings.
 	/// </summary>
 	/// <returns>The holdings.</returns>
-	Task<IList<Holding>> Holdings();
+	Task<IList<Holding>> HoldingsAsync();
 }

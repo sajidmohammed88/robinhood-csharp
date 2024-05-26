@@ -14,7 +14,7 @@ namespace Rb.Integration.Api.Services;
 public class OptionsInformationService(IHttpClientManager httpClientManager, IPaginator paginator) : IOptionsInformationService
 {
 	/// <inheritdoc />
-	public async Task<Chain> GetChain(string instrumentId)
+	public async Task<Chain> GetChainAsync(string instrumentId)
 	{
 		BaseResult<Chain> chainResult = await httpClientManager
 			.GetAsync<BaseResult<Chain>>(Constants.Routes.OptionsChainBase, query: new Dictionary<string, string> { { "equity_instrument_ids", instrumentId } });
@@ -23,7 +23,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Option>> GetOptionsByChainId(Guid chainId, IList<string> expirationDates,
+	public async Task<IList<Option>> GetOptionsByChainIdAsync(Guid chainId, IList<string> expirationDates,
 		OptionType optionType)
 	{
 		Dictionary<string, string> query = new()
@@ -42,7 +42,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Option>> GetOwnedOptions()
+	public async Task<IList<Option>> GetOwnedOptionsAsync()
 	{
 		BaseResult<Option> optionResult = await httpClientManager
 			.GetAsync<BaseResult<Option>>($"{Constants.Routes.OptionsBase}positions/?nonzero=true");
@@ -51,7 +51,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 	}
 
 	/// <inheritdoc />
-	public async Task<Guid> GetOptionChainId(string symbol)
+	public async Task<Guid> GetOptionChainIdAsync(string symbol)
 	{
 		if (string.IsNullOrEmpty(symbol))
 		{
@@ -66,14 +66,14 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 			throw new HttpResponseException($"The symbol:{symbol} not exist");
 		}
 
-		Chain chain = await GetChain(stockInfo.Results[0].Id.ToString());
+		Chain chain = await GetChainAsync(stockInfo.Results[0].Id.ToString());
 
 		return chain?.Id ?? Guid.Empty;
 	}
 
 	/// <inheritdoc />
 	/// /!\ in the python code we call GetOptionMarketData to bid and ask price, but it's respond all time 403 status code.
-	public async Task<Guid> GetOptionQuote(string symbol, string strike, string expirationDate, OptionType optionType, string state = "active")
+	public async Task<Guid> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType, string state = "active")
 	{
 		Dictionary<string, string> query = new()
 		{
@@ -96,7 +96,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 	}
 
 	/// <inheritdoc />
-	public async Task<dynamic> GetOptionMarketData(string optionId)
+	public async Task<dynamic> GetOptionMarketDataAsync(string optionId)
 	{
 		return await httpClientManager.GetAsync<dynamic>($"{Constants.Routes.MarketDataBase}options/{optionId}/");
 		// /!\ gives 403:Forbidden, the same result for python lib.

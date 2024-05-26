@@ -10,20 +10,20 @@ namespace RobinhoodConsoleApp;
 
 public static partial class Program
 {
-	public static async Task FetchOptions()
+	public static async Task FetchOptionsAsync()
 	{
-		IList<Option> options = await _robinhood.GetOptions("AAPL",
+		IList<Option> options = await _robinhood.GetOptionsAsync("AAPL",
 			[
 				"2021-04-16",
 				"2021-04-23"
 			], OptionType.Call);
 
-		IList<Option> ownedOptions = await _robinhood.GetOwnedOptions();
+		IList<Option> ownedOptions = await _robinhood.GetOwnedOptionsAsync();
 
-		Guid chainId = await _robinhood.GetOptionChainId("AAPL");
+		Guid chainId = await _robinhood.GetOptionChainIdAsync("AAPL");
 
-		Guid optionQuote = await _robinhood.GetOptionQuote("AAPL", "105.0000", "2021-04-16", OptionType.Call);
+		Guid optionQuote = await _robinhood.GetOptionQuoteAsync("AAPL", "105.0000", "2021-04-16", OptionType.Call);
 
-		dynamic marketDatas = await _robinhood.GetOptionMarketData(options.First().Id);
+		dynamic marketDatas = await _robinhood.GetOptionMarketDataAsync(options.First().Id);
 	}
 }

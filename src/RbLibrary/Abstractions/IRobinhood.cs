@@ -18,27 +18,27 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// Get the user.
 	/// </summary>
 	/// <returns>The user information.</returns>
-	Task<User> GetUser();
+	Task<User> GetUserAsync();
 
 	/// <summary>
 	/// Get the investment profile.
 	/// </summary>
 	/// <returns>The investment profile.</returns>
-	Task<InvestmentProfile> GetInvestmentProfile();
+	Task<InvestmentProfile> GetInvestmentProfileAsync();
 
 	/// <summary>
 	/// Get the ask price for stock..
 	/// </summary>
 	/// <param name="stock">The stock.</param>
 	/// <returns>The ask price.</returns>
-	Task<string> AskPrice(string stock);
+	Task<string> AskPriceAsync(string stock);
 
 	/// <summary>
 	/// Get bid price for stock.
 	/// </summary>
 	/// <param name="stock">The stock.</param>
 	/// <returns>The bid</returns>
-	Task<string> BidPrice(string stock);
+	Task<string> BidPriceAsync(string stock);
 
 	/// <summary>
 	/// Gets the options.
@@ -47,20 +47,20 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="expirationDates">The expiration dates.</param>
 	/// <param name="optionType">Type of the option.</param>
 	/// <returns>The options instrument chain.</returns>
-	Task<IList<Option>> GetOptions(string stock, IList<string> expirationDates, OptionType optionType);
+	Task<IList<Option>> GetOptionsAsync(string stock, IList<string> expirationDates, OptionType optionType);
 
 	/// <summary>
 	/// Get the owned options.
 	/// </summary>
 	/// <returns>The owned options.</returns>
-	Task<IList<Option>> GetOwnedOptions();
+	Task<IList<Option>> GetOwnedOptionsAsync();
 
 	/// <summary>
 	/// Gets the option chain identifier by symbol.
 	/// </summary>
 	/// <param name="symbol">The symbol.</param>
 	/// <returns>The chain identifier.</returns>
-	Task<Guid> GetOptionChainId(string symbol);
+	Task<Guid> GetOptionChainIdAsync(string symbol);
 
 	/// <summary>
 	/// Gets the option quote.
@@ -70,58 +70,58 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="expirationDate">The expiration date.</param>
 	/// <param name="optionType">Type of the option.</param>
 	/// <returns>Option quote</returns>
-	Task<Guid> GetOptionQuote(string symbol, string strike, string expirationDate, OptionType optionType);
+	Task<Guid> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType);
 
 	/// <summary>
 	/// Get the fundamentals.
 	/// </summary>
 	/// <param name="stock">The stock.</param>
 	/// <returns>Fundamentals.</returns>
-	Task<Fundamental> GetFundamentals(string stock);
+	Task<Fundamental> GetFundamentalsAsync(string stock);
 
 	/// <summary>
 	/// Gets the portfolio.
 	/// </summary>
 	/// <returns>The portfolios</returns>
-	Task<IList<Portfolio>> GetPortfolio();
+	Task<IList<Portfolio>> GetPortfolioAsync();
 
 	/// <summary>
 	/// Gets the dividends.
 	/// </summary>
 	/// <returns>Dividends.</returns>
-	Task<IList<Dividends>> GetDividends();
+	Task<IList<Dividends>> GetDividendsAsync();
 
 	/// <summary>
 	/// Gets the positions.
 	/// </summary>
 	/// <returns>The positions data.</returns>
-	Task<IList<Position>> GetPositions();
+	Task<IList<Position>> GetPositionsAsync();
 
 	/// <summary>
 	/// Get list of securities symbols that the user has shares in.
 	/// </summary>
 	/// <returns>The owned securities.</returns>
-	Task<IList<Position>> GetOwnedSecurities();
+	Task<IList<Position>> GetOwnedSecuritiesAsync();
 
 	/// <summary>
 	/// Get a list of market data for a given option id.
 	/// </summary>
 	/// <param name="optionId">The option identifier.</param>
 	/// <returns>The market data list.</returns>
-	Task<dynamic> GetOptionMarketData(Guid optionId);
+	Task<dynamic> GetOptionMarketDataAsync(Guid optionId);
 
 	/// <summary>
 	/// Get the order history.
 	/// </summary>
 	/// <param name="orderId">The order identifier.</param>
 	/// <returns>The order history.</returns>
-	Task<Order> GetOrderHistory(Guid orderId);
+	Task<Order> GetOrderHistoryAsync(Guid orderId);
 
 	/// <summary>
 	/// Get the orders history.
 	/// </summary>
 	/// <returns>The orders history.</returns>
-	Task<IList<Order>> GetOrdersHistory();
+	Task<IList<Order>> GetOrdersHistoryAsync();
 
 	/// <summary>
 	/// Gets the open orders.
@@ -134,7 +134,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// </summary>
 	/// <param name="orderId">The order identifier.</param>
 	/// <returns>True if the order is canceled, otherwise false.</returns>
-	Task<bool> CancelOrder(Guid orderId);
+	Task<bool> CancelOrderAsync(Guid orderId);
 
 	/// <summary>
 	/// Place the market buy order.
@@ -144,7 +144,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="timeInForce">The time in force.</param>
 	/// <param name="quantity">The quantity.</param>
 	/// <returns>The placed market buy order data.</returns>
-	Task<Order> PlaceMarketBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
+	Task<Order> PlaceMarketBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
 
 	/// <summary>
 	/// Place the market sell order.
@@ -154,7 +154,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="timeInForce">The time in force.</param>
 	/// <param name="quantity">The quantity.</param>
 	/// <returns>The placed market sell order data.</returns>
-	Task<Order> PlaceMarketSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
+	Task<Order> PlaceMarketSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
 
 	/// <summary>
 	/// Place the limit buy order.
@@ -165,7 +165,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="price">The price.</param>
 	/// <param name="quantity">The quantity.</param>
 	/// <returns>The placed limit buy order data.</returns>
-	Task<Order> PlaceLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce, string price,
+	Task<Order> PlaceLimitBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, string price,
 		int quantity);
 
 	/// <summary>
@@ -177,7 +177,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="price">The price.</param>
 	/// <param name="quantity">The quantity.</param>
 	/// <returns>The placed limit seller order data</returns>
-	Task<Order> PlaceLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	Task<Order> PlaceLimitSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string price, int quantity);
 
 	/// <summary>
@@ -189,7 +189,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="stopPrice">The stop price.</param>
 	/// <param name="quantity">The quantity.</param>
 	/// <returns>The placed stop loss buy order data.</returns>
-	Task<Order> PlaceStopLossBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	Task<Order> PlaceStopLossBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string stopPrice, int quantity);
 
 	/// <summary>
@@ -201,7 +201,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="stopPrice">The stop price.</param>
 	/// <param name="quantity">The quantity.</param>
 	/// <returns>The placed stop loss seller order data.</returns>
-	Task<Order> PlaceStopLossSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	Task<Order> PlaceStopLossSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string stopPrice, int quantity);
 
 	/// <summary>
@@ -214,7 +214,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="stopPrice">The stop price.</param>
 	/// <param name="quantity">The quantity.</param>
 	/// <returns>The placed stop limit buy order data.</returns>
-	Task<Order> PlaceStopLimitBuyOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	Task<Order> PlaceStopLimitBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string price, string stopPrice, int quantity);
 
 	/// <summary>
@@ -227,7 +227,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="stopPrice">The stop price.</param>
 	/// <param name="quantity">The quantity.</param>
 	/// <returns>The placed stop limit sell order data.</returns>
-	Task<Order> PlaceStopLimitSellOrder(string instrumentUrl, string symbol, TimeInForce timeInForce,
+	Task<Order> PlaceStopLimitSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
 		string price, string stopPrice, int quantity);
 
 	/// <summary>
@@ -237,7 +237,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="symbol">The symbol.</param>
 	/// <param name="price">The price.</param>
 	/// <returns>The placed order.</returns>
-	Task<Order> PlaceBuyOrder(string instrumentUrl, string symbol, string price);
+	Task<Order> PlaceBuyOrderAsync(string instrumentUrl, string symbol, string price);
 
 	/// <summary>
 	/// Place the sell order.
@@ -246,5 +246,5 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="symbol">The symbol.</param>
 	/// <param name="price">The price.</param>
 	/// <returns>The placed order.</returns>
-	Task<Order> PlaceSellOrder(string instrumentUrl, string symbol, string price);
+	Task<Order> PlaceSellOrderAsync(string instrumentUrl, string symbol, string price);
 }
