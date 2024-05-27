@@ -85,4 +85,4 @@ _robinhood.ConfigureManager(authResponse);
 ```
 User user = await _robinhood.GetUserAsync();
 ```
-- Find tests examples for all routes in **Rb.Integration.Api.Tests** project.
+- Find tests examples for all routes under **tests/RbConsoleApp** project.
