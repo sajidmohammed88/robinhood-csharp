@@ -1,12 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <PackageId>robinhood-csharp</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Mohammed Sajid</Authors>
     <ImplicitUsings>enable</ImplicitUsings>
     <Title> C# library that implement python robinhood API https://pyrh.readthedocs.io/en/latest/</Title>
     <Description>Robinhood Client is the way you manage your account via api with C#. 
 Note : This is an unofficial client package. I'm not affiliated with the folks at Robinhood Markets Inc.</Description>
     <PackageTags>trade, robinhood, stock</PackageTags>
+    <RepositoryUrl>https://github.com/sajidmohammed88/robinhood-csharp</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
