@@ -205,10 +205,10 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	public async Task LogoutAsync()
 	{
 		IDictionary<string, string> logoutContent = new Dictionary<string, string>
-					{
-							{"client_id", _configuration.ClientId},
-							{"token", _token}
-					};
+		{
+				{"client_id", _configuration.ClientId},
+				{"token", _token}
+		};
 
 		try
 		{
