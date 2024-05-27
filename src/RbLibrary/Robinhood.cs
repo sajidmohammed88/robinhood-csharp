@@ -205,6 +205,7 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 		return await optionsInformationService.GetOptionMarketDataAsync(optionId.ToString());
 	}
 	#endregion
+
 	#region FUNDAMENTALS
 
 	/// <inheritdoc />
@@ -282,7 +283,7 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 		IList<Order> orders = await orderService.GetOrdersHistoryAsync();
 		return orders != null && orders.Any(o => o.Cancel != null)
 			? orders.Where(o => o.Cancel != null).ToList()
-			: new List<Order>();
+			: [];
 	}
 
 	/// <inheritdoc />
