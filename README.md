@@ -21,9 +21,8 @@ See @Sanko's [Unofficial Documentation](https://github.com/sanko/Robinhood) for 
   }
 ```
 
-3. Inject ``IRobinhood`` Interface and ``Robinhood`` class in ``Program.Cs``
-<br>
-Example for Console App : 
+3. Inject ``IRobinhood`` Interface and ``Robinhood`` class in ``Program.Cs``, example for Console App :
+
 ```
 IRobinhood _robinhood = _serviceProvider.GetRequiredService<IRobinhood>(); 
 ```
@@ -86,4 +85,4 @@ _robinhood.ConfigureManager(authResponse);
 ```
 User user = await _robinhood.GetUserAsync();
 ```
-- Find tests examples for all routes in **Rb.Integration.Api.Tests** project.
+- Find tests examples for all routes under **tests/RbConsoleApp** project.
