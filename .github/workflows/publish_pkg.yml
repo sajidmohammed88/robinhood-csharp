@@ -27,7 +27,7 @@ jobs:
     - name: Package
       run: >
         dotnet pack --no-restore --no-build --configuration Release
-        -p:PackageVersion=${{ github.ref_name }} --output
+        -p:PackageVersion=${{ github.ref_name }} --output .
     - name: Publish
       run: >
         dotnet nuget push robinhood-csharp.${{ github.ref_name }}.nupkg
