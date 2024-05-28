@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Add GitHub Packages source to NuGet config
-      run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.RB_SCHARP_SECRET_NAME }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/sajidmohammed88/index.json"
+      run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.RB_CSHARP_SECRET_NAME }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/sajidmohammed88/index.json"
 
     - name: Restore dependencies
       run: dotnet restore

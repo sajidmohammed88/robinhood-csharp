@@ -8,9 +8,9 @@ C# library to make trades with Unofficial Robinhood API.
 See @Sanko's [Unofficial Documentation](https://github.com/sanko/Robinhood) for more information.
 
 # Getting Started
-1. Install the package
+1. Install the package from GitHub packages or NuGet packages
 ```
-dotnet add package robinhood-csharp --version 1.0.5
+dotnet add package robinhood-csharp --version 1.0.6
 ```
 3. Create Authentication section configuration in your project that call this package
 ```
