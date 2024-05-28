@@ -23,7 +23,7 @@ jobs:
         dotnet-version: 8.0.x
       
     - name: Add GitHub Packages source to NuGet config
-      run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.RB_SCHARP_SECRET_NAME }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/sajidmohammed88/index.json"
+      run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.RB_CSHARP_SECRET_NAME }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/sajidmohammed88/index.json"
 
     - name: Build
       run: dotnet build --configuration Release
@@ -32,8 +32,15 @@ jobs:
       run: >
         dotnet pack --no-restore --no-build --configuration Release
         -p:PackageVersion=${{ github.ref_name }} --output .
-    - name: Publish
+    - name: Publish to GitHub packages
       run: >
         dotnet nuget push robinhood-csharp.${{ github.ref_name }}.nupkg
         -s https://nuget.pkg.github.com/sajidmohammed88/index.json
-        -k ${{ secrets.RB_SCHARP_SECRET_NAME }}
+        -k ${{ secrets.RB_CSHARP_SECRET_NAME }}
+
+    - name: Publish to NuGet
+      run: >
+        dotnet nuget push robinhood-csharp.${{ github.ref_name }}.nupkg
+        -s https://api.nuget.org/v3/index.json
+        -k ${{ secrets.RB_CSHARP_NUGET_KEY }}
+        
