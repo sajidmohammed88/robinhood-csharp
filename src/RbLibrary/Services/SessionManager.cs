@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using Rb.Integration.Api.Abstractions;
@@ -7,6 +8,7 @@ using Rb.Integration.Api.Data.Authentication;
 using Rb.Integration.Api.Exceptions;
 using Rb.Integration.Api.Helpers;
 
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -27,15 +29,17 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	private string _token;
 	private string _refreshToken;
 	private readonly Guid _deviceToken;
+	private readonly ILogger<SessionManager> _logger;
 	private bool _disposedValue;
 
-	public SessionManager(IOptions<AuthConfiguration> options, IHttpClientFactory httpClientFactory)
+	public SessionManager(IOptions<AuthConfiguration> options, IHttpClientFactory httpClientFactory, ILogger<SessionManager> logger)
 	{
 		ArgumentNullException.ThrowIfNull(httpClientFactory);
 		_configuration = options?.Value ?? throw new ArgumentNullException(nameof(options));
 		_settings = CustomJsonSerializerOptions.Current;
 		_deviceToken = Guid.NewGuid();
 		_httpClient = PrepareHttpClientHeader(httpClientFactory);
+		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 	}
 
 	/// <inheritdoc />
@@ -105,6 +109,11 @@ public class SessionManager : ISessionManager, IHttpClientManager
 		}
 
 		string responseValue = await response.Content.ReadAsStringAsync();
+
+		if (!response.IsSuccessStatusCode)
+		{
+			_logger.LogError("Error occurred when calling {PostAsync}, with status code : {StatusCode} and response : {}", nameof(PostAsync), response.StatusCode, responseValue);
+		}
 
 		return (response.StatusCode, !string.IsNullOrEmpty(responseValue) ? JsonSerializer.Deserialize<T>(responseValue, _settings) : null);
 	}
