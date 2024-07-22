@@ -10,12 +10,13 @@ See @Sanko's [Unofficial Documentation](https://github.com/sanko/Robinhood) for 
 # Getting Started
 1. Install the package from GitHub packages or NuGet packages
 ```
-dotnet add package robinhood-csharp --version 1.0.6
+dotnet add package robinhood-csharp
 ```
-3. Create Authentication section configuration in your project that call this package
+2. Create Authentication section configuration in your project that call this package
 ```
 "Authentication": {
-    "UserName": "**********",
+    //email
+    "UserName": "**********", 
     "Password": "**********",
     "ClientId": "**********",
     "ExpirationTime": 734000,
