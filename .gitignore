@@ -5,6 +5,6 @@
 
 /src/RbLibrary/obj
 /src/RbLibrary/bin
-/tests/RbConsoleApp/obj
+/samples/RbConsoleApp/obj
 /.vs
-/tests/RbConsoleApp/bin
+/samples/RbConsoleApp/bin
