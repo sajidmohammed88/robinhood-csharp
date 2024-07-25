@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Rb.Integration.Api.Startup;
+using Rb.Integration.Api.Extensions;
 
 using System;
 using System.IO;
@@ -23,7 +23,7 @@ public static partial class Program
 			.ConfigureHostConfiguration(AddConfiguration)
 			.ConfigureServices(services =>
 			{
-				ConfigurationStartup.Startup(services, _configuration);
+				services.ConfigueRb(_configuration);
 				_serviceProvider = services.BuildServiceProvider();
 			});
 	}
