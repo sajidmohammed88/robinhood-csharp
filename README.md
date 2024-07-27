@@ -99,7 +99,7 @@ if (authResponse.MfaRequired)
 }
 
 ```
-6. Configure the token expiration date, refresh token and Authorization header by calling ConfigureManager method : 
+8. Configure the token expiration date, refresh token and Authorization header by calling ConfigureManager method : 
 ```
 _robinhood.ConfigureManager(authResponse);
 ```
@@ -110,4 +110,4 @@ _robinhood.ConfigureManager(authResponse);
 User user = await _robinhood.GetUserAsync();
 ```
 - Find tests examples for all routes under **samples/RbConsoleApp** project.
-- Find one test example for REST API under **samples/RbWebApp** project.
+- Find one test example for REST API under **samples/RbWebApi** project.
