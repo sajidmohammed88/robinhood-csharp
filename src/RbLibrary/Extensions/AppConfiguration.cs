@@ -1,14 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿namespace Rb.Integration.Api.Extensions;
 
-using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Configurations;
-using Rb.Integration.Api.Services;
-
-namespace Rb.Integration.Api.Extensions;
 public static class AppConfiguration
 {
-	public static void ConfigueRb(this IServiceCollection services, IConfiguration configuration)
+	public static void ConfigureRb(this IServiceCollection services, IConfiguration configuration)
 	{
 		services
 			.AddHttpClient()

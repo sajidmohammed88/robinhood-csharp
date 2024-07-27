@@ -1,6 +1,4 @@
-﻿using Rb.Integration.Api.Data.Base;
-
-namespace Rb.Integration.Api.Data.Crypto;
+﻿namespace Rb.Integration.Api.Data.Crypto;
 
 public class CryptoOrder : BaseOrder
 {

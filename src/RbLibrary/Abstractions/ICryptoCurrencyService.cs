@@ -1,7 +1,4 @@
-﻿using Rb.Integration.Api.Data.Crypto;
-using Rb.Integration.Api.Data.Crypto.Request;
-
-namespace Rb.Integration.Api.Abstractions;
+﻿namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// Robinhood crypto currency service interface.

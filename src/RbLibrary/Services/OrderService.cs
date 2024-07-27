@@ -1,13 +1,4 @@
-﻿using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Data.Base;
-using Rb.Integration.Api.Data.Orders;
-using Rb.Integration.Api.Data.Orders.Request;
-using Rb.Integration.Api.Data.Quote;
-using Rb.Integration.Api.Data.User;
-using Rb.Integration.Api.Exceptions;
-using Rb.Integration.Api.Helpers;
-
-namespace Rb.Integration.Api.Services;
+﻿namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// Order service that responsible on orders endpoints call.

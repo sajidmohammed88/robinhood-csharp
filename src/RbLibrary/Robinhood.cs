@@ -1,25 +1,4 @@
-﻿using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Data.Authentication;
-using Rb.Integration.Api.Data.Base;
-using Rb.Integration.Api.Data.Crypto;
-using Rb.Integration.Api.Data.Crypto.Request;
-using Rb.Integration.Api.Data.Dividends;
-using Rb.Integration.Api.Data.Fundamentals;
-using Rb.Integration.Api.Data.News;
-using Rb.Integration.Api.Data.Options;
-using Rb.Integration.Api.Data.Orders;
-using Rb.Integration.Api.Data.Orders.Request;
-using Rb.Integration.Api.Data.Portfolios;
-using Rb.Integration.Api.Data.Positions;
-using Rb.Integration.Api.Data.Quote;
-using Rb.Integration.Api.Data.User;
-using Rb.Integration.Api.Enum;
-using Rb.Integration.Api.Exceptions;
-using Rb.Integration.Api.Helpers;
-
-using System.Net;
-
-namespace Rb.Integration.Api;
+﻿namespace Rb.Integration.Api;
 
 public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDataService,
 	IOptionsInformationService optionsInformationService, IOrderService orderService, ICryptoCurrencyService cryptoCurrencyService,

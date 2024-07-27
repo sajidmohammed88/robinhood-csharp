@@ -2,9 +2,10 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-
+/.vs
 /src/RbLibrary/obj
 /src/RbLibrary/bin
 /samples/RbConsoleApp/obj
-/.vs
 /samples/RbConsoleApp/bin
+/samples/WebApi/obj
+/samples/WebApi/bin

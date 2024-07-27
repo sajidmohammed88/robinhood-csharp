@@ -23,7 +23,7 @@ public static partial class Program
 			.ConfigureHostConfiguration(AddConfiguration)
 			.ConfigureServices(services =>
 			{
-				services.ConfigueRb(_configuration);
+				services.ConfigureRb(_configuration);
 				_serviceProvider = services.BuildServiceProvider();
 			});
 	}

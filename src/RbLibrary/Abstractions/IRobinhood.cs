@@ -1,13 +1,4 @@
-﻿using Rb.Integration.Api.Data.Dividends;
-using Rb.Integration.Api.Data.Fundamentals;
-using Rb.Integration.Api.Data.Options;
-using Rb.Integration.Api.Data.Orders;
-using Rb.Integration.Api.Data.Portfolios;
-using Rb.Integration.Api.Data.Positions;
-using Rb.Integration.Api.Data.User;
-using Rb.Integration.Api.Enum;
-
-namespace Rb.Integration.Api.Abstractions;
+﻿namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// The robinhood interface.

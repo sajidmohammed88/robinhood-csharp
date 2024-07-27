@@ -25,15 +25,47 @@ dotnet add package robinhood-csharp
   }
 ```
 
-3. Inject ``IRobinhood`` Interface and ``Robinhood`` class in ``Program.Cs``, example for Console App :
+3. Add the configuration needed for the package in ``Program.cs``
+	1. REST API
+		```
+		builder.Services.ConfigureRb(builder.Configuration)
+		```
+	1. Console APP
+		```
+		private static IConfiguration _configuration;
+		private static IServiceProvider _serviceProvider;
 
-```
-IRobinhood _robinhood = _serviceProvider.GetRequiredService<IRobinhood>(); 
-```
-4. Call login method and manage responses types
+		private static IHostBuilder CreateHostBuilder(string[] args)
+		{
+			return Host.CreateDefaultBuilder(args)
+				.ConfigureHostConfiguration(AddConfiguration)
+				.ConfigureServices(services =>
+				{
+					services.ConfigureRb(_configuration);
+					_serviceProvider = services.BuildServiceProvider();
+				});
+		}
+
+		private static void AddConfiguration(IConfigurationBuilder builder)
+		{
+			IConfigurationBuilder configurationBuilder =
+				builder
+					.SetBasePath(Directory.GetCurrentDirectory())
+					.AddJsonFile("appsettings.json", false, true);
+
+			_configuration = configurationBuilder.Build();
+		}
+		
+		```
+
+4. Inject ``IRobinhood`` Interface
+
+5. Call login method and manage responses types
 ```
 AuthenticationResponse authResponse = await _robinhood.LoginAsync();
-
+```
+6. Manage challenge case
+```
 if (authResponse.IsChallenge)
 {
 	do
@@ -46,7 +78,10 @@ if (authResponse.IsChallenge)
 		authResponse = await _robinhood.ChallengeOauth2Async(challenge.Id, code);
 	} while (authResponse.IsChallenge && authResponse.Challenge.CanRetry);
 }
+```
 
+7. Manage Mfa case
+```
 if (authResponse.MfaRequired)
 {
 	int attempts = 3;
@@ -63,23 +98,8 @@ if (authResponse.MfaRequired)
 	authResponse = mfaResponse.mfaAuth;
 }
 
-if (!authResponse.IsOauthValid)
-{
-	string message;
-	if (!string.IsNullOrEmpty(authResponse.Error))
-	{
-		message = authResponse.Error;
-	}
-	else
-	{
-		message = !string.IsNullOrEmpty(authResponse.Detail) ? authResponse.Detail : "Unknown login error";
-	}
-
-	Console.WriteLine(message);
-	throw new AuthenticationException(message);
-}
 ```
-5. Configure the token expiration date, refresh token and Authorization header by calling ConfigureManager method : 
+6. Configure the token expiration date, refresh token and Authorization header by calling ConfigureManager method : 
 ```
 _robinhood.ConfigureManager(authResponse);
 ```
@@ -89,4 +109,5 @@ _robinhood.ConfigureManager(authResponse);
 ```
 User user = await _robinhood.GetUserAsync();
 ```
-- Find tests examples for all routes under **tests/RbConsoleApp** project.
+- Find tests examples for all routes under **samples/RbConsoleApp** project.
+- Find one test example for REST API under **samples/RbWebApp** project.

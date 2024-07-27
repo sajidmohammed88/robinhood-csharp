@@ -1,7 +1,4 @@
-﻿using Rb.Integration.Api.Data.Base;
-using Rb.Integration.Api.Enum;
-
-namespace Rb.Integration.Api.Data.Orders;
+﻿namespace Rb.Integration.Api.Data.Orders;
 
 public class Order : BaseOrder
 {

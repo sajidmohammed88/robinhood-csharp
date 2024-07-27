@@ -1,8 +1,4 @@
-﻿using Rb.Integration.Api.Data.Base;
-
-using System.Text.Json.Serialization;
-
-namespace Rb.Integration.Api.Data.Quote;
+﻿namespace Rb.Integration.Api.Data.Quote;
 
 public class HistoricalsData : BaseHistoricalData
 {
