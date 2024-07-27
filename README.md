@@ -60,7 +60,7 @@ dotnet add package robinhood-csharp
 
 4. Inject ``IRobinhood`` Interface
 
-5. Call login method and manage responses types
+5. Call login method
 ```
 AuthenticationResponse authResponse = await _robinhood.LoginAsync();
 ```
@@ -99,7 +99,7 @@ if (authResponse.MfaRequired)
 }
 
 ```
-8. Configure the token expiration date, refresh token and Authorization header by calling ConfigureManager method : 
+8. Configure the token expiration date, refresh token and Authorization header by calling ConfigureManager method
 ```
 _robinhood.ConfigureManager(authResponse);
 ```
