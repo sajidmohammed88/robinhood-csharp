@@ -1,7 +1,4 @@
-﻿using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Data.Base;
-
-namespace Rb.Integration.Api.Services;
+﻿namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// The paginator class

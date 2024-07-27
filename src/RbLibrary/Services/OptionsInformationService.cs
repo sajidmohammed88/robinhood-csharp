@@ -1,11 +1,4 @@
-﻿using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Data.Base;
-using Rb.Integration.Api.Data.Options;
-using Rb.Integration.Api.Data.Quote;
-using Rb.Integration.Api.Enum;
-using Rb.Integration.Api.Exceptions;
-
-namespace Rb.Integration.Api.Services;
+﻿namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// Options information service that responsible on options endpoints call.

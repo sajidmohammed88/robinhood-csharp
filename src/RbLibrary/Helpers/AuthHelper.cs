@@ -1,6 +1,4 @@
-﻿using Rb.Integration.Api.Configurations;
-
-namespace Rb.Integration.Api.Helpers;
+﻿namespace Rb.Integration.Api.Helpers;
 
 internal static class AuthHelper
 {

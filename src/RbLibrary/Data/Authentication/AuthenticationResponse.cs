@@ -1,8 +1,4 @@
-﻿using Rb.Integration.Api.Data.Base;
-
-using System.Text.Json.Serialization;
-
-namespace Rb.Integration.Api.Data.Authentication;
+﻿namespace Rb.Integration.Api.Data.Authentication;
 
 public class AuthenticationResponse : BaseDetail
 {
@@ -23,4 +19,7 @@ public class AuthenticationResponse : BaseDetail
 
 	[JsonIgnore]
 	public bool IsOauthValid => !string.IsNullOrEmpty(AccessToken) && !string.IsNullOrEmpty(RefreshToken);
+
+	public VerificationWorkflow VerificationWorkflow { get; set; }
 }
+

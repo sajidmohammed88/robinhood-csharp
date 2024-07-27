@@ -1,7 +1,4 @@
-﻿using Rb.Integration.Api.Data.Orders;
-using Rb.Integration.Api.Data.Orders.Request;
-
-namespace Rb.Integration.Api.Abstractions;
+﻿namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// Order service that responsible on orders endpoints call.

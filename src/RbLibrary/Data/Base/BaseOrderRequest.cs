@@ -1,6 +1,4 @@
-﻿using Rb.Integration.Api.Enum;
-
-namespace Rb.Integration.Api.Data.Base;
+﻿namespace Rb.Integration.Api.Data.Base;
 
 public class BaseOrderRequest
 {

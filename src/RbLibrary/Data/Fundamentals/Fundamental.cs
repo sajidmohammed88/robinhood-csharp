@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Rb.Integration.Api.Data.Fundamentals;
+﻿namespace Rb.Integration.Api.Data.Fundamentals;
 
 public class Fundamental
 {
