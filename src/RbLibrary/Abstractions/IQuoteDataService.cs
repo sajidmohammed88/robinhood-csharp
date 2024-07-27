@@ -1,9 +1,4 @@
-﻿using Rb.Integration.Api.Data.News;
-using Rb.Integration.Api.Data.Quote;
-using Rb.Integration.Api.Data.User;
-using Rb.Integration.Api.Enum;
-
-namespace Rb.Integration.Api.Abstractions;
+﻿namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// Quote interface that responsible on quote data endpoints.

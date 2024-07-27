@@ -1,13 +1,4 @@
-﻿using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Data.Base;
-using Rb.Integration.Api.Data.News;
-using Rb.Integration.Api.Data.Quote;
-using Rb.Integration.Api.Data.User;
-using Rb.Integration.Api.Enum;
-using Rb.Integration.Api.Exceptions;
-using Rb.Integration.Api.Helpers;
-
-namespace Rb.Integration.Api.Services;
+﻿namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// Quote data service that responsible on quote data endpoints call.

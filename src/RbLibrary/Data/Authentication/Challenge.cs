@@ -1,8 +1,4 @@
-﻿using Rb.Integration.Api.Enum;
-
-using System.Text.Json.Serialization;
-
-namespace Rb.Integration.Api.Data.Authentication;
+﻿namespace Rb.Integration.Api.Data.Authentication;
 
 public class Challenge
 {

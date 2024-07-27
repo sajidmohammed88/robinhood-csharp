@@ -1,15 +1,6 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
-using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Configurations;
-using Rb.Integration.Api.Data.Authentication;
-using Rb.Integration.Api.Exceptions;
-using Rb.Integration.Api.Helpers;
-
-using System.Linq.Expressions;
-using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -36,7 +27,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	{
 		ArgumentNullException.ThrowIfNull(httpClientFactory);
 		_configuration = options?.Value ?? throw new ArgumentNullException(nameof(options));
-		_settings = CustomJsonSerializerOptions.Current;
+		_settings = CustomJsonSerializerOptions.Current?.Value;
 		_deviceToken = Guid.NewGuid();
 		_httpClient = PrepareHttpClientHeader(httpClientFactory);
 		_logger = logger ?? throw new ArgumentNullException(nameof(logger));

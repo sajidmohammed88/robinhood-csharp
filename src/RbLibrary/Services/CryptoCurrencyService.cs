@@ -1,11 +1,4 @@
-﻿using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Data.Base;
-using Rb.Integration.Api.Data.Crypto;
-using Rb.Integration.Api.Data.Crypto.Request;
-using Rb.Integration.Api.Exceptions;
-
-using System.Net;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Rb.Integration.Api.Services;
 
@@ -60,7 +53,7 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 
 		try
 		{
-			return await httpClientManager.PostJsonAsync<CryptoOrder>(Constants.Routes.NummusOrders, JsonSerializer.Serialize(orderRequest, CustomJsonSerializerOptions.Current));
+			return await httpClientManager.PostJsonAsync<CryptoOrder>(Constants.Routes.NummusOrders, JsonSerializer.Serialize(orderRequest, CustomJsonSerializerOptions.Current?.Value));
 		}
 		catch (Exception ex)
 		{

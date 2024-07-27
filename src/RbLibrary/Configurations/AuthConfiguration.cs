@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-
-namespace Rb.Integration.Api.Configurations;
+﻿namespace Rb.Integration.Api.Configurations;
 
 /// <summary>
 /// The robinhood configuration.

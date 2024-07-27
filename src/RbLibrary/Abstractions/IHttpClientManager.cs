@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Rb.Integration.Api.Abstractions;
+﻿namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// HTTP client manager interface.

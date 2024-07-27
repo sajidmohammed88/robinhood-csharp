@@ -5,11 +5,13 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rb.Integration.Api", "src\RbLibrary\Rb.Integration.Api.csproj", "{C0822790-3C3E-4453-9546-CC245E2FEA37}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rb.Integration.Api.Tests", "tests\RbConsoleApp\Rb.Integration.Api.Tests.csproj", "{206AA3AB-1BB6-449F-B748-430B70A83214}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rb.Integration.Api.Console.Sample", "samples\RbConsoleApp\Rb.Integration.Api.Console.Sample.csproj", "{206AA3AB-1BB6-449F-B748-430B70A83214}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{56256E35-C901-4438-9B2B-CD0D0D90C3F2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1996C5A9-0C47-4758-B346-E4DE01D60C0C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7C129BB4-AEEA-4F1C-8D58-DB439DF4E4D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rb.Integration.Api.WebApi.Sample", "samples\RbWebApi\Rb.Integration.Api.WebApi.Sample.csproj", "{3284986C-79E5-4C3D-8FF6-F0C4254219E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,13 +27,18 @@ Global
 		{206AA3AB-1BB6-449F-B748-430B70A83214}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{206AA3AB-1BB6-449F-B748-430B70A83214}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{206AA3AB-1BB6-449F-B748-430B70A83214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3284986C-79E5-4C3D-8FF6-F0C4254219E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3284986C-79E5-4C3D-8FF6-F0C4254219E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3284986C-79E5-4C3D-8FF6-F0C4254219E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3284986C-79E5-4C3D-8FF6-F0C4254219E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C0822790-3C3E-4453-9546-CC245E2FEA37} = {56256E35-C901-4438-9B2B-CD0D0D90C3F2}
-		{206AA3AB-1BB6-449F-B748-430B70A83214} = {1996C5A9-0C47-4758-B346-E4DE01D60C0C}
+		{206AA3AB-1BB6-449F-B748-430B70A83214} = {7C129BB4-AEEA-4F1C-8D58-DB439DF4E4D6}
+		{3284986C-79E5-4C3D-8FF6-F0C4254219E3} = {7C129BB4-AEEA-4F1C-8D58-DB439DF4E4D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F70AA0C-E6CD-428B-913B-22703614C870}

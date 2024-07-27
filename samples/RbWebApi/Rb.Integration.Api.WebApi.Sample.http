@@ -1,0 +1,6 @@
+@Rb.Integration.Api.WebApi.Sample_HostAddress = http://localhost:5008
+
+GET {{Rb.Integration.Api.WebApi.Sample_HostAddress}}/rbintegrationapi/
+Accept: application/json
+
+###
