@@ -7,5 +7,5 @@
 /src/RbLibrary/bin
 /samples/RbConsoleApp/obj
 /samples/RbConsoleApp/bin
-/samples/WebApi/obj
-/samples/WebApi/bin
+/samples/RbWebApi/obj
+/samples/RbWebApi/bin

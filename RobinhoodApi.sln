@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{5625
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7C129BB4-AEEA-4F1C-8D58-DB439DF4E4D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rb.Integration.Api.WebApi.Sample", "samples\WebApi\Rb.Integration.Api.WebApi.Sample.csproj", "{3284986C-79E5-4C3D-8FF6-F0C4254219E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rb.Integration.Api.WebApi.Sample", "samples\RbWebApi\Rb.Integration.Api.WebApi.Sample.csproj", "{3284986C-79E5-4C3D-8FF6-F0C4254219E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
