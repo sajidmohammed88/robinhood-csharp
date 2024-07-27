@@ -3,7 +3,7 @@
 </p>
 
 # Introduction 
-C# library to make trades with Unofficial Robinhood API.
+.NetCore package to make trades with Unofficial Robinhood API.
 <br>
 See @Sanko's [Unofficial Documentation](https://github.com/sanko/Robinhood) for more information.
 
