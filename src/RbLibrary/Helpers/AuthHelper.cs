@@ -12,18 +12,18 @@ internal static class AuthHelper
 		return expirationDate == DateTime.MinValue || expirationDate <= DateTime.UtcNow;
 	}
 
-	internal static IDictionary<string, string> BuildAuthenticationContent(AuthConfiguration configuration, Guid deviceToken)
+	internal static IDictionary<string, string> BuildAuthenticationContent(AuthConfiguration configuration)
 	{
 		return new Dictionary<string, string>
 		{
 			{"password", configuration.Password},
 			{"username", configuration.UserName},
-			{"grant_type", "password"},
-			{"client_id", configuration.ClientId},
+			{"grant_type", Constants.Authentication.GrantType},
+			{"client_id", Constants.Authentication.ClientId},
 			{"expires_in", configuration.ExpirationTime.ToString()},
-			{"scope", "internal"},
-			{"device_token", deviceToken.ToString()},
-			{"challenge_type", configuration.ChallengeType}
+			{"scope", Constants.Authentication.Scope},
+			{"challenge_type", configuration.ChallengeType},
+			{"device_token", configuration.DeviceToken}
 		};
 	}
 }

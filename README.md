@@ -13,50 +13,53 @@ See @Sanko's [Unofficial Documentation](https://github.com/sanko/Robinhood) for 
 dotnet add package robinhood-csharp
 ```
 2. Create Authentication section configuration in your project that call this package
+
+In order to get device token, follow https://stackoverflow.com/a/64775021
+
 ```
-"Authentication": {
-    //email
+"RobinhoodAuthentication": {
+    //UserName is email format
     "UserName": "**********", 
     "Password": "**********",
-    "ClientId": "**********",
     "ExpirationTime": 734000,
     "Timeout": 5,
-    "ChallengeType": "sms"
+    "ChallengeType": "sms",
+    "DeviceToken": "**********"
   }
 ```
 
 3. Add the configuration needed for the package in ``Program.cs``
-	1. REST API
-		```
-		builder.Services.ConfigureRb(builder.Configuration)
-		```
-	1. Console APP
-		```
-		private static IConfiguration _configuration;
-		private static IServiceProvider _serviceProvider;
+    1. REST API
+        ```
+        builder.Services.ConfigureRb(builder.Configuration.GetSection("RobinhoodAuthentication"))
+        ```
+    1. Console APP
+        ```
+        private static IConfiguration _configuration;
+        private static IServiceProvider _serviceProvider;
 
-		private static IHostBuilder CreateHostBuilder(string[] args)
-		{
-			return Host.CreateDefaultBuilder(args)
-				.ConfigureHostConfiguration(AddConfiguration)
-				.ConfigureServices(services =>
-				{
-					services.ConfigureRb(_configuration);
-					_serviceProvider = services.BuildServiceProvider();
-				});
-		}
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureHostConfiguration(AddConfiguration)
+                .ConfigureServices(services =>
+                {
+                    services.ConfigureRb(_configuration.GetSection("RobinhoodAuthentication"));
+                    _serviceProvider = services.BuildServiceProvider();
+                });
+        }
 
-		private static void AddConfiguration(IConfigurationBuilder builder)
-		{
-			IConfigurationBuilder configurationBuilder =
-				builder
-					.SetBasePath(Directory.GetCurrentDirectory())
-					.AddJsonFile("appsettings.json", false, true);
+        private static void AddConfiguration(IConfigurationBuilder builder)
+        {
+            IConfigurationBuilder configurationBuilder =
+                builder
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", false, true);
 
-			_configuration = configurationBuilder.Build();
-		}
-		
-		```
+            _configuration = configurationBuilder.Build();
+        }
+        
+        ```
 
 4. Inject ``IRobinhood`` Interface
 
@@ -68,15 +71,15 @@ AuthenticationResponse authResponse = await _robinhood.LoginAsync();
 ```
 if (authResponse.IsChallenge)
 {
-	do
-	{
-		Challenge challenge = authResponse.Challenge;
+    do
+    {
+        Challenge challenge = authResponse.Challenge;
 
-		Console.WriteLine($"Input challenge code from {challenge.Type} ({challenge.RemainingAttempts}/{challenge.RemainingRetries}):");
-		string code = Console.ReadLine();
+        Console.WriteLine($"Input challenge code from {challenge.Type} ({challenge.RemainingAttempts}/{challenge.RemainingRetries}):");
+        string code = Console.ReadLine();
 
-		authResponse = await _robinhood.ChallengeOauth2Async(challenge.Id, code);
-	} while (authResponse.IsChallenge && authResponse.Challenge.CanRetry);
+        authResponse = await _robinhood.ChallengeOauth2Async(challenge.Id, code);
+    } while (authResponse.IsChallenge && authResponse.Challenge.CanRetry);
 }
 ```
 
@@ -84,18 +87,18 @@ if (authResponse.IsChallenge)
 ```
 if (authResponse.MfaRequired)
 {
-	int attempts = 3;
-	(HttpStatusCode statusCode, AuthenticationResponse mfaAuth) mfaResponse;
-	do
-	{
-		Console.WriteLine($"Input the MFA code:");
-		string code = Console.ReadLine();
+    int attempts = 3;
+    (HttpStatusCode statusCode, AuthenticationResponse mfaAuth) mfaResponse;
+    do
+    {
+        Console.WriteLine($"Input the MFA code:");
+        string code = Console.ReadLine();
 
-		mfaResponse = await _robinhood.MfaOath2Async(code);
-		attempts--;
-	} while (attempts > 0 && mfaResponse.statusCode != HttpStatusCode.OK);
+        mfaResponse = await _robinhood.MfaOath2Async(code);
+        attempts--;
+    } while (attempts > 0 && mfaResponse.statusCode != HttpStatusCode.OK);
 
-	authResponse = mfaResponse.mfaAuth;
+    authResponse = mfaResponse.mfaAuth;
 }
 
 ```

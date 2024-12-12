@@ -77,4 +77,17 @@ internal static class Constants
 		{"LTCUSD", "383280b1-ff53-43fc-9c84-f01afd0989cd"},
 		{"DOGEUSD", "1ef78e1b-049b-4f12-90e5-555dcf2fe204"}
 	};
+
+	internal static class Authentication
+	{
+		/**
+		 * This is extracted from Robinhood web app, same for all web client users:
+		 * https://stackoverflow.com/a/66020561
+		 */
+		internal const string ClientId = "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS";
+
+		internal const string GrantType = "password";
+
+		internal const string Scope = "internal";
+	}
 }
