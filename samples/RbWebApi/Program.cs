@@ -10,7 +10,7 @@ public static class Program
 	{
 		var builder = WebApplication.CreateBuilder(args);
 
-		builder.Services.ConfigureRb(builder.Configuration);
+		builder.Services.ConfigureRb(builder.Configuration.GetSection("RobinhoodAuthentication"));
 
 		builder.Services
 			.AddControllers()
