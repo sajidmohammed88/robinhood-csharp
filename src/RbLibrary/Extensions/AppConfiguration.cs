@@ -2,11 +2,11 @@
 
 public static class AppConfiguration
 {
-	public static void ConfigureRb(this IServiceCollection services, IConfiguration configuration)
+	public static void ConfigureRb(this IServiceCollection services, IConfigurationSection configurationSection)
 	{
 		services
 			.AddHttpClient()
-			.Configure<AuthConfiguration>(configuration.GetSection(AuthConfiguration.Authentication));
+			.Configure<AuthConfiguration>(configurationSection);
 
 		services.AddSingleton<SessionManager>()
 			.AddSingleton<ISessionManager>(_ => _.GetRequiredService<SessionManager>())

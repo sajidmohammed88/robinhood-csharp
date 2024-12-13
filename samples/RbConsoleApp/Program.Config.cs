@@ -23,7 +23,7 @@ public static partial class Program
 			.ConfigureHostConfiguration(AddConfiguration)
 			.ConfigureServices(services =>
 			{
-				services.ConfigureRb(_configuration);
+				services.ConfigureRb(_configuration.GetSection("RobinhoodAuthentication"));
 				_serviceProvider = services.BuildServiceProvider();
 			});
 	}
