@@ -1,7 +1,8 @@
 ﻿using Rb.Integration.Api.Data.Crypto;
 using Rb.Integration.Api.Data.Crypto.Request;
 using Rb.Integration.Api.Enum;
-
+using Rb.Integration.Api.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,9 +16,9 @@ public static partial class Program
 
 		Quotes quote = await _robinhood.GetQuotesAsync("LTCUSD");
 
-		var accounts = await _robinhood.GetAccountsAsync();
+		IList<CryptoAccount> accounts = await _robinhood.GetAccountsAsync();
 
-		CryptoOrder order = await _robinhood.TradeAsync("LTCUSD", new CryptoOrderRequest
+		CryptoOrder order = await _robinhood.TradeAsync("DOGEUSD", new CryptoOrderRequest
 		{
 			Type = OrderType.Market,
 			Price = "1",
@@ -28,9 +29,25 @@ public static partial class Program
 
 		IList<CryptoOrder> tradeHistory = await _robinhood.GetTradeHistoryAsync();
 
-		CryptoOrder orderStatus = await _robinhood.GetOrderStatusAsync("60afb549-abce-40bf-bda9-50f0715f0903");
+		try
+		{
+			CryptoOrder orderStatus = await _robinhood.GetOrderStatusAsync("60afb549-abce-40bf-bda9-50f0715f0903");
+		}
+		catch (HttpResponseException)
+		{
+			// handle exception
+			Console.WriteLine("Order not found");
+		}
 
-		bool isOrderCanceled = await _robinhood.CancelCryptoOrderAsync("60afb549-abce-40bf-bda9-50f0715f0903");
+		try
+		{
+			bool isOrderCanceled = await _robinhood.CancelCryptoOrderAsync("60afb549-abce-40bf-bda9-50f0715f0903");
+		}
+		catch (HttpResponseException)
+		{
+			// handle exception
+			Console.WriteLine("Order not found");
+		}
 
 		CryptoHistoricalData historicalData = await _robinhood.HistoricalsAsync("BTCUSD", "5minute", "day", "24_7");
 

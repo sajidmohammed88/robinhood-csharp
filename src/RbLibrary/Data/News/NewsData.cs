@@ -6,11 +6,11 @@ public class NewsData
 
 	public string Author { get; set; }
 
-	public int NumClicks { get; set; }
+	public int? NumClicks { get; set; }
 
 	public string PreviewImageUrl { get; set; }
 
-	public DateTime PublishedAt { get; set; }
+	public DateTime? PublishedAt { get; set; }
 
 	public string RelayUrl { get; set; }
 
@@ -20,11 +20,11 @@ public class NewsData
 
 	public string Title { get; set; }
 
-	public DateTime UpdatedAt { get; set; }
+	public DateTime? UpdatedAt { get; set; }
 
 	public string Url { get; set; }
 
-	public Guid Uuid { get; set; }
+	public Guid? Uuid { get; set; }
 
 	public IList<string> RelatedInstruments { get; set; }
 

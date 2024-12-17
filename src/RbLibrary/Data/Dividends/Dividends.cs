@@ -2,7 +2,7 @@
 
 public class Dividends
 {
-	public Guid Id { get; set; }
+	public Guid? Id { get; set; }
 
 	public string Url { get; set; }
 
@@ -18,15 +18,15 @@ public class Dividends
 
 	public string Withholding { get; set; }
 
-	public DateTime RecordDate { get; set; }
+	public DateTime? RecordDate { get; set; }
 
-	public DateTime PayableDate { get; set; }
+	public DateTime? PayableDate { get; set; }
 
-	public DateTime PaidAt { get; set; }
+	public DateTime? PaidAt { get; set; }
 
 	public string State { get; set; }
 
-	public bool DripEnabled { get; set; }
+	public bool? DripEnabled { get; set; }
 
 	public string NraWithholding { get; set; }
 }

@@ -167,11 +167,11 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task<AuthenticationResponse> ChallengeOauth2Async(Guid challengeId, string code)
+	public async Task<AuthenticationResponse> ChallengeOauth2Async(Guid? challengeId, string code)
 	{
 		var (statusCode, result) = await PostAsync(string.Format(Constants.Routes.Challenge, challengeId),
 				new Dictionary<string, string> { { "response", code } },
-				("X-ROBINHOOD-CHALLENGE-RESPONSE-ID", challengeId.ToString()));
+				("X-ROBINHOOD-CHALLENGE-RESPONSE-ID", challengeId?.ToString()));
 
 		try
 		{

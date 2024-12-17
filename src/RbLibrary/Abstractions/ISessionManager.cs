@@ -17,7 +17,7 @@ public interface ISessionManager
 	/// <param name="challengeId">The challenge identifier.</param>
 	/// <param name="code">The code.</param>
 	/// <returns>The authentication response.</returns>
-	Task<AuthenticationResponse> ChallengeOauth2Async(Guid challengeId, string code);
+	Task<AuthenticationResponse> ChallengeOauth2Async(Guid? challengeId, string code);
 
 	/// <summary>
 	/// Mfa oath2.

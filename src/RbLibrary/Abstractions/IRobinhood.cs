@@ -61,7 +61,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// <param name="expirationDate">The expiration date.</param>
 	/// <param name="optionType">Type of the option.</param>
 	/// <returns>Option quote</returns>
-	Task<Guid> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType);
+	Task<Guid?> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType);
 
 	/// <summary>
 	/// Get the fundamentals.
@@ -99,7 +99,7 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	/// </summary>
 	/// <param name="optionId">The option identifier.</param>
 	/// <returns>The market data list.</returns>
-	Task<dynamic> GetOptionMarketDataAsync(Guid optionId);
+	Task<dynamic> GetOptionMarketDataAsync(Guid? optionId);
 
 	/// <summary>
 	/// Get the order history.

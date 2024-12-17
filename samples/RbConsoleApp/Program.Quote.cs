@@ -2,7 +2,7 @@
 using Rb.Integration.Api.Data.Quote;
 using Rb.Integration.Api.Data.User;
 using Rb.Integration.Api.Enum;
-
+using Rb.Integration.Api.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,11 +16,11 @@ public static partial class Program
 		QuoteData quoteData = await _robinhood.GetQuoteDataAsync("AAPL");
 		IList<QuoteData> quotesData = await _robinhood.GetQuotesDataAsync(["AAPL", "SNAP"]);
 
-		IList<string> valuesByStock = await _robinhood.GetQuoteWithSpecifiedKeysAsync("AAPL", "symbol,last_trade_price");
+		IList<string> valuesByStock = await _robinhood.GetQuoteWithSpecifiedKeysAsync("AAPL", "Symbol,LastTradePrice");
 		Console.WriteLine($"{valuesByStock[0]}:{valuesByStock[1]}");
 
 		IDictionary<string, IList<string>> valuesByStocks = await _robinhood
-			.GetQuotesWithSpecifiedKeysAsync(["AAPL", "SNAP"], "symbol,last_trade_price")
+			.GetQuotesWithSpecifiedKeysAsync(["AAPL", "SNAP"], "Symbol,LastTradePrice")
 			;
 		foreach ((string key, IList<string> value) in valuesByStocks)
 		{
@@ -42,12 +42,28 @@ public static partial class Program
 		IList<Instrument> watchList = await _robinhood.GetWatchListsAsync();
 
 		// not worked routes:
-		dynamic marketData = await _robinhood.GetStockMarketDataAsync(
-		[
-			"450dfc6d-5510-4d40-abfb-f633b7d9be3e",
-			"1e513292-5926-4dc4-8c3d-4af6b5836704"
-		]);
+		try
+		{
+			dynamic marketData = await _robinhood.GetStockMarketDataAsync(
+				[
+					"450dfc6d-5510-4d40-abfb-f633b7d9be3e",
+							"1e513292-5926-4dc4-8c3d-4af6b5836704"
+				]);
+		}
+		catch (HttpResponseException)
+		{
+			// handle exception
+			Console.WriteLine("API GetStockMarketDataAsync not working");
+		}
 
-		dynamic popularity = await _robinhood.GetPopularityAsync("F");
+		try
+		{
+			dynamic popularity = await _robinhood.GetPopularityAsync("F");
+		}
+		catch (HttpResponseException)
+		{
+			// handle exception
+			Console.WriteLine("API GetPopularityAsync not working");
+		}
 	}
 }

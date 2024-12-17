@@ -4,7 +4,7 @@ public class AuthenticationResponse : BaseDetail
 {
 	public Challenge Challenge { get; set; }
 
-	public bool MfaRequired { get; set; }
+	public bool? MfaRequired { get; set; }
 
 	public string AccessToken { get; set; }
 

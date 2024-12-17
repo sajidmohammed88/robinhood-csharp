@@ -1,6 +1,6 @@
 ﻿namespace Rb.Integration.Api.Data.Crypto;
 
-public class CostBas
+public class CostBase
 {
 	public string CurrencyId { get; set; }
 

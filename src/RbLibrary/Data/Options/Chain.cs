@@ -2,11 +2,11 @@
 
 public class Chain
 {
-	public Guid Id { get; set; }
+	public Guid? Id { get; set; }
 
 	public string Symbol { get; set; }
 
-	public bool CanOpenPosition { get; set; }
+	public bool? CanOpenPosition { get; set; }
 
 	public string CashComponent { get; set; }
 

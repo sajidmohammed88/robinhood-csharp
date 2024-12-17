@@ -43,7 +43,7 @@ public static partial class Program
 			} while (authResponse.IsChallenge && authResponse.Challenge.CanRetry);
 		}
 
-		if (authResponse.MfaRequired)
+		if (authResponse.MfaRequired == true)
 		{
 			int attempts = 3;
 			(HttpStatusCode statusCode, AuthenticationResponse mfaAuth) mfaResponse;
@@ -87,7 +87,7 @@ public static partial class Program
 		await FetchQuoteDataAsync();
 
 		//options
-		await FetchOptionsAsync();
+		//await FetchOptionsAsync();
 
 		//fundamentals
 		Fundamental fundamental = await _robinhood.GetFundamentalsAsync("AAPL");
@@ -102,9 +102,26 @@ public static partial class Program
 
 		//orders
 		IList<Order> ordersHistory = await _robinhood.GetOrdersHistoryAsync();
-		Order orderHistory = await _robinhood.GetOrderHistoryAsync(new Guid("6081bf8f-cc7c-4960-bed9-04440614aa83"));
+
+		try
+		{
+			Order orderHistory = await _robinhood.GetOrderHistoryAsync(new Guid("6081bf8f-cc7c-4960-bed9-04440614aa83"));
+		}
+		catch (HttpResponseException)
+		{
+			Console.WriteLine("Order history not found");
+		}
+
 		IList<Order> openedOrders = await _robinhood.GetOpenOrders();
-		bool isOrderCanceled = await _robinhood.CancelOrderAsync(new Guid("6081c6f3-0d58-4532-a9a8-773ced6bec70"));
+
+		try
+		{
+			bool isOrderCanceled = await _robinhood.CancelOrderAsync(new Guid("6081c6f3-0d58-4532-a9a8-773ced6bec70"));
+		}
+		catch (HttpResponseException)
+		{
+			Console.WriteLine("Order not found");
+		}
 
 		Order placeBuyOrder = await _robinhood.PlaceBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
 		Order placeSellOrder = await _robinhood.PlaceSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");

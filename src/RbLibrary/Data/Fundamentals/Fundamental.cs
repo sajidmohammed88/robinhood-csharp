@@ -49,7 +49,7 @@ public class Fundamental
 
 	public string Industry { get; set; }
 
-	public int NumEmployees { get; set; }
+	public int? NumEmployees { get; set; }
 
-	public int YearFounded { get; set; }
+	public int? YearFounded { get; set; }
 }

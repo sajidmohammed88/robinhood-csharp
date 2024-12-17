@@ -8,9 +8,9 @@ public class InstrumentsTag
 
 	public IList<string> Instruments { get; set; }
 
-	public string Name { get; set; }
+	public string Name { get; set; } // Example: "Top Movers"
 
-	public string Slug { get; set; }
+	public string Slug { get; set; } // Example: "top-movers"
 
-	public int MembershipCount { get; set; }
+	public int? MembershipCount { get; set; }
 }
