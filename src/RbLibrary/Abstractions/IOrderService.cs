@@ -19,27 +19,6 @@ public interface IOrderService
 	Task<Order> GetOrderHistoryAsync(Guid orderId);
 
 	/// <summary>
-	/// Submit the buy order.
-	/// </summary>
-	/// <param name="orderRequest">The order request.</param>
-	/// <returns>The buy order.</returns>
-	Task<Order> SubmitBuyOrderAsync(OrderRequest orderRequest);
-
-	/// <summary>
-	/// Submit the sell order.
-	/// </summary>
-	/// <param name="orderRequest">The order request.</param>
-	/// <returns>The sell order.</returns>
-	Task<Order> SubmitSellOrderAsync(OrderRequest orderRequest);
-
-	/// <summary>
-	/// Places the order with orderRequest.
-	/// </summary>
-	/// <param name="orderRequest">The order request.</param>
-	/// <returns>The placed order.</returns>
-	Task<Order> PlaceOrderAsync(OrderRequest orderRequest);
-
-	/// <summary>
 	/// Places the order with params.
 	/// </summary>
 	/// <param name="symbol">The stock ticker of the stock.</param>
