@@ -85,7 +85,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 			  interval = day + span = year
 			  interval = week*/
 
-		Dictionary<string, string> query = new()
+		Dictionary<string, object> query = new()
 		{
 			{"symbols", string.Join(",",stocks).ToUpper()},
 			{"interval", interval.ToLower()},

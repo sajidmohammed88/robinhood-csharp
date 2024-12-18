@@ -285,100 +285,263 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceMarketBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
+	public async Task<Order> PlaceOrderBuyMarketAsync(
+		string symbol,
+		int quantity,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
-			OrderType.Market, Trigger.Immediate, Side.Buy);
-
-		return await orderService.SubmitBuyOrderAsync(orderRequest);
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Buy,
+			null,
+			null,
+			accountNumber,
+			timeInForce,
+			extendedHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceMarketSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity)
+	public async Task<Order> PlaceOrderBuyFractionalByQuantityAsync(
+		string symbol,
+		double quantity,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
-			OrderType.Market, Trigger.Immediate, Side.Sell);
-
-		return await orderService.SubmitSellOrderAsync(orderRequest);
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Buy,
+			null,
+			null,
+			accountNumber,
+			timeInForce,
+			extendedHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceLimitBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string price, int quantity)
+	public async Task<Order> PlaceOrderBuyFractionalByPriceAsync(
+		string symbol,
+		double amountInDollars,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false,
+		string marketHours = "regular_hours")
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
-			OrderType.Limit, Trigger.Immediate, Side.Buy, price);
+		if (amountInDollars < 1)
+		{
+			throw new Exception("Fractional share price should meet minimum 1.00");
+		}
 
-		return await orderService.SubmitBuyOrderAsync(orderRequest);
+		string price = await AskPriceAsync(symbol);
+		double priceVal = double.Parse(price);
+		double fractionalShares = (priceVal == 0 ? 0.0 : MathHelper.RoundPrice(amountInDollars / priceVal));
+
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			fractionalShares,
+			Side.Buy,
+			null,
+			null,
+			accountNumber,
+			timeInForce,
+			extendedHours,
+			marketHours: marketHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceLimitSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string price, int quantity)
+	public async Task<Order> PlaceOrderBuyLimitAsync(
+		string symbol,
+		int quantity,
+		double limitPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
-			OrderType.Limit, Trigger.Immediate, Side.Sell, price);
-
-		return await orderService.SubmitSellOrderAsync(orderRequest);
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Buy,
+			limitPrice,
+			null,
+			accountNumber,
+			timeInForce,
+			extendedHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceStopLossBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string stopPrice, int quantity)
+	public async Task<Order> PlaceOrderBuyStopLossAsync(
+		string symbol,
+		int quantity,
+		double stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
-			OrderType.Market, Trigger.Stop, Side.Buy, stopPrice: stopPrice);
-
-		return await orderService.SubmitBuyOrderAsync(orderRequest);
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Buy,
+			null,
+			stopPrice,
+			accountNumber,
+			timeInForce,
+			extendedHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceStopLossSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string stopPrice, int quantity)
+	public async Task<Order> PlaceOrderBuyStopLimitAsync(
+		string symbol,
+		int quantity,
+		double limitPrice,
+		double stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
-			OrderType.Market, Trigger.Stop, Side.Sell, stopPrice: stopPrice);
-
-		return await orderService.SubmitSellOrderAsync(orderRequest);
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Buy,
+			limitPrice,
+			stopPrice,
+			accountNumber,
+			timeInForce,
+			extendedHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceStopLimitBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string price, string stopPrice, int quantity)
+	public async Task<Order> PlaceOrderSellMarketAsync(
+		string symbol,
+		int quantity,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
-			OrderType.Limit, Trigger.Stop, Side.Buy, price, stopPrice);
-
-		return await orderService.SubmitBuyOrderAsync(orderRequest);
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Sell,
+			null,
+			null,
+			accountNumber,
+			timeInForce,
+			extendedHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceStopLimitSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string price, string stopPrice, int quantity)
+	public async Task<Order> PlaceOrderSellFractionalByQuantityAsync(
+		string symbol,
+		int quantity,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false,
+		string marketHours = "regular_hours")
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, timeInForce, quantity,
-			OrderType.Limit, Trigger.Stop, Side.Sell, price, stopPrice);
-
-		return await orderService.SubmitBuyOrderAsync(orderRequest);
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Sell,
+			null,
+			null,
+			accountNumber,
+			timeInForce,
+			extendedHours,
+			marketHours: marketHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceBuyOrderAsync(string instrumentUrl, string symbol, string price)
+	public async Task<Order> PlaceOrderSellFractionalByPriceAsync(
+		string symbol,
+		double amountInDollars,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
-			OrderType.Market, Trigger.Immediate, Side.Buy, price ?? "0.0");
+		if (amountInDollars < 1)
+		{
+			throw new Exception("Fractional share price should meet minimum 1.00");
+		}
 
-		return await orderService.PlaceOrderAsync(orderRequest);
+		string price = await BidPriceAsync(symbol);
+		double priceVal = double.Parse(price);
+		double fractionalShares = (priceVal == 0 ? 0.0 : MathHelper.RoundPrice(amountInDollars / priceVal));
+
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			fractionalShares,
+			Side.Sell,
+			null,
+			null,
+			accountNumber,
+			timeInForce,
+			extendedHours);
 	}
 
 	/// <inheritdoc />
-	public async Task<Order> PlaceSellOrderAsync(string instrumentUrl, string symbol, string price)
+	public async Task<Order> PlaceOrderSellLimitAsync(
+		string symbol,
+		int quantity,
+		double limitPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
 	{
-		OrderRequest orderRequest = RbHelper.BuildOrderRequestForMarket(instrumentUrl, symbol, TimeInForce.Gfd, 1,
-			OrderType.Market, Trigger.Immediate, Side.Sell, price ?? "0.0");
-
-		return await orderService.PlaceOrderAsync(orderRequest);
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Sell,
+			limitPrice,
+			null,
+			accountNumber,
+			timeInForce,
+			extendedHours);
 	}
+
+	/// <inheritdoc />
+	public async Task<Order> PlaceOrderSellStopLossAsync(
+		string symbol,
+		int quantity,
+		double stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
+	{
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Sell,
+			null,
+			stopPrice,
+			accountNumber,
+			timeInForce,
+			extendedHours);
+	}
+
+	/// <inheritdoc />
+	public async Task<Order> PlaceOrderSellStopLimitAsync(
+		string symbol,
+		int quantity,
+		double limitPrice,
+		double stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false)
+	{
+		return await orderService.PlaceOrderAsync(
+			symbol,
+			quantity,
+			Side.Sell,
+			limitPrice,
+			stopPrice,
+			accountNumber,
+			timeInForce,
+			extendedHours);
+	}
+
 	#endregion
 
 	#region CRYPTO

@@ -50,10 +50,12 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 
 		orderRequest.AccountId = (await GetAccountsAsync()).First().Id;
 		orderRequest.CurrencyPairId = Constants.Pairs[pair];
+		orderRequest.IsQuantityCollared = false;
 
 		try
 		{
-			return await httpClientManager.PostJsonAsync<CryptoOrder>(Constants.Routes.NummusOrders, JsonSerializer.Serialize(orderRequest, CustomJsonSerializerOptions.Current?.Value));
+			var rst = await httpClientManager.PostAsync<CryptoOrder>(Constants.Routes.NummusOrders, orderRequest);
+			return rst.Data;
 		}
 		catch (Exception ex)
 		{

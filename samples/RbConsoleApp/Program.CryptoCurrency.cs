@@ -20,33 +20,33 @@ public static partial class Program
 
 		CryptoOrder order = await _robinhood.TradeAsync("DOGEUSD", new CryptoOrderRequest
 		{
-			Type = OrderType.Market,
 			Price = "1",
-			Quantity = 1,
+			Quantity = "1",
 			Side = Side.Buy,
-			TimeInForce = TimeInForce.Gtc
+			TimeInForce = TimeInForce.Gtc,
+			Type = OrderType.Market
 		});
 
 		IList<CryptoOrder> tradeHistory = await _robinhood.GetTradeHistoryAsync();
 
 		try
 		{
-			CryptoOrder orderStatus = await _robinhood.GetOrderStatusAsync("60afb549-abce-40bf-bda9-50f0715f0903");
+			CryptoOrder orderStatus = await _robinhood.GetOrderStatusAsync("67621b65-ce79-4f23-b06f-ed3652d80140");
 		}
-		catch (HttpResponseException)
+		catch (HttpResponseException ex)
 		{
 			// handle exception
-			Console.WriteLine("Order not found");
+			Console.WriteLine(ex.Message);
 		}
 
 		try
 		{
-			bool isOrderCanceled = await _robinhood.CancelCryptoOrderAsync("60afb549-abce-40bf-bda9-50f0715f0903");
+			bool isOrderCanceled = await _robinhood.CancelCryptoOrderAsync("67621b65-ce79-4f23-b06f-ed3652d80140");
 		}
-		catch (HttpResponseException)
+		catch (HttpResponseException ex)
 		{
 			// handle exception
-			Console.WriteLine("Order not found");
+			Console.WriteLine(ex.Message);
 		}
 
 		CryptoHistoricalData historicalData = await _robinhood.HistoricalsAsync("BTCUSD", "5minute", "day", "24_7");

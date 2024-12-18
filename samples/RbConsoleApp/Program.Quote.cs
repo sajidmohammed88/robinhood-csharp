@@ -16,19 +16,25 @@ public static partial class Program
 		QuoteData quoteData = await _robinhood.GetQuoteDataAsync("AAPL");
 		IList<QuoteData> quotesData = await _robinhood.GetQuotesDataAsync(["AAPL", "SNAP"]);
 
-		IList<string> valuesByStock = await _robinhood.GetQuoteWithSpecifiedKeysAsync("AAPL", "Symbol,LastTradePrice");
+		IList<string> valuesByStock = await _robinhood.GetQuoteWithSpecifiedKeysAsync(
+			"AAPL",
+			"Symbol,LastTradePrice");
+
 		Console.WriteLine($"{valuesByStock[0]}:{valuesByStock[1]}");
 
-		IDictionary<string, IList<string>> valuesByStocks = await _robinhood
-			.GetQuotesWithSpecifiedKeysAsync(["AAPL", "SNAP"], "Symbol,LastTradePrice")
-			;
+		IDictionary<string, IList<string>> valuesByStocks = await _robinhood.GetQuotesWithSpecifiedKeysAsync(
+			["AAPL", "SNAP"],
+			"Symbol,LastTradePrice");
+
 		foreach ((string key, IList<string> value) in valuesByStocks)
 		{
 			Console.WriteLine($"stock :: {key} => {value[0]}:{value[1]}");
 		}
 
-		IList<HistoricalsData> historicalsData = await _robinhood
-			.GetHistoricalQuotesAsync(["AAPL", "SNAP"], "5minute", Span.Day);
+		IList<HistoricalsData> historicalsData = await _robinhood.GetHistoricalQuotesAsync(
+			["AAPL", "SNAP"],
+			"5minute",
+			Span.Day);
 
 		IList<NewsData> news = await _robinhood.GetNewsAsync("AAPL");
 
@@ -47,7 +53,7 @@ public static partial class Program
 			dynamic marketData = await _robinhood.GetStockMarketDataAsync(
 				[
 					"450dfc6d-5510-4d40-abfb-f633b7d9be3e",
-							"1e513292-5926-4dc4-8c3d-4af6b5836704"
+					"1e513292-5926-4dc4-8c3d-4af6b5836704"
 				]);
 		}
 		catch (HttpResponseException)
