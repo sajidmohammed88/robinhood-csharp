@@ -87,7 +87,7 @@ public static partial class Program
 		await FetchQuoteDataAsync();
 
 		//options
-		//await FetchOptionsAsync();
+		await FetchOptionsAsync();
 
 		//fundamentals
 		Fundamental fundamental = await _robinhood.GetFundamentalsAsync("AAPL");
@@ -105,42 +105,35 @@ public static partial class Program
 
 		try
 		{
-			Order orderHistory = await _robinhood.GetOrderHistoryAsync(new Guid("6081bf8f-cc7c-4960-bed9-04440614aa83"));
+			Order orderHistory = await _robinhood.GetOrderHistoryAsync(new Guid("67621c7c-deab-4708-9474-ea47c0a04783"));
 		}
-		catch (HttpResponseException)
+		catch (HttpResponseException ex)
 		{
-			Console.WriteLine("Order history not found");
+			Console.WriteLine(ex.Message);
 		}
 
 		IList<Order> openedOrders = await _robinhood.GetOpenOrders();
 
 		try
 		{
-			bool isOrderCanceled = await _robinhood.CancelOrderAsync(new Guid("6081c6f3-0d58-4532-a9a8-773ced6bec70"));
+			bool isOrderCanceled = await _robinhood.CancelOrderAsync(new Guid("67621c7c-deab-4708-9474-ea47c0a04783"));
 		}
-		catch (HttpResponseException)
+		catch (HttpResponseException ex)
 		{
-			Console.WriteLine("Order not found");
+			Console.WriteLine(ex.Message);
 		}
 
-		Order placeBuyOrder = await _robinhood.PlaceBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
-		Order placeSellOrder = await _robinhood.PlaceSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", "1.0");
-		Order marketBuyOrder = await _robinhood
-			.PlaceMarketBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, 1);
-		Order marketSellOrder = await _robinhood
-			.PlaceMarketSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, 1);
-		Order limitBuyOrder = await _robinhood
-			.PlaceLimitBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "1.1", 1);
-		Order limitSellOrder = await _robinhood
-			.PlaceLimitSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "20", 1);
-		Order stopMarketBuyOrder = await _robinhood
-			.PlaceStopLossBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "2.1", 1);
-		Order stopMarketSellOrder = await _robinhood
-			.PlaceStopLossSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "21", 1);
-		Order stopLimitBuyOrder = await _robinhood
-			.PlaceStopLimitBuyOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "1.5", "21", 1);
-		Order stopLimitSellOrder = await _robinhood
-			.PlaceStopLimitSellOrderAsync("https://api.robinhood.com/instruments/6df56bd0-0bf2-44ab-8875-f94fd8526942/", "F", TimeInForce.Gfd, "15", "21", 1);
+		Order buyMarket = await _robinhood.PlaceOrderBuyMarketAsync(symbol: "F", quantity: 1);
+		Order sellMarket = await _robinhood.PlaceOrderSellMarketAsync(symbol: "F", quantity: 1);
+
+		Order buyLimit = await _robinhood.PlaceOrderBuyLimitAsync(symbol: "F", quantity: 1, limitPrice: 9.9);
+		Order sellLimit = await _robinhood.PlaceOrderSellLimitAsync(symbol: "F", quantity: 1, limitPrice: 9.9);
+
+		Order buyStopLoss =  await _robinhood.PlaceOrderBuyStopLossAsync(symbol: "F", quantity: 1, stopPrice: 9.9);
+		Order sellStopLoss = await _robinhood.PlaceOrderSellStopLossAsync(symbol: "F", quantity: 1, stopPrice: 9.9);
+
+		Order buyStopLimit = await _robinhood.PlaceOrderBuyStopLimitAsync(symbol: "F", quantity: 1, stopPrice: 9.9, limitPrice: 10.0);
+		Order sellStopLimit = await _robinhood.PlaceOrderSellStopLimitAsync(symbol: "F", quantity: 1, stopPrice: 9.9, limitPrice: 10.0);
 
 		//await _robinhood.Logout();
 	}
