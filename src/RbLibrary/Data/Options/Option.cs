@@ -10,7 +10,7 @@ public class Option
 
 	public string ChainSymbol { get; set; }
 
-	public Guid Id { get; set; }
+	public Guid? Id { get; set; }
 
 	[JsonPropertyName("option")]
 	public string OptionUrl { get; set; }
@@ -35,11 +35,11 @@ public class Option
 
 	public string IntradayAverageOpenPrice { get; set; }
 
-	public DateTime CreatedAt { get; set; }
+	public DateTime? CreatedAt { get; set; }
 
 	public string TradeValueMultiplier { get; set; }
 
-	public DateTime UpdatedAt { get; set; }
+	public DateTime? UpdatedAt { get; set; }
 
 	public string Url { get; set; }
 

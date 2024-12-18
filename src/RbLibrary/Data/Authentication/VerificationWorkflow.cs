@@ -2,7 +2,7 @@
 
 public class VerificationWorkflow
 {
-	public Guid Id { get; set; }
+	public Guid? Id { get; set; }
 	public string WorkflowStatus { get; set; }
 }
 

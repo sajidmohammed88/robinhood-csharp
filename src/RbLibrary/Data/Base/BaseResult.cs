@@ -7,7 +7,7 @@ public class BaseResult<T>
 	public string Previous { get; set; }
 
 	// Used just for news
-	public int Count { get; set; }
+	public int? Count { get; set; }
 
 	public IList<T> Results { get; set; }
 }

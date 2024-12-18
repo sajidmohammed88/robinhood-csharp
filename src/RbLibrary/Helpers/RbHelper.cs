@@ -8,7 +8,7 @@ internal static class RbHelper
 	private static string GetValue(object obj, string key)
 	{
 		return obj.GetType().GetProperties()
-			.FirstOrDefault(_ => _.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name == key)
+			.FirstOrDefault(_ => _.Name == key)
 			?.GetValue(obj)
 			?.ToString();
 	}

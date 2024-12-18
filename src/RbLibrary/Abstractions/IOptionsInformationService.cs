@@ -19,7 +19,7 @@ public interface IOptionsInformationService
 	/// <param name="expirationDates">The expiration dates.</param>
 	/// <param name="optionType">Type of the option.</param>
 	/// <returns>instrument options chain.</returns>
-	Task<IList<Option>> GetOptionsByChainIdAsync(Guid chainId, IList<string> expirationDates, OptionType optionType);
+	Task<IList<Option>> GetOptionsByChainIdAsync(Guid? chainId, IList<string> expirationDates, OptionType optionType);
 
 	/// <summary>
 	/// Get the owned options.
@@ -43,7 +43,7 @@ public interface IOptionsInformationService
 	/// <param name="optionType">Type of the option.</param>
 	/// <param name="state">The state.</param>
 	/// <returns>Option quote</returns>
-	Task<Guid> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType,
+	Task<Guid?> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType,
 		string state = "active");
 
 	/// <summary>

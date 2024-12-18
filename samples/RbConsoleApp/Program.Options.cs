@@ -22,7 +22,7 @@ public static partial class Program
 
 		Guid chainId = await _robinhood.GetOptionChainIdAsync("AAPL");
 
-		Guid optionQuote = await _robinhood.GetOptionQuoteAsync("AAPL", "105.0000", "2021-04-16", OptionType.Call);
+		Guid? optionQuote = await _robinhood.GetOptionQuoteAsync("AAPL", "105.0000", "2021-04-16", OptionType.Call);
 
 		dynamic marketDatas = await _robinhood.GetOptionMarketDataAsync(options.First().Id);
 	}

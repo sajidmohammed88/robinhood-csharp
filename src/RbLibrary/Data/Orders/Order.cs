@@ -14,17 +14,17 @@ public class Order : BaseOrder
 
 	public string Fees { get; set; }
 
-	public Trigger Trigger { get; set; }
+	public Trigger? Trigger { get; set; }
 
 	public string StopPrice { get; set; }
 
 	public string RejectReason { get; set; }
 
-	public bool ExtendedHours { get; set; }
+	public bool? ExtendedHours { get; set; }
 
-	public bool OverrideDtbpChecks { get; set; }
+	public bool? OverrideDtbpChecks { get; set; }
 
-	public bool OverrideDayTradeChecks { get; set; }
+	public bool? OverrideDayTradeChecks { get; set; }
 
 	public string ResponseCategory { get; set; }
 
@@ -42,7 +42,7 @@ public class Order : BaseOrder
 
 	public string InvestmentScheduleId { get; set; }
 
-	public bool IsIpoAccessOrder { get; set; }
+	public bool? IsIpoAccessOrder { get; set; }
 
 	public string IpoAccessCancellationReason { get; set; }
 
@@ -54,5 +54,5 @@ public class Order : BaseOrder
 
 	public string IpoAccessLowerPrice { get; set; }
 
-	public bool IsIpoAccessPriceFinalized { get; set; }
+	public bool? IsIpoAccessPriceFinalized { get; set; }
 }

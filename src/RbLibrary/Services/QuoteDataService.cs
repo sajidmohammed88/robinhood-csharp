@@ -154,7 +154,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 	{
 		BaseResult<Account> accountResult = await httpClientManager.GetAsync<BaseResult<Account>>(Constants.Routes.Accounts);
 
-		if (accountResult?.Results is null || !accountResult.Results.Any() || accountResult.Results.All(a => a.Deactivated))
+		if (accountResult?.Results is null || !accountResult.Results.Any() || accountResult.Results.All(a => a.Deactivated == true))
 		{
 			throw new HttpResponseException("The account for the user need to be approved or disabled");
 		}

@@ -32,7 +32,7 @@ public class MarginBalances
 
 	public string Sma { get; set; }
 
-	public bool DayTradesProtection { get; set; }
+	public bool? DayTradesProtection { get; set; }
 
 	public string StartOfDayOvernightBuyingPower { get; set; }
 
@@ -48,9 +48,9 @@ public class MarginBalances
 
 	public string MarkedPatternDayTraderDate { get; set; }
 
-	public DateTime CreatedAt { get; set; }
+	public DateTime? CreatedAt { get; set; }
 
-	public DateTime UpdatedAt { get; set; }
+	public DateTime? UpdatedAt { get; set; }
 
 	public string StartOfDayDtbp { get; set; }
 
@@ -82,5 +82,5 @@ public class MarginBalances
 
 	public string EligibleDepositAsInstant { get; set; }
 
-	public bool LeverageEnabled { get; set; }
+	public bool? LeverageEnabled { get; set; }
 }

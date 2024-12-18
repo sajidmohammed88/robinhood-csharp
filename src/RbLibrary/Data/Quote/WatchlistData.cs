@@ -4,7 +4,7 @@ public class WatchlistData
 {
 	public string Instrument { get; set; }
 
-	public DateTime CreatedAt { get; set; }
+	public DateTime? CreatedAt { get; set; }
 
 	public string Watchlist { get; set; }
 
