@@ -18,7 +18,7 @@ public class User
 
 	public string LastName { get; set; }
 
-	public Origin? Origin { get; set; }
+	public Origin Origin { get; set; }
 
 	public string ProfileName { get; set; }
 
