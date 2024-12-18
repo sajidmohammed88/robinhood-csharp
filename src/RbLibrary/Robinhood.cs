@@ -13,7 +13,7 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	}
 
 	/// <inheritdoc />
-	public async Task<AuthenticationResponse> ChallengeOauth2Async(Guid challengeId, string code)
+	public async Task<AuthenticationResponse> ChallengeOauth2Async(Guid? challengeId, string code)
 	{
 		return await sessionManager.ChallengeOauth2Async(challengeId, code);
 	}
@@ -65,14 +65,14 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	/// <inheritdoc />
 	public async Task<string> AskPriceAsync(string stock)
 	{
-		return (await quoteDataService.GetQuoteWithSpecifiedKeysAsync(stock, "ask_price"))
+		return (await quoteDataService.GetQuoteWithSpecifiedKeysAsync(stock, "AskPrice"))
 			.FirstOrDefault();
 	}
 
 	/// <inheritdoc />
 	public async Task<string> BidPriceAsync(string stock)
 	{
-		return (await quoteDataService.GetQuoteWithSpecifiedKeysAsync(stock, "bid_price"))
+		return (await quoteDataService.GetQuoteWithSpecifiedKeysAsync(stock, "BidPrice"))
 			.FirstOrDefault();
 	}
 
@@ -173,15 +173,15 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	}
 
 	/// <inheritdoc />
-	public async Task<Guid> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType)
+	public async Task<Guid?> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType)
 	{
 		return await optionsInformationService.GetOptionQuoteAsync(symbol, strike, expirationDate, optionType);
 	}
 
 	/// <inheritdoc />
-	public async Task<dynamic> GetOptionMarketDataAsync(Guid optionId)
+	public async Task<dynamic> GetOptionMarketDataAsync(Guid? optionId)
 	{
-		return await optionsInformationService.GetOptionMarketDataAsync(optionId.ToString());
+		return await optionsInformationService.GetOptionMarketDataAsync(optionId?.ToString());
 	}
 	#endregion
 

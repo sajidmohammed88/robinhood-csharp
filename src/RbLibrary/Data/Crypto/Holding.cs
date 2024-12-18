@@ -4,9 +4,9 @@ public class Holding
 {
 	public string AccountId { get; set; }
 
-	public List<CostBas> CostBases { get; set; }
+	public List<CostBase> CostBases { get; set; }
 
-	public DateTime CreatedAt { get; set; }
+	public DateTime? CreatedAt { get; set; }
 
 	public Currency Currency { get; set; }
 
@@ -16,9 +16,11 @@ public class Holding
 
 	public string QuantityAvailable { get; set; }
 
+	public string QuantityHeld { get; set; }
+
 	public string QuantityHeldForBuy { get; set; }
 
 	public string QuantityHeldForSell { get; set; }
 
-	public DateTime UpdatedAt { get; set; }
+	public DateTime? UpdatedAt { get; set; }
 }

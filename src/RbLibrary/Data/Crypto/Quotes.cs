@@ -14,7 +14,7 @@ public class Quotes
 
 	public string OpenPrice { get; set; }
 
-	public string Symbol { get; set; }
+	public string Symbol { get; set; } //Example: "BTCUSD"
 
 	public string Id { get; set; }
 

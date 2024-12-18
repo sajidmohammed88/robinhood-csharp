@@ -45,4 +45,6 @@ public class Portfolio
 	public string UnwithdrawableDeposits { get; set; }
 
 	public string UnwithdrawableGrants { get; set; }
+
+	public bool? IsPrimaryAccount { get; set; }
 }

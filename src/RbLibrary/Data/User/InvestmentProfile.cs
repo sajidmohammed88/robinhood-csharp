@@ -2,7 +2,7 @@
 
 public class InvestmentProfile
 {
-	public string User { get; set; }
+	public string User { get; set; } //Example: "api.robinhood.com/user/"
 
 	public string TotalNetWorth { get; set; }
 
@@ -24,9 +24,9 @@ public class InvestmentProfile
 
 	public string LiquidityNeeds { get; set; }
 
-	public bool InvestmentExperienceCollected { get; set; }
+	public bool? InvestmentExperienceCollected { get; set; }
 
-	public bool SuitabilityVerified { get; set; }
+	public bool? SuitabilityVerified { get; set; }
 
 	public string OptionTradingExperience { get; set; }
 
@@ -36,5 +36,5 @@ public class InvestmentProfile
 
 	public string InterestedInOptions { get; set; }
 
-	public DateTime UpdatedAt { get; set; }
+	public DateTime? UpdatedAt { get; set; }
 }

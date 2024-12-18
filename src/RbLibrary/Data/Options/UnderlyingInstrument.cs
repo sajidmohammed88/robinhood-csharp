@@ -6,5 +6,5 @@ public class UnderlyingInstrument
 
 	public string Instrument { get; set; }
 
-	public int Quantity { get; set; }
+	public int? Quantity { get; set; }
 }

@@ -16,12 +16,12 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 	}
 
 	/// <inheritdoc />
-	public async Task<IList<Option>> GetOptionsByChainIdAsync(Guid chainId, IList<string> expirationDates,
+	public async Task<IList<Option>> GetOptionsByChainIdAsync(Guid? chainId, IList<string> expirationDates,
 		OptionType optionType)
 	{
 		Dictionary<string, string> query = new()
 		{
-			{"chain_id", chainId.ToString()},
+			{"chain_id", chainId?.ToString()},
 			{"expiration_dates", string.Join(",", expirationDates)},
 			{"state", "active"},
 			{"tradability", "tradable"},
@@ -66,7 +66,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 
 	/// <inheritdoc />
 	/// /!\ in the python code we call GetOptionMarketData to bid and ask price, but it's respond all time 403 status code.
-	public async Task<Guid> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType, string state = "active")
+	public async Task<Guid?> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType, string state = "active")
 	{
 		Dictionary<string, string> query = new()
 		{

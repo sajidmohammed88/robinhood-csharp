@@ -8,9 +8,9 @@ public class Execution
 
 	public string SettlementDate { get; set; }
 
-	public DateTime Timestamp { get; set; }
+	public DateTime? Timestamp { get; set; }
 
-	public Guid Id { get; set; }
+	public Guid? Id { get; set; }
 
 	public string IpoAccessExecutionRank { get; set; }
 }

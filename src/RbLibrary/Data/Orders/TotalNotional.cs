@@ -6,5 +6,5 @@ public class TotalNotional
 
 	public string CurrencyCode { get; set; }
 
-	public Guid CurrencyId { get; set; }
+	public Guid? CurrencyId { get; set; }
 }

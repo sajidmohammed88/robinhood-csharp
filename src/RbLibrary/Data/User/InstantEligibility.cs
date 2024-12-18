@@ -16,7 +16,7 @@ public class InstantEligibility
 
 	public string ComplianceUserMajorOakEmail { get; set; }
 
-	public DateTime CreatedAt { get; set; }
+	public DateTime? CreatedAt { get; set; }
 
 	public string CreatedBy { get; set; }
 }

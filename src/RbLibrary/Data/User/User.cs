@@ -2,9 +2,9 @@
 
 public class User
 {
-	public string Url { get; set; }
+	public string Url { get; set; } //Example: "https://api.robinhood.com/user/"
 
-	public Guid Id { get; set; }
+	public Guid? Id { get; set; }
 
 	public string IdInfo { get; set; }
 
@@ -12,7 +12,7 @@ public class User
 
 	public string Email { get; set; }
 
-	public bool EmailVerified { get; set; }
+	public bool? EmailVerified { get; set; }
 
 	public string FirstName { get; set; }
 
@@ -22,5 +22,5 @@ public class User
 
 	public string ProfileName { get; set; }
 
-	public DateTime CreatedAt { get; set; }
+	public DateTime? CreatedAt { get; set; }
 }

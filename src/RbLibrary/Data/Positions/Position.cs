@@ -2,9 +2,11 @@
 
 public class Position
 {
-	public string Url { get; set; }
+	public string Url { get; set; } // Example: "https://api.robinhood.com/positions/5SJ45118/450dfc6d-5510-4d40-abfb-f633b7d9be3e/"
 
-	public string Instrument { get; set; }
+	public string Instrument { get; set; } // Example: "https://api.robinhood.com/instruments/450dfc6d-5510-4d40-abfb-f633b7d9be3e/"
+
+	public string Symbol { get; set; } // Example: "AAPL"
 
 	public string Account { get; set; }
 
@@ -36,7 +38,7 @@ public class Position
 
 	public string SharesAvailableForClosingShortPosition { get; set; }
 
-	public DateTime UpdatedAt { get; set; }
+	public DateTime? UpdatedAt { get; set; }
 
-	public DateTime CreatedAt { get; set; }
+	public DateTime? CreatedAt { get; set; }
 }
