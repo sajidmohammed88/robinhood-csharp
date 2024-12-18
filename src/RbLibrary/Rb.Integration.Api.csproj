@@ -11,14 +11,11 @@
 Note : This is an unofficial client package. I'm not affiliated with the folks at Robinhood Markets Inc.</Description>
     <PackageTags>trade, robinhood, stock</PackageTags>
     <RepositoryUrl>https://github.com/sajidmohammed88/robinhood-csharp</RepositoryUrl>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE.txt" Pack="true" Visible="false" PackagePath=""/>
+    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md"/>
   </ItemGroup>
 
   <ItemGroup>
