@@ -6,5 +6,5 @@ public class CryptoOrderRequest : BaseOrderRequest
 
 	public string CurrencyPairId { get; set; }
 
-	public Guid RefId { get; set; } = Guid.NewGuid();
+	public bool? IsQuantityCollared { get; set; }
 }

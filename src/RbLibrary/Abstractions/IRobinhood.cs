@@ -1,4 +1,7 @@
-﻿namespace Rb.Integration.Api.Abstractions;
+﻿using Rb.Integration.Api.Data.Base;
+using System.Numerics;
+
+namespace Rb.Integration.Api.Abstractions;
 
 /// <summary>
 /// The robinhood interface.
@@ -128,114 +131,234 @@ public interface IRobinhood : IQuoteDataService, ISessionManager, ICryptoCurrenc
 	Task<bool> CancelOrderAsync(Guid orderId);
 
 	/// <summary>
-	/// Place the market buy order.
+	/// Submits a market order to be executed immediately.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
 	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="timeInForce">The time in force.</param>
-	/// <param name="quantity">The quantity.</param>
-	/// <returns>The placed market buy order data.</returns>
-	Task<Order> PlaceMarketBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
-
-	/// <summary>
-	/// Place the market sell order.
-	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="timeInForce">The time in force.</param>
-	/// <param name="quantity">The quantity.</param>
-	/// <returns>The placed market sell order data.</returns>
-	Task<Order> PlaceMarketSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, int quantity);
-
-	/// <summary>
-	/// Place the limit buy order.
-	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="timeInForce">The time in force.</param>
-	/// <param name="price">The price.</param>
-	/// <param name="quantity">The quantity.</param>
-	/// <returns>The placed limit buy order data.</returns>
-	Task<Order> PlaceLimitBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce, string price,
-		int quantity);
-
-	/// <summary>
-	/// Place the limit sell order.
-	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="timeInForce">The time in force.</param>
-	/// <param name="price">The price.</param>
-	/// <param name="quantity">The quantity.</param>
-	/// <returns>The placed limit seller order data</returns>
-	Task<Order> PlaceLimitSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string price, int quantity);
-
-	/// <summary>
-	/// Place the stop loss buy order.
-	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="timeInForce">The time in force.</param>
-	/// <param name="stopPrice">The stop price.</param>
-	/// <param name="quantity">The quantity.</param>
-	/// <returns>The placed stop loss buy order data.</returns>
-	Task<Order> PlaceStopLossBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string stopPrice, int quantity);
-
-	/// <summary>
-	/// Place the stop loss sell order.
-	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="timeInForce">The time in force.</param>
-	/// <param name="stopPrice">The stop price.</param>
-	/// <param name="quantity">The quantity.</param>
-	/// <returns>The placed stop loss seller order data.</returns>
-	Task<Order> PlaceStopLossSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string stopPrice, int quantity);
-
-	/// <summary>
-	/// Place the stop limit buy order.
-	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="timeInForce">The time in force.</param>
-	/// <param name="price">The price.</param>
-	/// <param name="stopPrice">The stop price.</param>
-	/// <param name="quantity">The quantity.</param>
-	/// <returns>The placed stop limit buy order data.</returns>
-	Task<Order> PlaceStopLimitBuyOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string price, string stopPrice, int quantity);
-
-	/// <summary>
-	/// Places the stop limit sell order.
-	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="timeInForce">The time in force.</param>
-	/// <param name="price">The price.</param>
-	/// <param name="stopPrice">The stop price.</param>
-	/// <param name="quantity">The quantity.</param>
-	/// <returns>The placed stop limit sell order data.</returns>
-	Task<Order> PlaceStopLimitSellOrderAsync(string instrumentUrl, string symbol, TimeInForce timeInForce,
-		string price, string stopPrice, int quantity);
-
-	/// <summary>
-	/// Place the buy order.
-	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="price">The price.</param>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The number of stocks you want to buy.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
 	/// <returns>The placed order.</returns>
-	Task<Order> PlaceBuyOrderAsync(string instrumentUrl, string symbol, string price);
+	Task<Order> PlaceOrderBuyMarketAsync(
+		string symbol,
+		int quantity,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
 
 	/// <summary>
-	/// Place the sell order.
+	/// Submits a market order to be executed immediately for fractional shares by specifying the amount that you want to trade.
+	/// Good for share fractions up to 6 decimal places.Robinhood does not currently support placing limit, stop, or stop loss orders
+	/// for fractional trades.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
 	/// </summary>
-	/// <param name="instrumentUrl">The instrument URL.</param>
-	/// <param name="symbol">The symbol.</param>
-	/// <param name="price">The price.</param>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The amount of the fractional shares you want to buy.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
 	/// <returns>The placed order.</returns>
-	Task<Order> PlaceSellOrderAsync(string instrumentUrl, string symbol, string price);
+	Task<Order> PlaceOrderBuyFractionalByQuantityAsync(
+		string symbol,
+		double quantity,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
+
+	/// <summary>
+	/// Submits a market order to be executed immediately for fractional shares by specifying the amount in dollars that you want to trade.
+	/// Good for share fractions up to 6 decimal places.Robinhood does not currently support placing limit, stop, or stop loss orders
+	/// for fractional trades.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="amountInDollars">The amount in dollars of the fractional shares you want to buy.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <param name="marketHours">"regular_hours", "extended_hours" or "all_day_hours"</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderBuyFractionalByPriceAsync(
+		string symbol,
+		double amountInDollars,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false,
+		string marketHours = "regular_hours");
+
+	/// <summary>
+	/// Submits a limit order to be executed once a certain price is reached.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The number of stocks to buy.</param>
+	/// <param name="limitPrice">The price to trigger the buy order.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderBuyLimitAsync(
+		string symbol,
+		int quantity,
+		double limitPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
+
+	/// <summary>
+	/// Submits a stop order to be turned into a market order once a certain stop price is reached.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The amount of stocks to buy.</param>
+	/// <param name="stopPrice">The price to trigger the market order.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderBuyStopLossAsync(
+		string symbol,
+		int quantity,
+		double stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
+
+	/// <summary>
+	/// Submits a stop order to be turned into a limit order once a certain stop price is reached.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The amount of stocks to buy.</param>
+	/// <param name="limitPrice">The price to trigger the market order.</param>
+	/// <param name="stopPrice">The price to trigger the limit order.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderBuyStopLimitAsync(
+		string symbol,
+		int quantity,
+		double limitPrice,
+		double stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
+
+	/// <summary>
+	/// Submits a market order to be executed immediately.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The amount of stocks to sell.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderSellMarketAsync(
+		string symbol,
+		int quantity,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
+
+	/// <summary>
+	/// Submits a market order to be executed immediately for fractional shares by specifying the amount that you want to trade.
+	/// Good for share fractions up to 6 decimal places.Robinhood does not currently support placing limit, stop, or stop loss orders
+	/// for fractional trades.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The amount of the fractional shares you want to sell.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <param name="marketHours">"regular_hours", "extended_hours" or "all_day_hours"</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderSellFractionalByQuantityAsync(
+		string symbol,
+		int quantity,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false,
+		string marketHours = "regular_hours");
+
+	/// <summary>
+	/// Submits a market order to be executed immediately for fractional shares by specifying the amount in dollars that you want to trade.
+	/// Good for share fractions up to 6 decimal places.Robinhood does not currently support placing limit, stop, or stop loss orders
+	/// for fractional trades.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="amountInDollars">The amount in dollars of the fractional shares you want to buy.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderSellFractionalByPriceAsync(
+		string symbol,
+		double amountInDollars,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
+
+	/// <summary>
+	/// Submits a limit order to be executed once a certain price is reached.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The amount of stocks to sell.</param>
+	/// <param name="limitPrice">The price to trigger the sell order.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderSellLimitAsync(
+		string symbol,
+		int quantity,
+		double limitPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
+
+	/// <summary>
+	/// Submits a stop order to be turned into a market order once a certain stop price is reached.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The amount of stocks to sell.</param>
+	/// <param name="stopPrice">The price to trigger the market order.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderSellStopLossAsync(
+		string symbol,
+		int quantity,
+		double stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
+
+	/// <summary>
+	/// Submits a stop order to be turned into a limit order once a certain stop price is reached.
+	/// Reference: https://github.com/jmfernandes/robin_stocks/blob/master/robin_stocks/robinhood/orders.py
+	/// </summary>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The amount of stocks to sell.</param>
+	/// <param name="limitPrice">The price to trigger the market order.</param>
+	/// <param name="stopPrice">The price to trigger the limit order.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <returns>The placed order.</returns>
+	Task<Order> PlaceOrderSellStopLimitAsync(
+		string symbol,
+		int quantity,
+		double limitPrice,
+		double stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false);
 }

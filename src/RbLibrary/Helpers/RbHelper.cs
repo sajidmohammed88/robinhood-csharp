@@ -1,4 +1,6 @@
-﻿namespace Rb.Integration.Api.Helpers;
+﻿using static System.Net.WebRequestMethods;
+
+namespace Rb.Integration.Api.Helpers;
 
 /// <summary>
 /// Class used to help build static functions.
@@ -27,27 +29,10 @@ internal static class RbHelper
 		: Constants.Routes.MarketDataBase;
 	}
 
-	internal static IDictionary<string, string> BuildOrderContent(OrderRequest orderRequest, string accountUrl)
-	{
-		return new Dictionary<string, string>
-		{
-			{"account", accountUrl},
-			{"instrument", orderRequest.InstrumentUrl},
-			{"symbol", orderRequest.Symbol},
-			{"type", orderRequest.Type.ToString().ToLower()},
-			{"time_in_force", orderRequest.TimeInForce.ToString().ToLower()},
-			{"trigger", orderRequest.Trigger.ToString().ToLower()},
-			{"price", orderRequest.Price},
-			{"stop_price", orderRequest.StopPrice},
-			{"quantity", orderRequest.Quantity.ToString()},
-			{"side", orderRequest.Side.ToString().ToLower()}
-		};
-	}
-
 	internal static OrderRequest BuildOrderRequestForMarket(string instrumentUrl,
 														 string symbol,
 														 TimeInForce timeInForce,
-														 int quantity,
+														 string quantity,
 														 OrderType orderType,
 														 Trigger trigger,
 														 Side side,
@@ -56,7 +41,7 @@ internal static class RbHelper
 	{
 		return new()
 		{
-			InstrumentUrl = instrumentUrl,
+			Instrument = instrumentUrl,
 			Symbol = symbol,
 			TimeInForce = timeInForce,
 			Quantity = quantity,
@@ -75,7 +60,7 @@ internal static class RbHelper
 			throw new RequestCheckException("The order request is null");
 		}
 
-		if (string.IsNullOrEmpty(orderRequest.InstrumentUrl))
+		if (string.IsNullOrEmpty(orderRequest.Instrument))
 		{
 			if (string.IsNullOrEmpty(orderRequest.Symbol))
 			{
@@ -110,7 +95,7 @@ internal static class RbHelper
 			throw new RequestCheckException("Market order has price limit.");
 		}
 
-		if (orderRequest.Quantity <= 0)
+		if (double.Parse(orderRequest.Quantity) <= 0)
 		{
 			throw new RequestCheckException("Quantity must be positive number.");
 		}

@@ -19,23 +19,26 @@ public interface IOrderService
 	Task<Order> GetOrderHistoryAsync(Guid orderId);
 
 	/// <summary>
-	/// Submit the buy order.
+	/// Places the order with params.
 	/// </summary>
-	/// <param name="orderRequest">The order request.</param>
-	/// <returns>The buy order.</returns>
-	Task<Order> SubmitBuyOrderAsync(OrderRequest orderRequest);
-
-	/// <summary>
-	/// Submit the sell order.
-	/// </summary>
-	/// <param name="orderRequest">The order request.</param>
-	/// <returns>The sell order.</returns>
-	Task<Order> SubmitSellOrderAsync(OrderRequest orderRequest);
-
-	/// <summary>
-	/// Places the order.
-	/// </summary>
-	/// <param name="orderRequest">The order request.</param>
+	/// <param name="symbol">The stock ticker of the stock.</param>
+	/// <param name="quantity">The number of stocks.</param>
+	/// <param name="side">Either Side.Buy or Side.Sell</param>
+	/// <param name="limitPrice">The price to trigger the market order.</param>
+	/// <param name="stopPrice">The price to trigger the sell.</param>
+	/// <param name="accountNumber">The Robinhood account number.</param>
+	/// <param name="timeInForce">Changes how long the order will be in effect for. 'gtc' = good until cancelled. 'gfd' = good for the day.</param>
+	/// <param name="extendedHours">Premium users only. Allows trading during extended hours. Should be true or false.</param>
+	/// <param name="marketHours">Choices are ['regular_hours', 'all_day_hours', 'extended_hours'].</param>
 	/// <returns>The placed order.</returns>
-	Task<Order> PlaceOrderAsync(OrderRequest orderRequest);
+	Task<Order> PlaceOrderAsync(
+		string symbol,
+		double quantity,
+		Side side,
+		double? limitPrice,
+		double? stopPrice,
+		string accountNumber = null,
+		TimeInForce timeInForce = TimeInForce.Gfd,
+		bool extendedHours = false,
+		string marketHours = "regular_hours");
 }
