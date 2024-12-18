@@ -29,23 +29,6 @@ internal static class RbHelper
 		: Constants.Routes.MarketDataBase;
 	}
 
-	internal static IDictionary<string, object> BuildOrderContent(OrderRequest orderRequest, string accountUrl)
-	{
-		return new Dictionary<string, object>
-		{
-			{"account", accountUrl},
-			{"instrument", orderRequest.Instrument},
-			{"symbol", orderRequest.Symbol},
-			{"type", orderRequest.Type.ToString().ToLower()},
-			{"time_in_force", orderRequest.TimeInForce.ToString().ToLower()},
-			{"trigger", orderRequest.Trigger.ToString().ToLower()},
-			{"price", orderRequest.Price},
-			{"stop_price", orderRequest.StopPrice},
-			{"quantity", orderRequest.Quantity.ToString()},
-			{"side", orderRequest.Side.ToString().ToLower()},
-		};
-	}
-
 	internal static OrderRequest BuildOrderRequestForMarket(string instrumentUrl,
 														 string symbol,
 														 TimeInForce timeInForce,
