@@ -16,24 +16,14 @@ public interface IHttpClientManager : IDisposable
 	Task<T> GetAsync<T>(string url, bool autoLog = true, IDictionary<string, string> query = null);
 
 	/// <summary>
-	/// Post data asynchronously.
-	/// </summary>
-	/// <param name="url">The URL.</param>
-	/// <param name="data">The data.</param>
-	/// <param name="autoLog">if set to <c>true</c> [automatic log].</param>
-	/// <returns>Tuple of the status code and deserialized data.</returns>
-	Task<(HttpStatusCode StatusCode, T Data)> PostAsync<T>(string url, IDictionary<string, string> data,
-		bool autoLog = true) where T : class;
-
-	/// <summary>
-	/// Posts the json asynchronous.
+	/// Posts the json by serialization of object asynchronous.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	/// <param name="url">The URL.</param>
-	/// <param name="jsonRequest">The json request.</param>
+	/// <param name="request">The request object.</param>
 	/// <param name="autoLog">if set to <c>true</c> [automatic log].</param>
 	/// <returns>Post result.</returns>
-	Task<T> PostJsonAsync<T>(string url, string jsonRequest, bool autoLog = true) where T : class;
+	Task<(HttpStatusCode StatusCode, T Data)> PostAsync<T>(string url, object request, bool autoLog = true) where T : class;
 
 	/// <summary>
 	/// Posts the asynchronous.
@@ -43,5 +33,5 @@ public interface IHttpClientManager : IDisposable
 	/// <param name="specifiedHeader">The specified header.</param>
 	/// <returns>The status code</returns>
 	Task<(HttpStatusCode StatusCode, string Result)> PostAsync(string url,
-		IDictionary<string, string> data, (string Name, string Value) specifiedHeader);
+		IDictionary<string, object> data, (string Name, string Value) specifiedHeader);
 }

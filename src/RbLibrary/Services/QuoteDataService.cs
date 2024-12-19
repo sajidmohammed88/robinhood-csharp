@@ -66,7 +66,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 
 		IList<QuoteData> quotesData = await GetQuotesDataAsync(stocks);
 
-		IDictionary<string, IList<string>> result = new Dictionary<string, IList<string>>();
+		Dictionary<string, IList<string>> result = [];
 
 		foreach (QuoteData quoteData in quotesData)
 		{
