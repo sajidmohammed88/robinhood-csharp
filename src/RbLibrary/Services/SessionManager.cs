@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+
 using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
@@ -53,27 +54,21 @@ public class SessionManager : ISessionManager, IHttpClientManager
 			throw new HttpResponseException($"The get call is faulted for {url} with status code : {response.StatusCode}");
 		}
 
-		string jsonString = string.Empty;
+		string jsonResult = await DecompressHttpResponseContentStreamIfNeededAsync(response);
 
-		if (response.Content.Headers.ContentEncoding.Contains("gzip"))
-		{
-			using (Stream responseStream = await response.Content.ReadAsStreamAsync())
-			using (GZipStream decompressionStream = new GZipStream(responseStream, CompressionMode.Decompress))
-			using (StreamReader reader = new StreamReader(decompressionStream))
-			{
-				jsonString = await reader.ReadToEndAsync();
-			}
-		}
-		else
-		{
-			jsonString = await response.Content.ReadAsStringAsync();
-		}
-
-		return JsonSerializer.Deserialize<T>(jsonString, _settings);
+		return JsonSerializer.Deserialize<T>(jsonResult, _settings);
 	}
 
 	/// <inheritdoc />
-	public async Task<T> PostJsonAsync<T>(string url, string jsonRequest, bool autoLog = true) where T : class
+	public async Task<(HttpStatusCode StatusCode, T Data)> PostAsync<T>(string url, object request, bool autoLog = true) where T : class
+	{
+		string jsonRequest = request == null ? string.Empty : JsonSerializer.Serialize(request, _settings);
+
+		return await PostAsync<T>(url, jsonRequest, autoLog);
+	}
+
+	/// <inheritdoc />
+	private async Task<(HttpStatusCode StatusCode, T Data)> PostAsync<T>(string url, string jsonRequest, bool autoLog = true) where T : class
 	{
 		HttpResponseMessage response = await _httpClient.PostAsync(url, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
 
@@ -84,48 +79,21 @@ public class SessionManager : ISessionManager, IHttpClientManager
 			response = await _httpClient.PostAsync(url, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
 		}
 
-		string result = await response.Content.ReadAsStringAsync();
-
-		if (response.StatusCode != HttpStatusCode.Created)
-		{
-			throw new HttpResponseException($"The post call is faulted for {url} with status code : {response.StatusCode} and message : {result}");
-		}
-
-		return JsonSerializer.Deserialize<T>(result, _settings);
-	}
-
-	/// <inheritdoc />
-	public async Task<(HttpStatusCode StatusCode, T Data)> PostAsync<T>(string url,
-			IDictionary<string, string> data, bool autoLog = true) where T : class
-	{
-		string body = data != null && data.Any()
-				? string.Join("&", data.Where(v => !string.IsNullOrEmpty(v.Value)).Select(_ => $"{_.Key}={_.Value}"))
-				: "";
-
-		HttpResponseMessage response = await _httpClient.PostAsync(url,
-				new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded"));
-
-		if (response.StatusCode == HttpStatusCode.Unauthorized && autoLog)
-		{
-			ConfigureManager(await RefreshOauth2Async());
-
-			response = await _httpClient.PostAsync(url,
-					new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded"));
-		}
-
-		string responseValue = await response.Content.ReadAsStringAsync();
+		string jsonResult = await DecompressHttpResponseContentStreamIfNeededAsync(response);
 
 		if (!response.IsSuccessStatusCode)
 		{
-			_logger.LogError("Error occurred when calling {PostAsync}, with status code : {StatusCode} and response : {}", nameof(PostAsync), response.StatusCode, responseValue);
+			throw new HttpResponseException($"The post call is faulted for {url} with status code : {response.StatusCode} and message : {jsonResult}");
 		}
 
-		return (response.StatusCode, !string.IsNullOrEmpty(responseValue) ? JsonSerializer.Deserialize<T>(responseValue, _settings) : null);
+		return (response.StatusCode, JsonSerializer.Deserialize<T>(jsonResult, _settings));
 	}
 
 	/// <inheritdoc />
-	public async Task<(HttpStatusCode StatusCode, string Result)> PostAsync(string url,
-					IDictionary<string, string> data, (string Name, string Value) specifiedHeader)
+	public async Task<(HttpStatusCode StatusCode, string Result)> PostAsync(
+		string url,
+		IDictionary<string, object> data,
+		(string Name, string Value) specifiedHeader)
 	{
 		if (specifiedHeader != (null, null) && !_httpClient.DefaultRequestHeaders.Contains(specifiedHeader.Name))
 		{
@@ -136,13 +104,15 @@ public class SessionManager : ISessionManager, IHttpClientManager
 		if (data != null && data.Any())
 		{
 			string body = string.Join("&",
-					data.Where(v => !string.IsNullOrEmpty(v.Value)).Select(_ => $"{_.Key}={_.Value}"));
+					data.Where(v => !string.IsNullOrEmpty(v.Value.ToString())).Select(_ => $"{_.Key}={_.Value.ToString()}"));
 			content = new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded");
 		}
 
 		HttpResponseMessage response = await _httpClient.PostAsync(url, content);
 
-		return (response.StatusCode, await response.Content.ReadAsStringAsync());
+		string jsonResult = await DecompressHttpResponseContentStreamIfNeededAsync(response);
+
+		return (response.StatusCode, jsonResult);
 	}
 
 	/// <inheritdoc />
@@ -170,7 +140,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	public async Task<AuthenticationResponse> ChallengeOauth2Async(Guid? challengeId, string code)
 	{
 		var (statusCode, result) = await PostAsync(string.Format(Constants.Routes.Challenge, challengeId),
-				new Dictionary<string, string> { { "response", code } },
+				new Dictionary<string, object> { { "response", code } },
 				("X-ROBINHOOD-CHALLENGE-RESPONSE-ID", challengeId?.ToString()));
 
 		try
@@ -194,7 +164,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	/// <inheritdoc />
 	public async Task<(HttpStatusCode, AuthenticationResponse)> MfaOath2Async(string code)
 	{
-		IDictionary<string, string> authContent = AuthHelper.BuildAuthenticationContent(_configuration);
+		Dictionary<string, string> authContent = AuthHelper.BuildAuthenticationContent(_configuration);
 		authContent.Add("mfa_code", code);
 
 		return await PostAsync<AuthenticationResponse>(Constants.Routes.Oauth, authContent);
@@ -218,15 +188,15 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	/// <inheritdoc />
 	public async Task LogoutAsync()
 	{
-		IDictionary<string, string> logoutContent = new Dictionary<string, string>
+		Dictionary<string, string> logoutContent = new()
 		{
-				{"client_id", Constants.Authentication.ClientId},
-				{"token", _token}
+			{"client_id", Constants.Authentication.ClientId},
+			{"token", _token}
 		};
 
 		try
 		{
-			await PostAsync<AuthenticationResponse>(Constants.Routes.OauthRevoke, logoutContent);
+			_ = await PostAsync<AuthenticationResponse>(Constants.Routes.OauthRevoke, logoutContent);
 
 			_token = null;
 			_refreshToken = null;
@@ -257,14 +227,14 @@ public class SessionManager : ISessionManager, IHttpClientManager
 		_httpClient.DefaultRequestHeaders.Remove("Authorization");
 
 		IDictionary<string, string> refreshContent = new Dictionary<string, string>
-					{
-							{"grant_type", "refresh_token"},
-							{"refresh_token", _refreshToken},
-							{"scope", "internal"},
-							{"client_id", Constants.Authentication.ClientId},
-							{"expires_in", _configuration.ExpirationTime.ToString()},
-							{"device_token", _configuration.DeviceToken },
-					};
+		{
+			{"grant_type", "refresh_token"},
+			{"refresh_token", _refreshToken},
+			{"scope", "internal"},
+			{"client_id", Constants.Authentication.ClientId},
+			{"expires_in", _configuration.ExpirationTime.ToString()},
+			{"device_token", _configuration.DeviceToken }
+		};
 
 		var authentication = await PostAsync<AuthenticationResponse>(Constants.Routes.Oauth, refreshContent);
 
@@ -286,6 +256,25 @@ public class SessionManager : ISessionManager, IHttpClientManager
 		client.DefaultRequestHeaders.Add("User-Agent", "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00) Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 
 		return client;
+	}
+
+	private static async Task<string> DecompressHttpResponseContentStreamIfNeededAsync(HttpResponseMessage httpResponseMessage)
+	{
+		string jsonString = string.Empty;
+
+		if (httpResponseMessage.Content.Headers.ContentEncoding.Contains("gzip"))
+		{
+			using Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+			using GZipStream decompressionStream = new(responseStream, CompressionMode.Decompress);
+			using StreamReader reader = new(decompressionStream);
+			jsonString = await reader.ReadToEndAsync();
+		}
+		else
+		{
+			jsonString = await httpResponseMessage.Content.ReadAsStringAsync();
+		}
+
+		return jsonString;
 	}
 
 	protected virtual void Dispose(bool disposing)

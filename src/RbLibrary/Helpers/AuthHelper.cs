@@ -12,7 +12,7 @@ internal static class AuthHelper
 		return expirationDate == DateTime.MinValue || expirationDate <= DateTime.UtcNow;
 	}
 
-	internal static IDictionary<string, string> BuildAuthenticationContent(AuthConfiguration configuration)
+	internal static Dictionary<string, string> BuildAuthenticationContent(AuthConfiguration configuration)
 	{
 		return new Dictionary<string, string>
 		{

@@ -50,10 +50,12 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 
 		orderRequest.AccountId = (await GetAccountsAsync()).First().Id;
 		orderRequest.CurrencyPairId = Constants.Pairs[pair];
+		orderRequest.IsQuantityCollared = false;
 
 		try
 		{
-			return await httpClientManager.PostJsonAsync<CryptoOrder>(Constants.Routes.NummusOrders, JsonSerializer.Serialize(orderRequest, CustomJsonSerializerOptions.Current?.Value));
+			var rst = await httpClientManager.PostAsync<CryptoOrder>(Constants.Routes.NummusOrders, orderRequest);
+			return rst.Data;
 		}
 		catch (Exception ex)
 		{
@@ -91,7 +93,7 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 			throw new HttpResponseException($"The order {orderId} can't be canceled.");
 		}
 
-		var (statusCode, _) = await httpClientManager.PostAsync(order.CancelUrl, null, (null, null));
+		(HttpStatusCode statusCode, string _) = await httpClientManager.PostAsync(order.CancelUrl, null, (null, null));
 
 		return statusCode == HttpStatusCode.OK;
 	}
@@ -99,13 +101,13 @@ public class CryptoCurrencyService(IHttpClientManager httpClientManager, IPagina
 	/// <inheritdoc />
 	public async Task<CryptoHistoricalData> HistoricalsAsync(string pair, string interval, string span, string bounds)
 	{
-		if (string.IsNullOrEmpty(pair) || !Constants.Pairs.ContainsKey(pair))
+		if (string.IsNullOrEmpty(pair) || !Constants.Pairs.TryGetValue(pair, out string value))
 		{
 			throw new CryptoCurrencyException("The pair is null, empty or not exist.");
 		}
 
 		return await httpClientManager.GetAsync<CryptoHistoricalData>(
-			string.Format(Constants.Routes.NummusHistoricals, Constants.Pairs[pair], interval, span, bounds));
+			string.Format(Constants.Routes.NummusHistoricals, value, interval, span, bounds));
 	}
 
 	/// <inheritdoc />
