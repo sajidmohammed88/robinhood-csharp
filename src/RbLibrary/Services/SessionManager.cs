@@ -37,7 +37,6 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	{
 		if (query != null && query.Any())
 		{
-
 			url = QueryHelpers.AddQueryString(url, query);
 		}
 
