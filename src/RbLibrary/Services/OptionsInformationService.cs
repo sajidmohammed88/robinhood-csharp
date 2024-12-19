@@ -10,7 +10,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 	public async Task<Chain> GetChainAsync(string instrumentId)
 	{
 		BaseResult<Chain> chainResult = await httpClientManager
-			.GetAsync<BaseResult<Chain>>(Constants.Routes.OptionsChainBase, query: new Dictionary<string, object> { { "equity_instrument_ids", instrumentId } });
+			.GetAsync<BaseResult<Chain>>(Constants.Routes.OptionsChainBase, query: new Dictionary<string, string> { { "equity_instrument_ids", instrumentId } });
 
 		return chainResult.Results?.FirstOrDefault();
 	}
@@ -19,7 +19,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 	public async Task<IList<Option>> GetOptionsByChainIdAsync(Guid? chainId, IList<string> expirationDates,
 		OptionType optionType)
 	{
-		Dictionary<string, object> query = new()
+		Dictionary<string, string> query = new()
 		{
 			{"chain_id", chainId?.ToString()},
 			{"expiration_dates", string.Join(",", expirationDates)},
@@ -52,7 +52,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 		}
 
 		BaseResult<Instrument> stockInfo = await httpClientManager.GetAsync<BaseResult<Instrument>>(Constants.Routes.InstrumentsBase,
-			query: new Dictionary<string, object> { { "symbol", symbol } });
+			query: new Dictionary<string, string> { { "symbol", symbol } });
 
 		if (stockInfo?.Results == null || !stockInfo.Results.Any())
 		{
@@ -68,7 +68,7 @@ public class OptionsInformationService(IHttpClientManager httpClientManager, IPa
 	/// /!\ in the python code we call GetOptionMarketData to bid and ask price, but it's respond all time 403 status code.
 	public async Task<Guid?> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType, string state = "active")
 	{
-		Dictionary<string, object> query = new()
+		Dictionary<string, string> query = new()
 		{
 			{"chain_symbol", symbol},
 			{"strike_price", strike},

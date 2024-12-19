@@ -66,7 +66,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 
 		IList<QuoteData> quotesData = await GetQuotesDataAsync(stocks);
 
-		IDictionary<string, IList<string>> result = new Dictionary<string, IList<string>>();
+		Dictionary<string, IList<string>> result = [];
 
 		foreach (QuoteData quoteData in quotesData)
 		{
@@ -85,7 +85,7 @@ public class QuoteDataService(IHttpClientManager httpClientManager, IPaginator p
 			  interval = day + span = year
 			  interval = week*/
 
-		Dictionary<string, object> query = new()
+		Dictionary<string, string> query = new()
 		{
 			{"symbols", string.Join(",",stocks).ToUpper()},
 			{"interval", interval.ToLower()},

@@ -6,7 +6,6 @@
 /// <seealso cref="IPaginator" />
 public class Paginator(IHttpClientManager httpClientManager) : IPaginator
 {
-
 	/// <inheritdoc />
 	public async Task<IList<T>> PaginateResultAsync<T>(BaseResult<T> baseResult)
 	{

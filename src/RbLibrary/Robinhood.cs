@@ -268,18 +268,13 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	/// <inheritdoc />
 	public async Task<bool> CancelOrderAsync(Guid orderId)
 	{
-		Order order = await orderService.GetOrderHistoryAsync(orderId);
-		if (order == null)
-		{
-			throw new HttpResponseException($"The order {orderId} not exist.");
-		}
-
+		Order order = await orderService.GetOrderHistoryAsync(orderId) ?? throw new HttpResponseException($"The order {orderId} not exist.");
 		if (order.Cancel == null)
 		{
 			throw new HttpResponseException($"The order {orderId} can't be canceled.");
 		}
 
-		var (statusCode, _) = await httpClientManager.PostAsync(order.Cancel, null, (null, null));
+		(HttpStatusCode statusCode, string _) = await httpClientManager.PostAsync(order.Cancel, null, (null, null));
 
 		return statusCode == HttpStatusCode.OK;
 	}
@@ -333,12 +328,11 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	{
 		if (amountInDollars < 1)
 		{
-			throw new Exception("Fractional share price should meet minimum 1.00");
+			throw new HttpResponseException("Fractional share price should meet minimum 1.00");
 		}
 
-		string price = await AskPriceAsync(symbol);
-		double priceVal = double.Parse(price);
-		double fractionalShares = (priceVal == 0 ? 0.0 : MathHelper.RoundPrice(amountInDollars / priceVal));
+		_ = double.TryParse(await AskPriceAsync(symbol), out double priceValue);
+		double fractionalShares = priceValue == 0 ? 0.0 : MathHelper.RoundPrice(amountInDollars / priceValue);
 
 		return await orderService.PlaceOrderAsync(
 			symbol,
@@ -463,12 +457,11 @@ public class Robinhood(ISessionManager sessionManager, IQuoteDataService quoteDa
 	{
 		if (amountInDollars < 1)
 		{
-			throw new Exception("Fractional share price should meet minimum 1.00");
+			throw new HttpResponseException("Fractional share price should meet minimum 1.00");
 		}
 
-		string price = await BidPriceAsync(symbol);
-		double priceVal = double.Parse(price);
-		double fractionalShares = (priceVal == 0 ? 0.0 : MathHelper.RoundPrice(amountInDollars / priceVal));
+		_ = double.TryParse(await BidPriceAsync(symbol), out double priceValue);
+		double fractionalShares = priceValue == 0 ? 0.0 : MathHelper.RoundPrice(amountInDollars / priceValue);
 
 		return await orderService.PlaceOrderAsync(
 			symbol,

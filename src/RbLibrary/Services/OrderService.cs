@@ -1,8 +1,4 @@
-﻿
-using Rb.Integration.Api.Abstractions;
-using Rb.Integration.Api.Data.Orders.Request;
-
-namespace Rb.Integration.Api.Services;
+﻿namespace Rb.Integration.Api.Services;
 
 /// <summary>
 /// Order service that responsible on orders endpoints call.
@@ -46,13 +42,11 @@ public class OrderService(IQuoteDataService quoteDataService, IHttpClientManager
 		string instrumentUrl = quoteData.Instrument;
 		string askPrice = quoteData.AskPrice;
 		string bidPrice = quoteData.BidPrice;
-
-		OrderType orderType = OrderType.Market;
-		Trigger trigger = Trigger.Immediate;
-
 		double? price = null;
 		string presetPercentLimit = null;
 
+		OrderType orderType;
+		Trigger trigger;
 		if (limitPrice.HasValue && stopPrice.HasValue)
 		{
 			// Buy Stop Limit / Sell Stop Limit
@@ -96,7 +90,7 @@ public class OrderService(IQuoteDataService quoteDataService, IHttpClientManager
 			}
 		}
 
-		OrderRequest orderRequest = new OrderRequest
+		OrderRequest orderRequest = new()
 		{
 			Account = accountUrl,
 			AskPrice = askPrice,
@@ -132,7 +126,7 @@ public class OrderService(IQuoteDataService quoteDataService, IHttpClientManager
 		}
 	}
 
-	private string GetOrderUrl(string orderId = null, string accountNumber = null)
+	private static string GetOrderUrl(string orderId = null, string accountNumber = null)
 	{
 		string url = Constants.Routes.Orders;
 		if (!string.IsNullOrEmpty(orderId))

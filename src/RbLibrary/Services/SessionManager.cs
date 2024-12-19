@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+
 using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
@@ -32,14 +33,12 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	}
 
 	/// <inheritdoc />
-	public async Task<T> GetAsync<T>(string url, bool autoLog = true, IDictionary<string, object> query = null)
+	public async Task<T> GetAsync<T>(string url, bool autoLog = true, IDictionary<string, string> query = null)
 	{
 		if (query != null && query.Any())
 		{
-			IDictionary<string, string> queryStrDict = query
-				.ToDictionary(kvp => kvp.Key, kvp => kvp.Value?.ToString());
 
-			url = QueryHelpers.AddQueryString(url, queryStrDict);
+			url = QueryHelpers.AddQueryString(url, query);
 		}
 
 		HttpResponseMessage response = await _httpClient.GetAsync(url);
@@ -56,7 +55,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 			throw new HttpResponseException($"The get call is faulted for {url} with status code : {response.StatusCode}");
 		}
 
-		string jsonResult = await DecompressHttpResponseContentStreamIfNeeded(response);
+		string jsonResult = await DecompressHttpResponseContentStreamIfNeededAsync(response);
 
 		return JsonSerializer.Deserialize<T>(jsonResult, _settings);
 	}
@@ -64,7 +63,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	/// <inheritdoc />
 	public async Task<(HttpStatusCode StatusCode, T Data)> PostAsync<T>(string url, object request, bool autoLog = true) where T : class
 	{
-		string jsonRequest = (request == null ? string.Empty : JsonSerializer.Serialize(request, _settings));
+		string jsonRequest = request == null ? string.Empty : JsonSerializer.Serialize(request, _settings);
 
 		return await PostAsync<T>(url, jsonRequest, autoLog);
 	}
@@ -81,7 +80,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 			response = await _httpClient.PostAsync(url, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
 		}
 
-		string jsonResult = await DecompressHttpResponseContentStreamIfNeeded(response);
+		string jsonResult = await DecompressHttpResponseContentStreamIfNeededAsync(response);
 
 		if (!response.IsSuccessStatusCode)
 		{
@@ -112,7 +111,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 
 		HttpResponseMessage response = await _httpClient.PostAsync(url, content);
 
-		string jsonResult = await DecompressHttpResponseContentStreamIfNeeded(response);
+		string jsonResult = await DecompressHttpResponseContentStreamIfNeededAsync(response);
 
 		return (response.StatusCode, jsonResult);
 	}
@@ -166,7 +165,7 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	/// <inheritdoc />
 	public async Task<(HttpStatusCode, AuthenticationResponse)> MfaOath2Async(string code)
 	{
-		IDictionary<string, object> authContent = AuthHelper.BuildAuthenticationContent(_configuration);
+		Dictionary<string, string> authContent = AuthHelper.BuildAuthenticationContent(_configuration);
 		authContent.Add("mfa_code", code);
 
 		return await PostAsync<AuthenticationResponse>(Constants.Routes.Oauth, authContent);
@@ -190,15 +189,15 @@ public class SessionManager : ISessionManager, IHttpClientManager
 	/// <inheritdoc />
 	public async Task LogoutAsync()
 	{
-		IDictionary<string, object> logoutContent = new Dictionary<string, object>
+		Dictionary<string, string> logoutContent = new()
 		{
-				{"client_id", Constants.Authentication.ClientId},
-				{"token", _token}
+			{"client_id", Constants.Authentication.ClientId},
+			{"token", _token}
 		};
 
 		try
 		{
-			await PostAsync<AuthenticationResponse>(Constants.Routes.OauthRevoke, logoutContent);
+			_ = await PostAsync<AuthenticationResponse>(Constants.Routes.OauthRevoke, logoutContent);
 
 			_token = null;
 			_refreshToken = null;
@@ -228,15 +227,15 @@ public class SessionManager : ISessionManager, IHttpClientManager
 
 		_httpClient.DefaultRequestHeaders.Remove("Authorization");
 
-		IDictionary<string, object> refreshContent = new Dictionary<string, object>
-					{
-							{"grant_type", "refresh_token"},
-							{"refresh_token", _refreshToken},
-							{"scope", "internal"},
-							{"client_id", Constants.Authentication.ClientId},
-							{"expires_in", _configuration.ExpirationTime.ToString()},
-							{"device_token", _configuration.DeviceToken },
-					};
+		IDictionary<string, string> refreshContent = new Dictionary<string, string>
+		{
+			{"grant_type", "refresh_token"},
+			{"refresh_token", _refreshToken},
+			{"scope", "internal"},
+			{"client_id", Constants.Authentication.ClientId},
+			{"expires_in", _configuration.ExpirationTime.ToString()},
+			{"device_token", _configuration.DeviceToken }
+		};
 
 		var authentication = await PostAsync<AuthenticationResponse>(Constants.Routes.Oauth, refreshContent);
 
@@ -260,18 +259,16 @@ public class SessionManager : ISessionManager, IHttpClientManager
 		return client;
 	}
 
-	private async Task<string> DecompressHttpResponseContentStreamIfNeeded(HttpResponseMessage httpResponseMessage)
+	private static async Task<string> DecompressHttpResponseContentStreamIfNeededAsync(HttpResponseMessage httpResponseMessage)
 	{
 		string jsonString = string.Empty;
 
 		if (httpResponseMessage.Content.Headers.ContentEncoding.Contains("gzip"))
 		{
-			using (Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync())
-			using (GZipStream decompressionStream = new GZipStream(responseStream, CompressionMode.Decompress))
-			using (StreamReader reader = new StreamReader(decompressionStream))
-			{
-				jsonString = await reader.ReadToEndAsync();
-			}
+			using Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+			using GZipStream decompressionStream = new(responseStream, CompressionMode.Decompress);
+			using StreamReader reader = new(decompressionStream);
+			jsonString = await reader.ReadToEndAsync();
 		}
 		else
 		{
