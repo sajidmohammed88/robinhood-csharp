@@ -43,8 +43,7 @@ public interface IOptionsInformationService
 	/// <param name="optionType">Type of the option.</param>
 	/// <param name="state">The state.</param>
 	/// <returns>Option quote</returns>
-	Task<Guid?> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType,
-		string state = "active");
+	Task<Guid?> GetOptionQuoteAsync(string symbol, string strike, string expirationDate, OptionType optionType, string state = "active");
 
 	/// <summary>
 	/// Get a list of market data for a given option id.
