@@ -32,6 +32,5 @@ public interface IHttpClientManager : IDisposable
 	/// <param name="data">The data.</param>
 	/// <param name="specifiedHeader">The specified header.</param>
 	/// <returns>The status code</returns>
-	Task<(HttpStatusCode StatusCode, string Result)> PostAsync(string url,
-		IDictionary<string, object> data, (string Name, string Value) specifiedHeader);
+	Task<(HttpStatusCode StatusCode, string Result)> PostAsync(string url, IDictionary<string, object> data, (string Name, string Value) specifiedHeader);
 }
