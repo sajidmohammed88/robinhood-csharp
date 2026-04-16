@@ -20,7 +20,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 10.0.x
       
     - name: Add GitHub Packages source to NuGet config
       run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.RB_CSHARP_SECRET_NAME }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/sajidmohammed88/index.json"
