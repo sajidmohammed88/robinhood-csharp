@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <PackageId>robinhood-csharp</PackageId>
     <Version>1.0.0</Version>
     <Authors>Mohammed Sajid</Authors>
@@ -15,7 +15,7 @@ Note : This is an unofficial client package. I'm not affiliated with the folks a
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md"/>
+    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
   </ItemGroup>
 
   <ItemGroup>
